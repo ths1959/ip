@@ -102,11 +102,14 @@ public class MemoMax {
                     ui.showMessage("Incomplete command\n" +
                             "Type 'help' for more options");
                 } else {
-                    String[] actionDate = userInput.split("/by");
+                    String[] actionDate = userInput.split("/by", -1);
                     String action = actionDate[0].substring("deadline ".length()).trim();
                     String date = actionDate[1].trim();
                     if (action.isEmpty()) {
                         ui.showMessage("Task description cannot be empty\n" +
+                                "Type 'help' for more options");
+                    } else if (date.isEmpty()) {
+                        ui.showMessage("Task deadline has to be specified\n" +
                                 "Type 'help' for more options");
                     } else {
                         tasks[taskCounter] = new Deadline(action, date);
@@ -120,20 +123,31 @@ public class MemoMax {
                     ui.showMessage("Incomplete command\n" +
                             "Type 'help' for more options");
                 } else {
-                    String[] eventDate = userInput.split("/from");
+                    String[] eventDate = userInput.split("/from", -1);
                     String event = eventDate[0].substring("event ".length()).trim();
-                    String[] fromTo = eventDate[1].split("/to");
-                    String from = fromTo[0].trim();
-                    String to = fromTo[1].trim();
-                    if (event.isEmpty()) {
-                        ui.showMessage("Task description cannot be empty\n" +
+                    if (eventDate.length < 2) {
+                        ui.showMessage("Missing start time after /from\n" +
                                 "Type 'help' for more options");
                     } else {
-                        tasks[taskCounter] = new Event(event, from, to);
-                        System.out.println("Got it. I've added this task:\n  " + tasks[taskCounter].toString());
-                        taskCounter += 1;
-                        ui.showMessage("Now you have " + taskCounter + " task(s) in the list.");
+                        String[] fromTo = eventDate[1].split("/to", -1);
+                        String from = fromTo[0].trim();
+                        String to = fromTo[1].trim();
+                        if (event.isEmpty()) {
+                            ui.showMessage("Task description cannot be empty\n" +
+                                    "Type 'help' for more options");
+                        } else if (from.isEmpty()) {
+                            ui.showMessage("Start time cannot be empty\n" +
+                                    "Type 'help' for more options");
+                        } else if (to.isEmpty()) {
+                            ui.showMessage("End time cannot be empty\n" +
+                                    "Type 'help' for more options");
+                        } else {
+                            tasks[taskCounter] = new Event(event, from, to);
+                            System.out.println("Got it. I've added this task:\n  " + tasks[taskCounter].toString());
+                            taskCounter += 1;
+                            ui.showMessage("Now you have " + taskCounter + " task(s) in the list.");
                         }
+                    }
                 }
             } else if (inputParts[0].equals("help")) { // Process help command
                 if (inputParts.length != 1) {

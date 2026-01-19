@@ -1,0 +1,34 @@
+list
+todo read book
+list
+todo
+deadline return book /by Sunday
+deadline
+deadline homework
+deadline submit report /by
+deadline project /by
+event team meeting /from 2pm /to 4pm
+event
+event party
+event celebration /from 6pm
+event celebration2 /from
+event dinner /to 8pm
+event /from 9am /to 10am
+list
+mark 1
+mark 1
+mark 2
+mark 0
+mark
+mark ten
+mark 99
+unmark 2
+unmark
+unmark twenty
+unmark 99
+unmark 1
+unmark 1
+list
+blah blah
+help
+bye

@@ -1,7 +1,120 @@
-Hello from
- ____        _        
+Hello! I'm MemoMax
+What can I do for you? ____        _        
 |  _ \ _   _| | _____ 
 | | | | | | | |/ / _ \
 | |_| | |_| |   <  __/
 |____/ \__,_|_|\_\___|
 
+    ____________________________________________________________
+There are currently no tasks in your list
+    ____________________________________________________________
+Got it. I've added this task:
+  [T][ ] read book
+Now you have 1 task(s) in the list.
+    ____________________________________________________________
+Here is/are the task(s) in your list:
+1.[T][ ] read book
+You have 1 task(s).
+    ____________________________________________________________
+Incomplete command
+Type 'help' for more options
+    ____________________________________________________________
+Got it. I've added this task:
+  [D][ ] return book (by: Sunday)
+Now you have 2 task(s) in the list.
+    ____________________________________________________________
+Incomplete command
+Type 'help' for more options
+    ____________________________________________________________
+Incomplete command
+Type 'help' for more options
+    ____________________________________________________________
+Task deadline has to be specified
+Type 'help' for more options
+    ____________________________________________________________
+Task deadline has to be specified
+Type 'help' for more options
+    ____________________________________________________________
+Got it. I've added this task:
+  [E][ ] team meeting (from: 2pm to: 4pm)
+Now you have 3 task(s) in the list.
+    ____________________________________________________________
+Incomplete command
+Type 'help' for more options
+    ____________________________________________________________
+Incomplete command
+Type 'help' for more options
+    ____________________________________________________________
+Incomplete command
+Type 'help' for more options
+    ____________________________________________________________
+Incomplete command
+Type 'help' for more options
+    ____________________________________________________________
+Incomplete command
+Type 'help' for more options
+    ____________________________________________________________
+Task description cannot be empty
+Type 'help' for more options
+    ____________________________________________________________
+Here is/are the task(s) in your list:
+1.[T][ ] read book
+2.[D][ ] return book (by: Sunday)
+3.[E][ ] team meeting (from: 2pm to: 4pm)
+You have 3 task(s).
+    ____________________________________________________________
+Nice! I've marked this task as done:
+  [T][X] read book
+    ____________________________________________________________
+Task already marked as done
+    ____________________________________________________________
+Nice! I've marked this task as done:
+  [D][X] return book (by: Sunday)
+    ____________________________________________________________
+Task does not exist
+Type 'help' for more options
+    ____________________________________________________________
+Task number not specified
+Type 'help' for more options
+    ____________________________________________________________
+Task number is incorrectly specified
+Type 'help' for more options
+    ____________________________________________________________
+Task does not exist
+Type 'help' for more options
+    ____________________________________________________________
+OK, I've marked this task as not done yet:
+  [D][ ] return book (by: Sunday)
+    ____________________________________________________________
+Task number not specified
+Type 'help' for more options
+    ____________________________________________________________
+Task not specified as a number
+    ____________________________________________________________
+Task does not exist
+    ____________________________________________________________
+OK, I've marked this task as not done yet:
+  [T][ ] read book
+    ____________________________________________________________
+Task is already unmarked
+    ____________________________________________________________
+Here is/are the task(s) in your list:
+1.[T][ ] read book
+2.[D][ ] return book (by: Sunday)
+3.[E][ ] team meeting (from: 2pm to: 4pm)
+You have 3 task(s).
+    ____________________________________________________________
+Invalid command
+Type 'help' for more options
+    ____________________________________________________________
+Here's what I can help with:
+1. Add a task: todo <description>
+2. Add a deadline: deadline <task> /by <date>
+3. Add an event: event <task> /from <start> /to <end>
+4. See all tasks: list
+5. Mark as done: mark <number>
+6. Mark as not done: unmark <number>
+7. Say goodbye: bye
+    ____________________________________________________________
+Bye. Hope to see you again soon!
+    ____________________________________________________________
