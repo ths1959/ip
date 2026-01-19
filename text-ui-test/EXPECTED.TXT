@@ -16,93 +16,109 @@ Here is/are the task(s) in your list:
 1.[T][ ] read book
 You have 1 task(s).
     ____________________________________________________________
-Incomplete command
-Type 'help' for more options
+Task description cannot be empty
+Enter 'help' for more information
     ____________________________________________________________
 Got it. I've added this task:
   [D][ ] return book (by: Sunday)
 Now you have 2 task(s) in the list.
     ____________________________________________________________
-Incomplete command
-Type 'help' for more options
+Incomplete command. It requires both description and 'by' date to be specified.
+Enter 'help' for more information
     ____________________________________________________________
-Incomplete command
-Type 'help' for more options
-    ____________________________________________________________
-Task deadline has to be specified
-Type 'help' for more options
+Incomplete command. It requires an additional 'by' date to be specified.
+Enter 'help' for more information
     ____________________________________________________________
 Task deadline has to be specified
-Type 'help' for more options
+Enter 'help' for more information
+    ____________________________________________________________
+Task deadline has to be specified
+Enter 'help' for more information
     ____________________________________________________________
 Got it. I've added this task:
   [E][ ] team meeting (from: 2pm to: 4pm)
 Now you have 3 task(s) in the list.
     ____________________________________________________________
-Incomplete command
-Type 'help' for more options
+Incomplete command. It requires a description, '/from' time and '/to' time to be specified.
+Enter 'help' for more information
     ____________________________________________________________
-Incomplete command
-Type 'help' for more options
+Incomplete command. It requires both '/from' time and '/to' time to be specified.
+Enter 'help' for more information
     ____________________________________________________________
-Incomplete command
-Type 'help' for more options
+Incomplete command. It requires an additional '/to' time to be specified.
+Enter 'help' for more information
     ____________________________________________________________
-Incomplete command
-Type 'help' for more options
+Incomplete command. It requires an additional '/to' time to be specified.
+Enter 'help' for more information
     ____________________________________________________________
-Incomplete command
-Type 'help' for more options
+Incomplete command. It requires an additional '/from' time to be specified.
+Enter 'help' for more information
     ____________________________________________________________
 Task description cannot be empty
-Type 'help' for more options
+Enter 'help' for more information
+    ____________________________________________________________
+Start time cannot be empty
+Enter 'help' for more information
+    ____________________________________________________________
+End time cannot be empty
+Enter 'help' for more information
+    ____________________________________________________________
+Got it. I've added this task:
+  [E][ ] dinner (from: 9am to: 10am)
+Now you have 4 task(s) in the list.
     ____________________________________________________________
 Here is/are the task(s) in your list:
 1.[T][ ] read book
 2.[D][ ] return book (by: Sunday)
 3.[E][ ] team meeting (from: 2pm to: 4pm)
-You have 3 task(s).
+4.[E][ ] dinner (from: 9am to: 10am)
+You have 4 task(s).
     ____________________________________________________________
 Nice! I've marked this task as done:
   [T][X] read book
     ____________________________________________________________
-Task already marked as done
+Task is already marked as done
+Enter 'help' for more information
     ____________________________________________________________
 Nice! I've marked this task as done:
   [D][X] return book (by: Sunday)
     ____________________________________________________________
 Task does not exist
-Type 'help' for more options
+Enter 'help' for more information
     ____________________________________________________________
 Task number not specified
-Type 'help' for more options
+Enter 'help' for more information
     ____________________________________________________________
-Task number is incorrectly specified
-Type 'help' for more options
+'ten' is not a valid number
+Enter 'help' for more information
     ____________________________________________________________
 Task does not exist
-Type 'help' for more options
+Enter 'help' for more information
     ____________________________________________________________
 OK, I've marked this task as not done yet:
   [D][ ] return book (by: Sunday)
     ____________________________________________________________
 Task number not specified
-Type 'help' for more options
+Enter 'help' for more information
     ____________________________________________________________
-Task not specified as a number
+'twenty' is not a valid number
+Enter 'help' for more information
     ____________________________________________________________
 Task does not exist
+Enter 'help' for more information
     ____________________________________________________________
 OK, I've marked this task as not done yet:
   [T][ ] read book
     ____________________________________________________________
 Task is already unmarked
+Enter 'help' for more information
     ____________________________________________________________
 Here is/are the task(s) in your list:
 1.[T][ ] read book
 2.[D][ ] return book (by: Sunday)
 3.[E][ ] team meeting (from: 2pm to: 4pm)
-You have 3 task(s).
+4.[E][ ] dinner (from: 9am to: 10am)
+You have 4 task(s).
     ____________________________________________________________
 Invalid command
 Type 'help' for more options

@@ -5,4 +5,10 @@ public class Ui {
         System.out.println(message);
         System.out.println(DIVIDER);
     }
+
+    public void showErrorMessage(String message) {
+        System.out.println(message);
+        System.out.println("Enter 'help' for more information");
+        System.out.println(DIVIDER);
+    }
 }

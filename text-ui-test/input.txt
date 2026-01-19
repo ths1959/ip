@@ -14,6 +14,9 @@ event celebration /from 6pm
 event celebration2 /from
 event dinner /to 8pm
 event /from 9am /to 10am
+event dinner /from /to 10am
+event dinner /from 9am /to
+event dinner /from 9am /to 10am
 list
 mark 1
 mark 1
