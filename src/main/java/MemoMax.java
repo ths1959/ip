@@ -40,27 +40,42 @@ public class MemoMax {
         while (true) {
             String userInput = scanner.nextLine();
             String[] inputParts = userInput.split(" ");
+            CommandType commandType = CommandType.parseCommand(inputParts[0]);
 
-            if (userInput.equals("bye")) {
+            switch (commandType) {
+                case BYE:
+                    break;
+                case LIST:
+                    handleList();
+                    break;
+                case MARK:
+                    handleMark(inputParts);
+                    break;
+                case UNMARK:
+                    handleUnmark(inputParts);
+                    break;
+                case DELETE:
+                    handleDelete(inputParts);
+                    break;
+                case TODO:
+                    handleTodo(userInput, inputParts);
+                    break;
+                case DEADLINE:
+                    handleDeadline(userInput);
+                    break;
+                case EVENT:
+                    handleEvent(userInput);
+                    break;
+                case HELP:
+                    handleHelp(inputParts);
+                    break;
+                case UNKNOWN:
+                    handleUnknownCommand();
+                    break;
+            }
+
+            if (commandType == CommandType.BYE) {
                 break;
-            } else if (userInput.equals("list")) {
-                handleList();
-            } else if (inputParts[0].equals("mark")) {
-                handleMark(inputParts);
-            } else if (inputParts[0].equals("unmark")) {
-                handleUnmark(inputParts);
-            } else if (inputParts[0].equals("delete")) {
-                handleDelete(inputParts);
-            } else if (inputParts[0].equals("todo")) {
-                handleTodo(userInput, inputParts);
-            } else if (inputParts[0].equals("deadline")) {
-                handleDeadline(userInput);
-            } else if (inputParts[0].equals("event")) {
-                handleEvent(userInput);
-            } else if (inputParts[0].equals("help")) {
-                handleHelp(inputParts);
-            } else {
-                handleUnknownCommand();
             }
         }
     }
@@ -176,7 +191,6 @@ public class MemoMax {
      */
     private static void handleDeadline(String userInput) {
         try {
-            // First check: if input is just "deadline" (no description, no /by)
             if (userInput.trim().equals("deadline")) {
                 throw new MemoMaxException("Deadline needs a description and a due date. " +
                         "Example: deadline return book /by Sunday");
