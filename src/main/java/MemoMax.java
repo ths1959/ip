@@ -1,184 +1,395 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+ Note: ChatGPT was consulted for adherence towards Javadoc documentation standards.
+ Core logic, structure, and error messages remain my own implementation.
+*/
+
+/**
+ * Main chatbot class for MemoMax.
+ * Handles user commands and manages task list.
+ */
 public class MemoMax {
+    private static final ArrayList<Task> tasks = new ArrayList<>();
+    private static final Ui ui = new Ui();
+    private static final Scanner scanner = new Scanner(System.in);
+
+    /**
+     * Main entry point for the chatbot.
+     *
+     * @param args Command line arguments
+     */
     public static void main(String[] args) {
-        Ui ui = new Ui();
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
+        String logo = " __  __  _____  __  __   ___   __  __     _    __  __\n"
+                + "|  \\/  || ____||  \\/  | / _ \\ |  \\/  |   / \\   \\ \\/ /\n"
+                + "| |\\/| ||  _|  | |\\/| || | | || |\\/| |  / _ \\   \\  / \n"
+                + "| |  | || |___ | |  | || |_| || |  | | / ___ \\  /  \\ \n"
+                + "|_|  |_||_____||_|  |_| \\___/ |_|  |_|/_/   \\_\\/_/\\_\\\n";
         ui.showMessage("Hello! I'm MemoMax\nWhat can I do for you?" + logo);
 
-        Task[] tasks = new Task[100]; // Task storage
-        int taskCounter = 0; // Serial number for tasks
-        Scanner scanner = new Scanner(System.in);
-        while(true) {
-            String userInput = scanner.nextLine();
-            String[] inputParts = userInput.split(" ");
-            if (userInput.equals("bye")) { // Exit condition
-                break;
-            } else if (userInput.equals("list")) { // List tasks
-                if (taskCounter == 0) { // No task in storage
-                    ui.showMessage("There are currently no tasks in your list");
-                } else { // Print out all tasks
-                    System.out.println("Here is/are the task(s) in your list:");
-                    for (int i = 0; i < taskCounter; i++) {
-                        System.out.println(i+1 + "." + tasks[i].toString());
-                    }
-                    ui.showMessage("You have " + taskCounter + " task(s).");
-                }
-            } else if (inputParts[0].equals("mark")) { // Mark task as done
-                try {
-                    if (inputParts.length < 2) { // Invalid command due to unspecified task
-                        throw new MemoMaxException("Task number not specified");
-                    }
-                    int taskNumber = Integer.parseInt(inputParts[1]);
-                    if (taskNumber < 1 || taskNumber > taskCounter) { // Task number out of range
-                        throw new MemoMaxException("Task does not exist");
-                    }
-                    int index = taskNumber - 1;
-                    if (tasks[index].getStatusIcon().equals("[X]")) { // Task already marked
-                        throw new MemoMaxException("Task is already marked as done");
-                    }
-                    tasks[index].mark();
-                    ui.showMessage("Nice! I've marked this task as done:\n" + "  " +
-                            tasks[index].toString());
-                } catch (MemoMaxException e) {
-                    ui.showErrorMessage(e.getMessage());
-                }
-                catch (NumberFormatException e) { // If task number has an invalid format
-                    ui.showErrorMessage("'" + inputParts[1] + "' is not a valid number");
-                }
-            } else if (inputParts[0].equals("unmark")) { // Unmark done task
-                try {
-                    if (inputParts.length < 2) { // Invalid command due to unspecified task
-                        throw new MemoMaxException("Task number not specified");
-                    }
-                    int taskNumber = Integer.parseInt(inputParts[1]);
-                    if (taskNumber < 1 || taskNumber > taskCounter) { // Task number out of range
-                        throw new MemoMaxException("Task does not exist");
-                    }
-                    int index = taskNumber - 1;
-                    if (tasks[index].getStatusIcon().equals("[ ]")) { // Task already unmarked
-                        throw new MemoMaxException("Task is already unmarked");
-                    }
-                    tasks[index].unmark();
-                    ui.showMessage("OK, I've marked this task as not done yet:\n" + "  " +
-                            tasks[index].toString());
-                } catch (MemoMaxException e) {
-                    ui.showErrorMessage(e.getMessage());
-                }
-                catch (NumberFormatException e) { // If task number has an invalid format
-                    ui.showErrorMessage("'" + inputParts[1] + "' is not a valid number");
-                }
-            } else if (inputParts[0].equals("todo")) { // Process todo command
-                try {
-                    if (inputParts.length == 1) {
-                        throw new MemoMaxException("Task description cannot be empty");
-                    }
-                    String description = userInput.substring("todo ".length());
-                    tasks[taskCounter] = new Todo(description);
-                    System.out.println("Got it. I've added this task:\n  " + tasks[taskCounter].toString());
-                    taskCounter += 1;
-                    ui.showMessage("Now you have " + taskCounter + " task(s) in the list.");
-                } catch (MemoMaxException e) {
-                    ui.showErrorMessage(e.getMessage());
-                }
-            } else if (inputParts[0].equals("deadline")) { // Process deadline command
-                try {
-                    if (inputParts.length == 1) {
-                        throw new MemoMaxException("Incomplete command. It requires both" +
-                                " description and 'by' date to be specified.");
-                    }
-                    if (!userInput.contains("/by")) {
-                        throw new MemoMaxException("Incomplete command. It requires an additional" +
-                                " 'by' date to be specified.");
-                    }
-                    String[] actionDate = userInput.split("/by", -1);
-                    String action = actionDate[0].substring("deadline ".length()).trim();
-                    String date = actionDate[1].trim();
-                    if (action.isEmpty()) {
-                        throw new MemoMaxException("Task description cannot be empty");
-                    }
-                    if (date.isEmpty()) {
-                        throw new MemoMaxException("Task deadline has to be specified");
-                    }
-                    tasks[taskCounter] = new Deadline(action, date);
-                    System.out.println("Got it. I've added this task:\n  " + tasks[taskCounter].toString());
-                    taskCounter += 1;
-                    ui.showMessage("Now you have " + taskCounter + " task(s) in the list.");
-                } catch (MemoMaxException e) {
-                    ui.showErrorMessage(e.getMessage());
-                }
-            } else if (inputParts[0].equals("event")) { // Process event command
-                try {
-                    if (inputParts.length == 1) {
-                        throw new MemoMaxException("Incomplete command. It requires a description, " +
-                                "'/from' time and '/to' time to be specified.");
-                    }
-                    boolean hasFrom = userInput.contains("/from");
-                    boolean hasTo = userInput.contains("/to");
-                    if (!hasFrom && !hasTo) {
-                        throw new MemoMaxException("Incomplete command. It requires both '/from' time " +
-                                "and '/to' time to be specified.");
-                    }
-                    if (!hasFrom) {
-                        throw new MemoMaxException("Incomplete command. It requires an additional " +
-                                "'/from' time to be specified.");
-                    }
-                    String[] eventDate = userInput.split("/from", -1);
-                    String event = eventDate[0].substring("event ".length()).trim();
-                    if (eventDate.length < 2) {
-                        throw new MemoMaxException("Missing start time after '/from'.");
-                    }
-                    if (!hasTo) {
-                        throw new MemoMaxException("Incomplete command. It requires an additional " +
-                                "'/to' time to be specified.");
-                    }
-                    String[] fromTo = eventDate[1].split("/to", -1);
-                    if (fromTo.length < 2) {
-                        throw new MemoMaxException("Missing end time after '/to'.");
-                    }
-                    String from = fromTo[0].trim();
-                    String to = fromTo[1].trim();
-                    if (event.isEmpty()) {
-                        throw new MemoMaxException("Task description cannot be empty");
-                    }
-                    if (from.isEmpty()) {
-                        throw new MemoMaxException("Start time cannot be empty");
-                    }
-                    if (to.isEmpty()) {
-                        throw new MemoMaxException("End time cannot be empty");
-                    }
-                    tasks[taskCounter] = new Event(event, from, to);
-                    System.out.println("Got it. I've added this task:\n  " + tasks[taskCounter].toString());
-                    taskCounter += 1;
-                    ui.showMessage("Now you have " + taskCounter + " task(s) in the list.");
-                } catch (MemoMaxException e) {
-                    ui.showErrorMessage(e.getMessage());
-                }
-            } else if (inputParts[0].equals("help")) { // Process help command
-                if (inputParts.length != 1) {
-                    ui.showMessage("Invalid command\n" +
-                            "Type 'help' for more options");
-                } else {
-                    ui.showMessage("""
-                            Here's what I can help with:
-                            1. Add a task: todo <description>
-                            2. Add a deadline: deadline <task> /by <date>
-                            3. Add an event: event <task> /from <start> /to <end>
-                            4. See all tasks: list
-                            5. Mark as done: mark <number>
-                            6. Mark as not done: unmark <number>
-                            7. Say goodbye: bye""");
-                }
-            } else { // Unknown command entered
-                ui.showMessage("Invalid command\n" +
-                        "Type 'help' for more options");
-            }
-        }
+        runChatbotLoop();
 
         ui.showMessage("Bye. Hope to see you again soon!");
+    }
+
+    /**
+     * Main chatbot loop that processes user commands.
+     */
+    private static void runChatbotLoop() {
+        while (true) {
+            String userInput = scanner.nextLine();
+            String[] inputParts = userInput.split(" ");
+
+            if (userInput.equals("bye")) {
+                break;
+            } else if (userInput.equals("list")) {
+                handleList();
+            } else if (inputParts[0].equals("mark")) {
+                handleMark(inputParts);
+            } else if (inputParts[0].equals("unmark")) {
+                handleUnmark(inputParts);
+            } else if (inputParts[0].equals("delete")) {
+                handleDelete(inputParts);
+            } else if (inputParts[0].equals("todo")) {
+                handleTodo(userInput, inputParts);
+            } else if (inputParts[0].equals("deadline")) {
+                handleDeadline(userInput);
+            } else if (inputParts[0].equals("event")) {
+                handleEvent(userInput);
+            } else if (inputParts[0].equals("help")) {
+                handleHelp(inputParts);
+            } else {
+                handleUnknownCommand();
+            }
+        }
+    }
+
+    /**
+     * Displays all tasks in the list.
+     */
+    private static void handleList() {
+        if (tasks.isEmpty()) {
+            ui.showMessage("There are currently no tasks in your list");
+        } else {
+            System.out.println("Here is/are the task(s) in your list:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println((i + 1) + "." + tasks.get(i).toString());
+            }
+            ui.showMessage("You have " + tasks.size() + " task(s).");
+        }
+    }
+
+    /**
+     * Marks a task as done.
+     *
+     * @param inputParts The split input parts
+     */
+    private static void handleMark(String[] inputParts) {
+        try {
+            validateTaskNumber(inputParts);
+            int taskNumber = parseTaskNumber(inputParts[1]);
+            validateListNotEmpty();
+            validateTaskExists(taskNumber);
+            int index = taskNumber - 1;
+            validateNotAlreadyMarked(index);
+
+            tasks.get(index).mark();
+            ui.showMessage("Nice! I've marked this task as done:\n  " +
+                    tasks.get(index).toString());
+        } catch (MemoMaxException e) {
+            ui.showErrorMessage(e.getMessage());
+        }
+    }
+
+    /**
+     * Marks a task as not done.
+     *
+     * @param inputParts The split input parts
+     */
+    private static void handleUnmark(String[] inputParts) {
+        try {
+            validateTaskNumber(inputParts);
+            int taskNumber = parseTaskNumber(inputParts[1]);
+            validateListNotEmpty();
+            validateTaskExists(taskNumber);
+            int index = taskNumber - 1;
+            validateNotAlreadyUnmarked(index);
+
+            tasks.get(index).unmark();
+            ui.showMessage("OK, I've marked this task as not done yet:\n  " +
+                    tasks.get(index).toString());
+        } catch (MemoMaxException e) {
+            ui.showErrorMessage(e.getMessage());
+        }
+    }
+
+    /**
+     * Deletes a task from the list.
+     *
+     * @param inputParts The split input parts
+     */
+    private static void handleDelete(String[] inputParts) {
+        try {
+            validateTaskNumber(inputParts);
+            int taskNumber = parseTaskNumber(inputParts[1]);
+            validateListNotEmpty();
+            validateTaskExists(taskNumber);
+
+            int index = taskNumber - 1;
+            Task taskToRemove = tasks.get(index);
+            tasks.remove(index);
+
+            System.out.println("Noted. I've removed this task:\n  " + taskToRemove.toString());
+            ui.showMessage("Now you have " + tasks.size() + " task(s) in the list.");
+        } catch (MemoMaxException e) {
+            ui.showErrorMessage(e.getMessage());
+        }
+    }
+
+    /**
+     * Adds a new todo task.
+     *
+     * @param userInput The user input string
+     * @param inputParts The split input parts
+     */
+    private static void handleTodo(String userInput, String[] inputParts) {
+        try {
+            if (inputParts.length == 1) {
+                throw new MemoMaxException("Todo needs a description. Example: todo read book");
+            }
+            String description = userInput.substring("todo ".length()).trim();
+            tasks.add(new Todo(description));
+
+            System.out.println("Got it. I've added this task:\n  " +
+                    tasks.get(tasks.size() - 1).toString());
+            ui.showMessage("Now you have " + tasks.size() + " task(s) in the list.");
+        } catch (MemoMaxException e) {
+            ui.showErrorMessage(e.getMessage());
+        }
+    }
+
+    /**
+     * Adds a new deadline task.
+     *
+     * @param userInput The user input string
+     */
+    private static void handleDeadline(String userInput) {
+        try {
+            // First check: if input is just "deadline" (no description, no /by)
+            if (userInput.trim().equals("deadline")) {
+                throw new MemoMaxException("Deadline needs a description and a due date. " +
+                        "Example: deadline return book /by Sunday");
+            }
+
+            if (!userInput.contains("/by")) {
+                throw new MemoMaxException("Deadline needs a due date. " +
+                        "Example: deadline return book /by Sunday");
+            }
+
+            String[] actionDate = userInput.split("/by", -1);
+            if (actionDate.length < 2) {
+                throw new MemoMaxException("Please add a due date after '/by'. " +
+                        "Example: deadline return book /by Sunday");
+            }
+
+            String action = actionDate[0].substring("deadline ".length()).trim();
+            String date = actionDate[1].trim();
+
+            if (action.isEmpty()) {
+                throw new MemoMaxException("Task not specified. " +
+                        "Example: deadline return book /by Sunday");
+            }
+            if (date.isEmpty()) {
+                throw new MemoMaxException("Due date is not specified. " +
+                        "Example: deadline return book /by Sunday");
+            }
+
+            tasks.add(new Deadline(action, date));
+            System.out.println("Got it. I've added this task:\n  " +
+                    tasks.get(tasks.size() - 1).toString());
+            ui.showMessage("Now you have " + tasks.size() + " task(s) in the list.");
+        } catch (MemoMaxException e) {
+            ui.showErrorMessage(e.getMessage());
+        }
+    }
+
+    /**
+     * Adds a new event task.
+     *
+     * @param userInput The user input string
+     */
+    private static void handleEvent(String userInput) {
+        try {
+            boolean hasFrom = userInput.contains("/from");
+            boolean hasTo = userInput.contains("/to");
+
+            if (!hasFrom && !hasTo) {
+                throw new MemoMaxException("Event needs description, start, and end times. " +
+                        "Example: event meeting /from 2pm /to 4pm");
+            }
+            if (!hasFrom) {
+                throw new MemoMaxException("Start time not specified, add '/from' time. " +
+                        "Example: event meeting /from 2pm /to 4pm");
+            }
+
+            String[] eventDate = userInput.split("/from", -1);
+            String event = eventDate[0].substring("event ".length()).trim();
+
+            if (eventDate.length < 2) {
+                throw new MemoMaxException("Start time not specified. " +
+                        "Example: event meeting /from 2pm /to 4pm");
+            }
+
+            if (!hasTo) {
+                throw new MemoMaxException("End time not specified, add '/to' time. " +
+                        "Example: event meeting /from 2pm /to 4pm");
+            }
+
+            String[] fromTo = eventDate[1].split("/to", -1);
+            if (fromTo.length < 2) {
+                throw new MemoMaxException("End time not specified. " +
+                        "Example: event meeting /from 2pm /to 4pm");
+            }
+
+            String from = fromTo[0].trim();
+            String to = fromTo[1].trim();
+
+            if (event.isEmpty()) {
+                throw new MemoMaxException("Event not specified. " +
+                        "Example: event meeting /from 2pm /to 4pm");
+            }
+            if (from.isEmpty()) {
+                throw new MemoMaxException("Start time not specified. " +
+                        "Example: event meeting /from 2pm /to 4pm");
+            }
+            if (to.isEmpty()) {
+                throw new MemoMaxException("End time not specified. " +
+                        "Example: event meeting /from 2pm /to 4pm");
+            }
+
+            tasks.add(new Event(event, from, to));
+            System.out.println("Got it. I've added this task:\n  " +
+                    tasks.get(tasks.size() - 1).toString());
+            ui.showMessage("Now you have " + tasks.size() + " task(s) in the list.");
+        } catch (MemoMaxException e) {
+            ui.showErrorMessage(e.getMessage());
+        }
+    }
+
+    /**
+     * Displays help information.
+     *
+     * @param inputParts The split input parts
+     */
+    private static void handleHelp(String[] inputParts) {
+        if (inputParts.length != 1) {
+            ui.showMessage("Invalid command\nType 'help' for more options");
+        } else {
+            ui.showMessage("""
+                    Here's what I can help with:
+                    1. Add a task: todo <description>
+                    2. Add a deadline: deadline <task> /by <date>
+                    3. Add an event: event <task> /from <start> /to <end>
+                    4. See all tasks: list
+                    5. Mark as done: mark <number>
+                    6. Mark as not done: unmark <number>
+                    7. Delete a task: delete <number>
+                    8. Say goodbye: bye""");
+        }
+    }
+
+    /**
+     * Handles unknown commands.
+     */
+    private static void handleUnknownCommand() {
+        ui.showMessage("Invalid command\nType 'help' for more options");
+    }
+
+    // Helper validation methods
+
+    /**
+     * Validates that a task number is specified.
+     *
+     * @param inputParts The split input parts
+     * @throws MemoMaxException if task number is not specified
+     */
+    private static void validateTaskNumber(String[] inputParts) throws MemoMaxException {
+        if (inputParts.length < 2) {
+            if (inputParts[0].equals("mark")) {
+                throw new MemoMaxException("Please tell me which task number. Example: mark 1");
+            }
+            if (inputParts[0].equals("unmark")) {
+                throw new MemoMaxException("Please tell me which task number. Example: unmark 1");
+            }
+            if (inputParts[0].equals("delete")) {
+                throw new MemoMaxException("Please tell me which task number. Example: delete 1");
+            }
+        }
+    }
+
+    /**
+     * Parses a task number from string.
+     *
+     * @param numberStr The string containing the task number
+     * @return The parsed task number
+     * @throws MemoMaxException if the string is not a valid number
+     */
+    private static int parseTaskNumber(String numberStr) throws MemoMaxException {
+        try {
+            return Integer.parseInt(numberStr);
+        } catch (NumberFormatException e) {
+            throw new MemoMaxException("'" + numberStr + "' is not a number. " +
+                    "Please use a number like 1, 2, or 3.");
+        }
+    }
+
+    /**
+     * Validates that a task exists at the given number.
+     *
+     * @param taskNumber The task number to validate
+     * @throws MemoMaxException if the task does not exist
+     */
+    private static void validateTaskExists(int taskNumber) throws MemoMaxException {
+        if (taskNumber < 1 || taskNumber > tasks.size()) {
+            throw new MemoMaxException("Task " + taskNumber + " doesn't exist. " +
+                    "You have " + tasks.size() + " task(s) in your list.");
+        }
+    }
+
+    /**
+     * Validates that the task list is not empty.
+     *
+     * @throws MemoMaxException if the task list is empty
+     */
+    private static void validateListNotEmpty() throws MemoMaxException {
+        if (tasks.isEmpty()) {
+            throw new MemoMaxException("Your list is empty! Add some tasks first " +
+                    "using 'todo', 'deadline', or 'event'.");
+        }
+    }
+
+    /**
+     * Validates that a task is not already marked as done.
+     *
+     * @param index The index of the task to check
+     * @throws MemoMaxException if the task is already marked
+     */
+    private static void validateNotAlreadyMarked(int index) throws MemoMaxException {
+        if (tasks.get(index).getStatusIcon().equals("[X]")) {
+            throw new MemoMaxException("Task " + (index + 1) + " is already marked as done!");
+        }
+    }
+
+    /**
+     * Validates that a task is not already marked as not done.
+     *
+     * @param index The index of the task to check
+     * @throws MemoMaxException if the task is already unmarked
+     */
+    private static void validateNotAlreadyUnmarked(int index) throws MemoMaxException {
+        if (tasks.get(index).getStatusIcon().equals("[ ]")) {
+            throw new MemoMaxException("Task " + (index + 1) + " is already not done!");
+        }
     }
 }
