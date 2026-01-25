@@ -11,9 +11,10 @@ import java.util.Scanner;
  * Handles user commands and manages task list.
  */
 public class MemoMax {
-    private static final ArrayList<Task> tasks = new ArrayList<>();
+    private static ArrayList<Task> tasks = new ArrayList<>();
     private static final Ui ui = new Ui();
     private static final Scanner scanner = new Scanner(System.in);
+    private static final Storage storage = new Storage("./data/MemoMax.txt");
 
     /**
      * Main entry point for the chatbot.
@@ -27,6 +28,8 @@ public class MemoMax {
                 + "| |  | || |___ | |  | || |_| || |  | | / ___ \\  /  \\ \n"
                 + "|_|  |_||_____||_|  |_| \\___/ |_|  |_|/_/   \\_\\/_/\\_\\\n";
         ui.showMessage("Hello! I'm MemoMax\nWhat can I do for you?" + logo);
+
+        loadTasksFromFile();
 
         runChatbotLoop();
 
@@ -81,6 +84,29 @@ public class MemoMax {
     }
 
     /**
+     * Loads tasks from storage file into memory.
+     */
+    private static void loadTasksFromFile() {
+        try {
+            tasks = storage.load();
+        } catch (MemoMaxException e) {
+            ui.showStorageError("Failed to load saved tasks: " + e.getMessage());
+            tasks = new ArrayList<>();
+        }
+    }
+
+    /**
+     * Saves tasks from memory to storage file.
+     */
+    private static void saveTasksToFile() {
+        try {
+            storage.save(tasks);
+        } catch (MemoMaxException e) {
+            ui.showStorageError("Failed to save tasks: " + e.getMessage());
+        }
+    }
+
+    /**
      * Displays all tasks in the list.
      */
     private static void handleList() {
@@ -115,6 +141,8 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
+
+        saveTasksToFile();
     }
 
     /**
@@ -137,6 +165,8 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
+
+        saveTasksToFile();
     }
 
     /**
@@ -160,6 +190,8 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
+
+        saveTasksToFile();
     }
 
     /**
@@ -182,6 +214,8 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
+
+        saveTasksToFile();
     }
 
     /**
@@ -226,6 +260,8 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
+
+        saveTasksToFile();
     }
 
     /**
@@ -289,6 +325,8 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
+
+        saveTasksToFile();
     }
 
     /**
