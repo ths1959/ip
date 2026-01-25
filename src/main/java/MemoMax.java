@@ -13,7 +13,6 @@ import java.util.Scanner;
 public class MemoMax {
     private static ArrayList<Task> tasks = new ArrayList<>();
     private static final Ui ui = new Ui();
-    private static final Scanner scanner = new Scanner(System.in);
     private static final Storage storage = new Storage("./data/MemoMax.txt");
 
     /**
@@ -27,13 +26,13 @@ public class MemoMax {
                 + "| |\\/| ||  _|  | |\\/| || | | || |\\/| |  / _ \\   \\  / \n"
                 + "| |  | || |___ | |  | || |_| || |  | | / ___ \\  /  \\ \n"
                 + "|_|  |_||_____||_|  |_| \\___/ |_|  |_|/_/   \\_\\/_/\\_\\\n";
-        ui.showMessage("Hello! I'm MemoMax\nWhat can I do for you?" + logo);
+        ui.showWelcome(logo);
 
         loadTasksFromFile();
 
         runChatbotLoop();
 
-        ui.showMessage("Bye. Hope to see you again soon!");
+        ui.showGoodbye();
     }
 
     /**
@@ -41,7 +40,7 @@ public class MemoMax {
      */
     private static void runChatbotLoop() {
         while (true) {
-            String userInput = scanner.nextLine();
+            String userInput = ui.readCommand();
             String[] inputParts = userInput.split(" ");
             CommandType commandType = CommandType.parseCommand(inputParts[0]);
 
@@ -110,15 +109,7 @@ public class MemoMax {
      * Displays all tasks in the list.
      */
     private static void handleList() {
-        if (tasks.isEmpty()) {
-            ui.showMessage("There are currently no tasks in your list");
-        } else {
-            System.out.println("Here is/are the task(s) in your list:");
-            for (int i = 0; i < tasks.size(); i++) {
-                System.out.println((i + 1) + "." + tasks.get(i).toString());
-            }
-            ui.showMessage("You have " + tasks.size() + " task(s) in the list.");
-        }
+        ui.showTaskList(tasks, tasks.isEmpty());
     }
 
     /**
@@ -136,8 +127,7 @@ public class MemoMax {
             validateNotAlreadyMarked(index);
 
             tasks.get(index).mark();
-            ui.showMessage("Nice! I've marked this task as done:\n  " +
-                    tasks.get(index).toString());
+            ui.showTaskMarked(tasks.get(index));
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
@@ -160,8 +150,7 @@ public class MemoMax {
             validateNotAlreadyUnmarked(index);
 
             tasks.get(index).unmark();
-            ui.showMessage("OK, I've marked this task as not done yet:\n  " +
-                    tasks.get(index).toString());
+            ui.showTaskUnmarked(tasks.get(index));
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
@@ -185,8 +174,7 @@ public class MemoMax {
             Task taskToRemove = tasks.get(index);
             tasks.remove(index);
 
-            System.out.println("Noted. I've removed this task:\n  " + taskToRemove.toString());
-            ui.showMessage("Now you have " + tasks.size() + " task(s) in the list.");
+            ui.showTaskDeleted(taskToRemove, tasks.size());
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
@@ -206,11 +194,10 @@ public class MemoMax {
                 throw new MemoMaxException("Todo needs a description. Example: todo read book");
             }
             String description = userInput.substring("todo ".length()).trim();
-            tasks.add(new Todo(description));
+            Task newTask = new Todo(description);
+            tasks.add(newTask);
 
-            System.out.println("Got it. I've added this task:\n  " +
-                    tasks.get(tasks.size() - 1).toString());
-            ui.showMessage("Now you have " + tasks.size() + " task(s) in the list.");
+            ui.showTasksAdded(newTask, tasks.size());
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
@@ -253,10 +240,9 @@ public class MemoMax {
                         "Example: deadline return book /by 2026-02-14 1800");
             }
 
-            tasks.add(new Deadline(action, date));
-            System.out.println("Got it. I've added this task:\n  " +
-                    tasks.get(tasks.size() - 1).toString());
-            ui.showMessage("Now you have " + tasks.size() + " task(s) in the list.");
+            Task newTask = new Deadline(action, date);
+            tasks.add(newTask);
+            ui.showTasksAdded(newTask, tasks.size());
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
@@ -320,10 +306,9 @@ public class MemoMax {
                         "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
             }
 
-            tasks.add(new Event(event, from, to));
-            System.out.println("Got it. I've added this task:\n  " +
-                    tasks.get(tasks.size() - 1).toString());
-            ui.showMessage("Now you have " + tasks.size() + " task(s) in the list.");
+            Task newTask = new Event(event, from, to);
+            tasks.add(newTask);
+            ui.showTasksAdded(newTask, tasks.size());
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
         }
@@ -338,18 +323,9 @@ public class MemoMax {
      */
     private static void handleHelp(String[] inputParts) {
         if (inputParts.length != 1) {
-            ui.showMessage("Invalid command\nType 'help' for more options");
+            ui.showUnknownCommand();
         } else {
-            ui.showMessage("""
-                    Here's what I can help with:
-                    1. Add a task: todo <description>
-                    2. Add a deadline: deadline <task> /by yyyy-MM-dd HHmm
-                    3. Add an event: event <task> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm
-                    4. See all tasks: list
-                    5. Mark as done: mark <number>
-                    6. Mark as not done: unmark <number>
-                    7. Delete a task: delete <number>
-                    8. Say goodbye: bye""");
+            ui.showHelp();
         }
     }
 
@@ -357,7 +333,7 @@ public class MemoMax {
      * Handles unknown commands.
      */
     private static void handleUnknownCommand() {
-        ui.showMessage("Invalid command\nType 'help' for more options");
+        ui.showUnknownCommand();
     }
 
     // Helper validation methods
