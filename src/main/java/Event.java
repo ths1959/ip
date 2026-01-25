@@ -1,10 +1,14 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents an event task with start and end times.
  * Extends Task with time interval information.
  */
 public class Event extends Task {
-    protected String from;
-    protected String to;
+    protected LocalDateTime from;
+    protected LocalDateTime to;
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     /**
      * Creates a new event task.
@@ -13,10 +17,14 @@ public class Event extends Task {
      * @param from Start time
      * @param to End time
      */
-    public Event(String description, String from, String to) {
+    public Event(String description, String from, String to) throws MemoMaxException {
         super(description);
-        this.from = from;
-        this.to = to;
+        try {
+            this.from = LocalDateTime.parse(from.trim(), INPUT_FORMAT);
+            this.to = LocalDateTime.parse(to.trim(), INPUT_FORMAT);
+        } catch (Exception e) {
+            throw new MemoMaxException("Invalid date! Use: yyyy-MM-dd HHmm");
+        }
     }
 
     /**
@@ -26,7 +34,9 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        DateTimeFormatter outFmt = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+        return "[E]" + super.toString() + " (from: " + from.format(outFmt) +
+                " to: " + to.format(outFmt) + ")";
     }
 
     /**
@@ -36,6 +46,7 @@ public class Event extends Task {
      */
     @Override
     public String toFileFormat() {
-        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " + from + " | " + to;
+        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " +
+                from.format(INPUT_FORMAT) + " | " + to.format(INPUT_FORMAT);
     }
 }
