@@ -117,7 +117,7 @@ public class MemoMax {
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println((i + 1) + "." + tasks.get(i).toString());
             }
-            ui.showMessage("You have " + tasks.size() + " task(s).");
+            ui.showMessage("You have " + tasks.size() + " task(s) in the list.");
         }
     }
 
@@ -227,18 +227,18 @@ public class MemoMax {
         try {
             if (userInput.trim().equals("deadline")) {
                 throw new MemoMaxException("Deadline needs a description and a due date. " +
-                        "Example: deadline return book /by Sunday");
+                        "Example: deadline return book /by 2025-02-01 1800");
             }
 
             if (!userInput.contains("/by")) {
                 throw new MemoMaxException("Deadline needs a due date. " +
-                        "Example: deadline return book /by Sunday");
+                        "Example: deadline return book /by 2026-02-14 1800");
             }
 
             String[] actionDate = userInput.split("/by", -1);
             if (actionDate.length < 2) {
                 throw new MemoMaxException("Please add a due date after '/by'. " +
-                        "Example: deadline return book /by Sunday");
+                        "Example: deadline return book /by 2026-02-14 1800");
             }
 
             String action = actionDate[0].substring("deadline ".length()).trim();
@@ -246,11 +246,11 @@ public class MemoMax {
 
             if (action.isEmpty()) {
                 throw new MemoMaxException("Task not specified. " +
-                        "Example: deadline return book /by Sunday");
+                        "Example: deadline return book /by 2026-02-14 1800");
             }
             if (date.isEmpty()) {
                 throw new MemoMaxException("Due date is not specified. " +
-                        "Example: deadline return book /by Sunday");
+                        "Example: deadline return book /by 2026-02-14 1800");
             }
 
             tasks.add(new Deadline(action, date));
@@ -275,12 +275,14 @@ public class MemoMax {
             boolean hasTo = userInput.contains("/to");
 
             if (!hasFrom && !hasTo) {
-                throw new MemoMaxException("Event needs description, start, and end times. " +
-                        "Example: event meeting /from 2pm /to 4pm");
+                throw new MemoMaxException("Event needs description, start, " +
+                        "and end times. " + "Example: event meeting " +
+                        "/from 2026-02-14 1400 /to 2026-02-14 1600");
             }
             if (!hasFrom) {
-                throw new MemoMaxException("Start time not specified, add '/from' time. " +
-                        "Example: event meeting /from 2pm /to 4pm");
+                throw new MemoMaxException("Start time not specified, " +
+                        "add '/from' time. " + "Example: event meeting " +
+                        "/from 2026-02-14 1400 /to 2026-02-14 1600");
             }
 
             String[] eventDate = userInput.split("/from", -1);
@@ -288,18 +290,18 @@ public class MemoMax {
 
             if (eventDate.length < 2) {
                 throw new MemoMaxException("Start time not specified. " +
-                        "Example: event meeting /from 2pm /to 4pm");
+                        "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
             }
 
             if (!hasTo) {
                 throw new MemoMaxException("End time not specified, add '/to' time. " +
-                        "Example: event meeting /from 2pm /to 4pm");
+                        "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
             }
 
             String[] fromTo = eventDate[1].split("/to", -1);
             if (fromTo.length < 2) {
                 throw new MemoMaxException("End time not specified. " +
-                        "Example: event meeting /from 2pm /to 4pm");
+                        "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
             }
 
             String from = fromTo[0].trim();
@@ -307,15 +309,15 @@ public class MemoMax {
 
             if (event.isEmpty()) {
                 throw new MemoMaxException("Event not specified. " +
-                        "Example: event meeting /from 2pm /to 4pm");
+                        "Example: event meeting /from 2026-02-14 14:00 /to 2026-02-14 16:00");
             }
             if (from.isEmpty()) {
                 throw new MemoMaxException("Start time not specified. " +
-                        "Example: event meeting /from 2pm /to 4pm");
+                        "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
             }
             if (to.isEmpty()) {
                 throw new MemoMaxException("End time not specified. " +
-                        "Example: event meeting /from 2pm /to 4pm");
+                        "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
             }
 
             tasks.add(new Event(event, from, to));
@@ -341,8 +343,8 @@ public class MemoMax {
             ui.showMessage("""
                     Here's what I can help with:
                     1. Add a task: todo <description>
-                    2. Add a deadline: deadline <task> /by <date>
-                    3. Add an event: event <task> /from <start> /to <end>
+                    2. Add a deadline: deadline <task> /by yyyy-MM-dd HHmm
+                    3. Add an event: event <task> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm
                     4. See all tasks: list
                     5. Mark as done: mark <number>
                     6. Mark as not done: unmark <number>

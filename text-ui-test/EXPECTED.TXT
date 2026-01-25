@@ -14,74 +14,70 @@ Now you have 1 task(s) in the list.
     ____________________________________________________________
 Here is/are the task(s) in your list:
 1.[T][ ] read book
-You have 1 task(s).
+You have 1 task(s) in the list.
     ____________________________________________________________
 Oops! Todo needs a description. Example: todo read book
 Enter 'help' for more information
     ____________________________________________________________
 Got it. I've added this task:
-  [D][ ] return book (by: Sunday)
+  [D][ ] return book (by: Feb 01 2025, 6:00 pm)
 Now you have 2 task(s) in the list.
     ____________________________________________________________
-Oops! Deadline needs a description and a due date. Example: deadline return book /by Sunday
+Oops! Deadline needs a description and a due date. Example: deadline return book /by 2025-02-01 1800
 Enter 'help' for more information
     ____________________________________________________________
-Oops! Deadline needs a due date. Example: deadline return book /by Sunday
+Oops! Deadline needs a due date. Example: deadline return book /by 2026-02-14 1800
 Enter 'help' for more information
     ____________________________________________________________
-Oops! Due date is not specified. Example: deadline return book /by Sunday
+Oops! Due date is not specified. Example: deadline return book /by 2026-02-14 1800
 Enter 'help' for more information
     ____________________________________________________________
-Oops! Due date is not specified. Example: deadline return book /by Sunday
+Oops! Invalid date! Use: yyyy-MM-dd HHmm
 Enter 'help' for more information
     ____________________________________________________________
-Got it. I've added this task:
-  [E][ ] team meeting (from: 2pm to: 4pm)
-Now you have 3 task(s) in the list.
-    ____________________________________________________________
-Oops! Event needs description, start, and end times. Example: event meeting /from 2pm /to 4pm
+Oops! Event needs description, start, and end times. Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600
 Enter 'help' for more information
     ____________________________________________________________
-Oops! Event needs description, start, and end times. Example: event meeting /from 2pm /to 4pm
+Oops! Event needs description, start, and end times. Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600
 Enter 'help' for more information
     ____________________________________________________________
-Oops! End time not specified, add '/to' time. Example: event meeting /from 2pm /to 4pm
+Oops! End time not specified, add '/to' time. Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600
 Enter 'help' for more information
     ____________________________________________________________
-Oops! End time not specified, add '/to' time. Example: event meeting /from 2pm /to 4pm
+Oops! Start time not specified, add '/from' time. Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600
 Enter 'help' for more information
     ____________________________________________________________
-Oops! Start time not specified, add '/from' time. Example: event meeting /from 2pm /to 4pm
+Oops! Event not specified. Example: event meeting /from 2026-02-14 14:00 /to 2026-02-14 16:00
 Enter 'help' for more information
-    ____________________________________________________________
-Oops! Event not specified. Example: event meeting /from 2pm /to 4pm
-Enter 'help' for more information
-    ____________________________________________________________
-Oops! Start time not specified. Example: event meeting /from 2pm /to 4pm
-Enter 'help' for more information
-    ____________________________________________________________
-Oops! End time not specified. Example: event meeting /from 2pm /to 4pm
-Enter 'help' for more information
-    ____________________________________________________________
-Got it. I've added this task:
-  [E][ ] dinner (from: 9am to: 10am)
-Now you have 4 task(s) in the list.
     ____________________________________________________________
 Here is/are the task(s) in your list:
 1.[T][ ] read book
-2.[D][ ] return book (by: Sunday)
-3.[E][ ] team meeting (from: 2pm to: 4pm)
-4.[E][ ] dinner (from: 9am to: 10am)
-You have 4 task(s).
+2.[D][ ] return book (by: Feb 01 2025, 6:00 pm)
+You have 2 task(s) in the list.
+    ____________________________________________________________
+Got it. I've added this task:
+  [D][ ] test1 (by: Dec 31 2025, 11:59 pm)
+Now you have 3 task(s) in the list.
+    ____________________________________________________________
+Got it. I've added this task:
+  [D][ ] test2 (by: Jun 15 2025, 9:00 am)
+Now you have 4 task(s) in the list.
+    ____________________________________________________________
+Oops! Invalid date! Use: yyyy-MM-dd HHmm
+Enter 'help' for more information
+    ____________________________________________________________
+Here is/are the task(s) in your list:
+1.[T][ ] read book
+2.[D][ ] return book (by: Feb 01 2025, 6:00 pm)
+3.[D][ ] test1 (by: Dec 31 2025, 11:59 pm)
+4.[D][ ] test2 (by: Jun 15 2025, 9:00 am)
+You have 4 task(s) in the list.
     ____________________________________________________________
 Nice! I've marked this task as done:
   [T][X] read book
     ____________________________________________________________
-Oops! Task 1 is already marked as done!
-Enter 'help' for more information
-    ____________________________________________________________
 Nice! I've marked this task as done:
-  [D][X] return book (by: Sunday)
+  [D][X] return book (by: Feb 01 2025, 6:00 pm)
     ____________________________________________________________
 Oops! Task 0 doesn't exist. You have 4 task(s) in your list.
 Enter 'help' for more information
@@ -96,37 +92,22 @@ Oops! Task 99 doesn't exist. You have 4 task(s) in your list.
 Enter 'help' for more information
     ____________________________________________________________
 OK, I've marked this task as not done yet:
-  [D][ ] return book (by: Sunday)
+  [D][ ] return book (by: Feb 01 2025, 6:00 pm)
     ____________________________________________________________
 Oops! Please tell me which task number. Example: unmark 1
-Enter 'help' for more information
-    ____________________________________________________________
-Oops! 'twenty' is not a number. Please use a number like 1, 2, or 3.
 Enter 'help' for more information
     ____________________________________________________________
 Oops! Task 99 doesn't exist. You have 4 task(s) in your list.
 Enter 'help' for more information
     ____________________________________________________________
-OK, I've marked this task as not done yet:
-  [T][ ] read book
-    ____________________________________________________________
-Oops! Task 1 is already not done!
-Enter 'help' for more information
-    ____________________________________________________________
 Here is/are the task(s) in your list:
-1.[T][ ] read book
-2.[D][ ] return book (by: Sunday)
-3.[E][ ] team meeting (from: 2pm to: 4pm)
-4.[E][ ] dinner (from: 9am to: 10am)
-You have 4 task(s).
-    ____________________________________________________________
-Oops! Please tell me which task number. Example: delete 1
-Enter 'help' for more information
+1.[T][X] read book
+2.[D][ ] return book (by: Feb 01 2025, 6:00 pm)
+3.[D][ ] test1 (by: Dec 31 2025, 11:59 pm)
+4.[D][ ] test2 (by: Jun 15 2025, 9:00 am)
+You have 4 task(s) in the list.
     ____________________________________________________________
 Oops! Task 0 doesn't exist. You have 4 task(s) in your list.
-Enter 'help' for more information
-    ____________________________________________________________
-Oops! Task -5 doesn't exist. You have 4 task(s) in your list.
 Enter 'help' for more information
     ____________________________________________________________
 Oops! 'abc' is not a number. Please use a number like 1, 2, or 3.
@@ -136,46 +117,26 @@ Oops! Task 99 doesn't exist. You have 4 task(s) in your list.
 Enter 'help' for more information
     ____________________________________________________________
 Noted. I've removed this task:
-  [T][ ] read book
+  [T][X] read book
 Now you have 3 task(s) in the list.
     ____________________________________________________________
 Here is/are the task(s) in your list:
-1.[D][ ] return book (by: Sunday)
-2.[E][ ] team meeting (from: 2pm to: 4pm)
-3.[E][ ] dinner (from: 9am to: 10am)
-You have 3 task(s).
+1.[D][ ] return book (by: Feb 01 2025, 6:00 pm)
+2.[D][ ] test1 (by: Dec 31 2025, 11:59 pm)
+3.[D][ ] test2 (by: Jun 15 2025, 9:00 am)
+You have 3 task(s) in the list.
     ____________________________________________________________
 Noted. I've removed this task:
-  [D][ ] return book (by: Sunday)
+  [D][ ] return book (by: Feb 01 2025, 6:00 pm)
 Now you have 2 task(s) in the list.
-    ____________________________________________________________
-Here is/are the task(s) in your list:
-1.[E][ ] team meeting (from: 2pm to: 4pm)
-2.[E][ ] dinner (from: 9am to: 10am)
-You have 2 task(s).
-    ____________________________________________________________
-Noted. I've removed this task:
-  [E][ ] team meeting (from: 2pm to: 4pm)
-Now you have 1 task(s) in the list.
-    ____________________________________________________________
-Here is/are the task(s) in your list:
-1.[E][ ] dinner (from: 9am to: 10am)
-You have 1 task(s).
-    ____________________________________________________________
-Oops! Please tell me which task number. Example: delete 1
-Enter 'help' for more information
-    ____________________________________________________________
-Noted. I've removed this task:
-  [E][ ] dinner (from: 9am to: 10am)
-Now you have 0 task(s) in the list.
     ____________________________________________________________
 Invalid command
 Type 'help' for more options
     ____________________________________________________________
 Here's what I can help with:
 1. Add a task: todo <description>
-2. Add a deadline: deadline <task> /by <date>
-3. Add an event: event <task> /from <start> /to <end>
+2. Add a deadline: deadline <task> /by yyyy-MM-dd HHmm
+3. Add an event: event <task> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm
 4. See all tasks: list
 5. Mark as done: mark <number>
 6. Mark as not done: unmark <number>

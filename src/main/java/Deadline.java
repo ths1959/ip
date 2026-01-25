@@ -1,9 +1,13 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents a deadline task with due date.
  * Extends Task with deadline information.
  */
 public class Deadline extends Task{
-    protected String by;
+    protected LocalDateTime by;
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     /**
      * Creates a new deadline task.
@@ -11,9 +15,13 @@ public class Deadline extends Task{
      * @param description Task description
      * @param by Due date/time
      */
-    public Deadline(String description, String by) {
+    public Deadline(String description, String by) throws MemoMaxException {
         super(description);
-        this.by = by;
+        try {
+            this.by = LocalDateTime.parse(by.trim(), INPUT_FORMAT);
+        } catch (Exception e) {
+            throw new MemoMaxException("Invalid date! Use: yyyy-MM-dd HHmm");
+        }
     }
 
     /**
@@ -23,7 +31,8 @@ public class Deadline extends Task{
      */
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        DateTimeFormatter outFmt = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+        return "[D]" + super.toString() + " (by: " + by.format(outFmt) + ")";
     }
 
     /**
@@ -33,6 +42,7 @@ public class Deadline extends Task{
      */
     @Override
     public String toFileFormat() {
-        return "D | " + (isDone ? "1" : "0") + " | " + description + " | " + by;
+        return "D | " + (isDone ? "1" : "0") + " | " + description +
+                " | " + by.format(INPUT_FORMAT);
     }
 }
