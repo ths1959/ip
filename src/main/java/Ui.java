@@ -25,4 +25,14 @@ public class Ui {
         System.out.println("Enter 'help' for more information");
         System.out.println(DIVIDER);
     }
+
+    /**
+     * Shows a storage/file system error message.
+     *
+     * @param message the storage error message to display
+     */
+    public void showStorageError(String message) {
+        System.out.println("[Storage] " + message);
+        System.out.println(DIVIDER);
+    }
 }
