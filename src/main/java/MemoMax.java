@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /*
  Note: ChatGPT was consulted for adherence towards Javadoc documentation standards.
@@ -60,7 +59,7 @@ public class MemoMax {
                     handleDelete(inputParts);
                     break;
                 case TODO:
-                    handleTodo(userInput, inputParts);
+                    handleTodo(userInput);
                     break;
                 case DEADLINE:
                     handleDeadline(userInput);
@@ -119,10 +118,9 @@ public class MemoMax {
      */
     private static void handleMark(String[] inputParts) {
         try {
-            validateTaskNumber(inputParts);
-            int taskNumber = parseTaskNumber(inputParts[1]);
-            validateListNotEmpty();
-            validateTaskExists(taskNumber);
+            int taskNumber = Parser.parseTaskNumber(inputParts, "mark");
+            Parser.validateListNotEmpty(tasks.size());
+            Parser.validateTaskExists(taskNumber, tasks.size());
             int index = taskNumber - 1;
             validateNotAlreadyMarked(index);
 
@@ -142,10 +140,9 @@ public class MemoMax {
      */
     private static void handleUnmark(String[] inputParts) {
         try {
-            validateTaskNumber(inputParts);
-            int taskNumber = parseTaskNumber(inputParts[1]);
-            validateListNotEmpty();
-            validateTaskExists(taskNumber);
+            int taskNumber = Parser.parseTaskNumber(inputParts, "unmark");
+            Parser.validateListNotEmpty(tasks.size());
+            Parser.validateTaskExists(taskNumber, tasks.size());
             int index = taskNumber - 1;
             validateNotAlreadyUnmarked(index);
 
@@ -165,10 +162,9 @@ public class MemoMax {
      */
     private static void handleDelete(String[] inputParts) {
         try {
-            validateTaskNumber(inputParts);
-            int taskNumber = parseTaskNumber(inputParts[1]);
-            validateListNotEmpty();
-            validateTaskExists(taskNumber);
+            int taskNumber = Parser.parseTaskNumber(inputParts, "delete");
+            Parser.validateListNotEmpty(tasks.size());
+            Parser.validateTaskExists(taskNumber, tasks.size());
 
             int index = taskNumber - 1;
             Task taskToRemove = tasks.get(index);
@@ -186,14 +182,10 @@ public class MemoMax {
      * Adds a new todo task.
      *
      * @param userInput The user input string
-     * @param inputParts The split input parts
      */
-    private static void handleTodo(String userInput, String[] inputParts) {
+    private static void handleTodo(String userInput) {
         try {
-            if (inputParts.length == 1) {
-                throw new MemoMaxException("Todo needs a description. Example: todo read book");
-            }
-            String description = userInput.substring("todo ".length()).trim();
+            String description = Parser.parseTodo(userInput);
             Task newTask = new Todo(description);
             tasks.add(newTask);
 
@@ -212,34 +204,9 @@ public class MemoMax {
      */
     private static void handleDeadline(String userInput) {
         try {
-            if (userInput.trim().equals("deadline")) {
-                throw new MemoMaxException("Deadline needs a description and a due date. " +
-                        "Example: deadline return book /by 2025-02-01 1800");
-            }
-
-            if (!userInput.contains("/by")) {
-                throw new MemoMaxException("Deadline needs a due date. " +
-                        "Example: deadline return book /by 2026-02-14 1800");
-            }
-
-            String[] actionDate = userInput.split("/by", -1);
-            if (actionDate.length < 2) {
-                throw new MemoMaxException("Please add a due date after '/by'. " +
-                        "Example: deadline return book /by 2026-02-14 1800");
-            }
-
-            String action = actionDate[0].substring("deadline ".length()).trim();
-            String date = actionDate[1].trim();
-
-            if (action.isEmpty()) {
-                throw new MemoMaxException("Task not specified. " +
-                        "Example: deadline return book /by 2026-02-14 1800");
-            }
-            if (date.isEmpty()) {
-                throw new MemoMaxException("Due date is not specified. " +
-                        "Example: deadline return book /by 2026-02-14 1800");
-            }
-
+            String[] parsed = Parser.parseDeadline(userInput);
+            String action = parsed[0];
+            String date = parsed[1];
             Task newTask = new Deadline(action, date);
             tasks.add(newTask);
             ui.showTasksAdded(newTask, tasks.size());
@@ -257,54 +224,10 @@ public class MemoMax {
      */
     private static void handleEvent(String userInput) {
         try {
-            boolean hasFrom = userInput.contains("/from");
-            boolean hasTo = userInput.contains("/to");
-
-            if (!hasFrom && !hasTo) {
-                throw new MemoMaxException("Event needs description, start, " +
-                        "and end times. " + "Example: event meeting " +
-                        "/from 2026-02-14 1400 /to 2026-02-14 1600");
-            }
-            if (!hasFrom) {
-                throw new MemoMaxException("Start time not specified, " +
-                        "add '/from' time. " + "Example: event meeting " +
-                        "/from 2026-02-14 1400 /to 2026-02-14 1600");
-            }
-
-            String[] eventDate = userInput.split("/from", -1);
-            String event = eventDate[0].substring("event ".length()).trim();
-
-            if (eventDate.length < 2) {
-                throw new MemoMaxException("Start time not specified. " +
-                        "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
-            }
-
-            if (!hasTo) {
-                throw new MemoMaxException("End time not specified, add '/to' time. " +
-                        "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
-            }
-
-            String[] fromTo = eventDate[1].split("/to", -1);
-            if (fromTo.length < 2) {
-                throw new MemoMaxException("End time not specified. " +
-                        "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
-            }
-
-            String from = fromTo[0].trim();
-            String to = fromTo[1].trim();
-
-            if (event.isEmpty()) {
-                throw new MemoMaxException("Event not specified. " +
-                        "Example: event meeting /from 2026-02-14 14:00 /to 2026-02-14 16:00");
-            }
-            if (from.isEmpty()) {
-                throw new MemoMaxException("Start time not specified. " +
-                        "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
-            }
-            if (to.isEmpty()) {
-                throw new MemoMaxException("End time not specified. " +
-                        "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
-            }
+            String[] parsed = Parser.parseEvent(userInput);
+            String event = parsed[0];
+            String from = parsed[1];
+            String to = parsed[2];
 
             Task newTask = new Event(event, from, to);
             tasks.add(newTask);
@@ -337,67 +260,6 @@ public class MemoMax {
     }
 
     // Helper validation methods
-
-    /**
-     * Validates that a task number is specified.
-     *
-     * @param inputParts The split input parts
-     * @throws MemoMaxException if task number is not specified
-     */
-    private static void validateTaskNumber(String[] inputParts) throws MemoMaxException {
-        if (inputParts.length < 2) {
-            if (inputParts[0].equals("mark")) {
-                throw new MemoMaxException("Please tell me which task number. Example: mark 1");
-            }
-            if (inputParts[0].equals("unmark")) {
-                throw new MemoMaxException("Please tell me which task number. Example: unmark 1");
-            }
-            if (inputParts[0].equals("delete")) {
-                throw new MemoMaxException("Please tell me which task number. Example: delete 1");
-            }
-        }
-    }
-
-    /**
-     * Parses a task number from string.
-     *
-     * @param numberStr The string containing the task number
-     * @return The parsed task number
-     * @throws MemoMaxException if the string is not a valid number
-     */
-    private static int parseTaskNumber(String numberStr) throws MemoMaxException {
-        try {
-            return Integer.parseInt(numberStr);
-        } catch (NumberFormatException e) {
-            throw new MemoMaxException("'" + numberStr + "' is not a number. " +
-                    "Please use a number like 1, 2, or 3.");
-        }
-    }
-
-    /**
-     * Validates that a task exists at the given number.
-     *
-     * @param taskNumber The task number to validate
-     * @throws MemoMaxException if the task does not exist
-     */
-    private static void validateTaskExists(int taskNumber) throws MemoMaxException {
-        if (taskNumber < 1 || taskNumber > tasks.size()) {
-            throw new MemoMaxException("Task " + taskNumber + " doesn't exist. " +
-                    "You have " + tasks.size() + " task(s) in your list.");
-        }
-    }
-
-    /**
-     * Validates that the task list is not empty.
-     *
-     * @throws MemoMaxException if the task list is empty
-     */
-    private static void validateListNotEmpty() throws MemoMaxException {
-        if (tasks.isEmpty()) {
-            throw new MemoMaxException("Your list is empty! Add some tasks first " +
-                    "using 'todo', 'deadline', or 'event'.");
-        }
-    }
 
     /**
      * Validates that a task is not already marked as done.
