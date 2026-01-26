@@ -9,7 +9,7 @@ What can I do for you? __  __  _____  __  __   ___   __  __     _    __  __
 There are currently no tasks in your list
     ____________________________________________________________
 Got it. I've added this task:
-  [T][ ] read book
+ [T][ ] read book
 Now you have 1 task(s) in the list.
     ____________________________________________________________
 Here is/are the task(s) in your list:
@@ -20,7 +20,7 @@ Oops! Todo needs a description. Example: todo read book
 Enter 'help' for more information
     ____________________________________________________________
 Got it. I've added this task:
-  [D][ ] return book (by: Feb 01 2025, 6:00 pm)
+ [D][ ] return book (by: Feb 01 2025, 6:00 pm)
 Now you have 2 task(s) in the list.
     ____________________________________________________________
 Oops! Deadline needs a description and a due date. Example: deadline return book /by 2025-02-01 1800
@@ -56,11 +56,11 @@ Here is/are the task(s) in your list:
 You have 2 task(s) in the list.
     ____________________________________________________________
 Got it. I've added this task:
-  [D][ ] test1 (by: Dec 31 2025, 11:59 pm)
+ [D][ ] test1 (by: Dec 31 2025, 11:59 pm)
 Now you have 3 task(s) in the list.
     ____________________________________________________________
 Got it. I've added this task:
-  [D][ ] test2 (by: Jun 15 2025, 9:00 am)
+ [D][ ] test2 (by: Jun 15 2025, 9:00 am)
 Now you have 4 task(s) in the list.
     ____________________________________________________________
 Oops! Invalid date! Use: yyyy-MM-dd HHmm
@@ -74,12 +74,12 @@ Here is/are the task(s) in your list:
 You have 4 task(s) in the list.
     ____________________________________________________________
 Nice! I've marked this task as done:
-  [T][X] read book
+ [T][X] read book
     ____________________________________________________________
 Nice! I've marked this task as done:
-  [D][X] return book (by: Feb 01 2025, 6:00 pm)
+ [D][X] return book (by: Feb 01 2025, 6:00 pm)
     ____________________________________________________________
-Oops! Task 0 doesn't exist. You have 4 task(s) in your list.
+Oops! Task number must be positive. Example: mark 1
 Enter 'help' for more information
     ____________________________________________________________
 Oops! Please tell me which task number. Example: mark 1
@@ -88,16 +88,16 @@ Enter 'help' for more information
 Oops! 'ten' is not a number. Please use a number like 1, 2, or 3.
 Enter 'help' for more information
     ____________________________________________________________
-Oops! Task 99 doesn't exist. You have 4 task(s) in your list.
+Oops! Task 99 does not exist!
 Enter 'help' for more information
     ____________________________________________________________
 OK, I've marked this task as not done yet:
-  [D][ ] return book (by: Feb 01 2025, 6:00 pm)
+ [D][ ] return book (by: Feb 01 2025, 6:00 pm)
     ____________________________________________________________
 Oops! Please tell me which task number. Example: unmark 1
 Enter 'help' for more information
     ____________________________________________________________
-Oops! Task 99 doesn't exist. You have 4 task(s) in your list.
+Oops! Task 99 does not exist!
 Enter 'help' for more information
     ____________________________________________________________
 Here is/are the task(s) in your list:
@@ -107,17 +107,17 @@ Here is/are the task(s) in your list:
 4.[D][ ] test2 (by: Jun 15 2025, 9:00 am)
 You have 4 task(s) in the list.
     ____________________________________________________________
-Oops! Task 0 doesn't exist. You have 4 task(s) in your list.
+Oops! Task number must be positive. Example: delete 1
 Enter 'help' for more information
     ____________________________________________________________
 Oops! 'abc' is not a number. Please use a number like 1, 2, or 3.
 Enter 'help' for more information
     ____________________________________________________________
-Oops! Task 99 doesn't exist. You have 4 task(s) in your list.
+Oops! Task 99 does not exist!
 Enter 'help' for more information
     ____________________________________________________________
 Noted. I've removed this task:
-  [T][X] read book
+ [T][X] read book
 Now you have 3 task(s) in the list.
     ____________________________________________________________
 Here is/are the task(s) in your list:
@@ -127,7 +127,7 @@ Here is/are the task(s) in your list:
 You have 3 task(s) in the list.
     ____________________________________________________________
 Noted. I've removed this task:
-  [D][ ] return book (by: Feb 01 2025, 6:00 pm)
+ [D][ ] return book (by: Feb 01 2025, 6:00 pm)
 Now you have 2 task(s) in the list.
     ____________________________________________________________
 Invalid command
