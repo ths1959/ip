@@ -21,13 +21,11 @@ public class Storage {
      * Loads tasks from storage file.
      * Returns empty list if file doesn't exist.
      *
-     * @throws MemoMaxException if file cannot be read
+     * @throws MemoMaxException if file cannot be read or has corrupted data
      */
     public ArrayList<Task> load() throws MemoMaxException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
-
-        ensureDirectoryAndFileExist();
 
         if (!file.exists()) {
             return tasks;
@@ -58,9 +56,16 @@ public class Storage {
      */
     public void save(ArrayList<Task> tasks) throws MemoMaxException {
         try {
-            ensureDirectoryAndFileExist();
-
             File file = new File(filePath);
+            File parentDir = file.getParentFile();
+
+            if (parentDir != null && !parentDir.exists()) {
+                boolean dirsCreated = parentDir.mkdirs();
+                if (!dirsCreated) {
+                    throw new MemoMaxException("Failed to save tasks.");
+                }
+            }
+
             try (FileWriter writer = new FileWriter(file)) {
                 for (Task task : tasks) {
                     writer.write(task.toFileFormat() + "\n");
@@ -68,36 +73,6 @@ public class Storage {
             }
         } catch (IOException e) {
             throw new MemoMaxException("Failed to save tasks.");
-        }
-    }
-
-    /**
-     * Ensures directory and file exist.
-     * Creates them if they don't exist.
-     *
-     * @throws MemoMaxException if directory or file cannot be created
-     */
-    private void ensureDirectoryAndFileExist() throws MemoMaxException {
-        File file = new File(filePath);
-        File parentDir = file.getParentFile();
-
-        try {
-            if (parentDir != null && !parentDir.exists()) {
-                boolean dirsCreated = parentDir.mkdirs();
-                if (!dirsCreated) {
-                    throw new MemoMaxException("Failed to create directory: "
-                            + parentDir.getPath());
-                }
-            }
-
-            if (!file.exists()) {
-                boolean fileCreated = file.createNewFile();
-                if (!fileCreated) {
-                    throw new MemoMaxException("Failed to create file: " + filePath);
-                }
-            }
-        } catch (IOException e) {
-            throw new MemoMaxException("Failed to create file or directory: " + e.getMessage());
         }
     }
 
@@ -128,12 +103,12 @@ public class Storage {
         }
 
         boolean isDone = doneStatus.equals("1");
-        Task task = null;
+        Task task;
 
         try {
             switch (type) {
             case "T":
-                if (parts.length != 3) {
+                if (parts.length != 3 || description.isEmpty()) {
                     return null;
                 }
                 task = new Todo(description);
@@ -144,6 +119,9 @@ public class Storage {
                     return null;
                 }
                 String by = parts[3].trim();
+                if (description.isEmpty() || by.isEmpty()) {
+                    return null;
+                }
                 task = new Deadline(description, by);
                 break;
 
@@ -153,6 +131,9 @@ public class Storage {
                 }
                 String from = parts[3].trim();
                 String to = parts[4].trim();
+                if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+                    return null;
+                }
                 task = new Event(description, from, to);
                 break;
 
