@@ -1,3 +1,5 @@
+package memomax.exception;
+
 /**
  * Exception specific to MemoMax chatbot errors.
  * Provides user-friendly error messages.

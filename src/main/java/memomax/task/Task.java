@@ -1,3 +1,5 @@
+package memomax.task;
+
 /**
  * Represents a task in the MemoMax application.
  * Base class for different task types with common functionality.

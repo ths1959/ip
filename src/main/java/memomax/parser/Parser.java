@@ -1,3 +1,7 @@
+package memomax.parser;
+
+import memomax.exception.MemoMaxException;
+
 /**
  * Parses user input into commands and parameters.
  * Handles extraction and validation of command arguments.
@@ -147,32 +151,5 @@ public class Parser {
         }
 
         return new String[]{event, from, to};
-    }
-
-    /**
-     * Validates that the task number is within bounds.
-     *
-     * @param taskNumber The task number to validate (1-based)
-     * @param taskCount Total number of tasks
-     * @throws MemoMaxException if task number is out of bounds
-     */
-    public static void validateTaskExists(int taskNumber, int taskCount) throws MemoMaxException {
-        if (taskNumber < 1 || taskNumber > taskCount) {
-            throw new MemoMaxException("Task " + taskNumber + " doesn't exist. " +
-                    "You have " + taskCount + " task(s) in your list.");
-        }
-    }
-
-    /**
-     * Validates that the task list is not empty.
-     *
-     * @param taskCount Total number of tasks
-     * @throws MemoMaxException if task list is empty
-     */
-    public static void validateListNotEmpty(int taskCount) throws MemoMaxException {
-        if (taskCount == 0) {
-            throw new MemoMaxException("Your list is empty! Add some tasks first " +
-                    "using 'todo', 'deadline', or 'event'.");
-        }
     }
 }

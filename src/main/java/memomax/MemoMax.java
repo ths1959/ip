@@ -1,3 +1,15 @@
+package memomax;
+
+import memomax.exception.MemoMaxException;
+import memomax.parser.Parser;
+import memomax.parser.CommandType;
+import memomax.storage.Storage;
+import memomax.tasklist.TaskList;
+import memomax.task.Task;
+import memomax.task.Todo;
+import memomax.task.Deadline;
+import memomax.task.Event;
+import memomax.ui.Ui;
 import java.util.ArrayList;
 
 /*

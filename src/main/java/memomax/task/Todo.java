@@ -1,3 +1,5 @@
+package memomax.task;
+
 /**
  * Represents a todo task.
  * Extends Task with specific todo formatting.

@@ -1,3 +1,7 @@
+package memomax.tasklist;
+
+import memomax.task.Task;
+import memomax.exception.MemoMaxException;
 import java.util.ArrayList;
 
 /**
