@@ -1,3 +1,5 @@
+package memomax.exception;
+
 /**
  * Exception thrown when task format in storage file is invalid.
  */

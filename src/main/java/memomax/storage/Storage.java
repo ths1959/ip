@@ -1,3 +1,11 @@
+package memomax.storage;
+
+import memomax.exception.MemoMaxException;
+import memomax.task.Task;
+import memomax.task.Todo;
+import memomax.task.Deadline;
+import memomax.task.Event;
+import java.io.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,6 +34,8 @@ public class Storage {
     public ArrayList<Task> load() throws MemoMaxException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
+
+        ensureDirectoryAndFileExist();
 
         if (!file.exists()) {
             return tasks;
@@ -56,6 +66,7 @@ public class Storage {
      */
     public void save(ArrayList<Task> tasks) throws MemoMaxException {
         try {
+            ensureDirectoryAndFileExist();
             File file = new File(filePath);
             File parentDir = file.getParentFile();
 
@@ -73,6 +84,36 @@ public class Storage {
             }
         } catch (IOException e) {
             throw new MemoMaxException("Failed to save tasks.");
+        }
+    }
+
+        /**
+     * Ensures directory and file exist.
+     * Creates them if they don't exist.
+     *
+     * @throws MemoMaxException if directory or file cannot be created
+     */
+    private void ensureDirectoryAndFileExist() throws MemoMaxException {
+        File file = new File(filePath);
+        File parentDir = file.getParentFile();
+
+        try {
+            if (parentDir != null && !parentDir.exists()) {
+                boolean dirsCreated = parentDir.mkdirs();
+                if (!dirsCreated) {
+                    throw new MemoMaxException("Failed to create directory: "
+                            + parentDir.getPath());
+                }
+            }
+
+            if (!file.exists()) {
+                boolean fileCreated = file.createNewFile();
+                if (!fileCreated) {
+                    throw new MemoMaxException("Failed to create file: " + filePath);
+                }
+            }
+        } catch (IOException e) {
+            throw new MemoMaxException("Failed to create file or directory: " + e.getMessage());
         }
     }
 

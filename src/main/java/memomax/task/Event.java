@@ -1,3 +1,6 @@
+package memomax.task;
+
+import memomax.exception.MemoMaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

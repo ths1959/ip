@@ -1,3 +1,6 @@
+package memomax.ui;
+
+import memomax.task.Task;
 import java.util.ArrayList;
 import java.util.Scanner;
 

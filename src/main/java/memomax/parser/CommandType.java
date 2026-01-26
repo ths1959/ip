@@ -1,3 +1,5 @@
+package memomax.parser;
+
 /**
  * Command types supported by MemoMax.
  */
