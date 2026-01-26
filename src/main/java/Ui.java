@@ -26,16 +26,6 @@ public class Ui {
     }
 
     /**
-     * Displays a standard message with divider.
-     *
-     * @param message Message to display
-     */
-    public void showMessage(String message) {
-        System.out.println(message);
-        System.out.println(DIVIDER);
-    }
-
-    /**
      * Displays an error message with help prompt.
      *
      * @param message Error message to display
@@ -71,7 +61,7 @@ public class Ui {
      * Shows the goodbye message.
      */
     public void showGoodbye() {
-        System.out.println("Bye. Hope to see your again soon!");
+        System.out.println("Bye. Hope to see you again soon!");
         System.out.println(DIVIDER);
     }
 

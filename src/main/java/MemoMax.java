@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Handles user commands and manages task list.
  */
 public class MemoMax {
-    private static ArrayList<Task> tasks = new ArrayList<>();
+    private static TaskList tasks = new TaskList();
     private static final Ui ui = new Ui();
     private static final Storage storage = new Storage("./data/MemoMax.txt");
 
@@ -86,10 +86,11 @@ public class MemoMax {
      */
     private static void loadTasksFromFile() {
         try {
-            tasks = storage.load();
+            ArrayList<Task> loadedTasks = storage.load();
+            tasks = new TaskList(loadedTasks);
         } catch (MemoMaxException e) {
             ui.showStorageError("Failed to load saved tasks: " + e.getMessage());
-            tasks = new ArrayList<>();
+            tasks = new TaskList();
         }
     }
 
@@ -98,7 +99,7 @@ public class MemoMax {
      */
     private static void saveTasksToFile() {
         try {
-            storage.save(tasks);
+            storage.save(tasks.getAllTasks());
         } catch (MemoMaxException e) {
             ui.showStorageError("Failed to save tasks: " + e.getMessage());
         }
@@ -108,7 +109,7 @@ public class MemoMax {
      * Displays all tasks in the list.
      */
     private static void handleList() {
-        ui.showTaskList(tasks, tasks.isEmpty());
+        ui.showTaskList(tasks.getAllTasks(), tasks.isEmpty());
     }
 
     /**
@@ -119,12 +120,9 @@ public class MemoMax {
     private static void handleMark(String[] inputParts) {
         try {
             int taskNumber = Parser.parseTaskNumber(inputParts, "mark");
-            Parser.validateListNotEmpty(tasks.size());
-            Parser.validateTaskExists(taskNumber, tasks.size());
             int index = taskNumber - 1;
-            validateNotAlreadyMarked(index);
 
-            tasks.get(index).mark();
+            tasks.mark(index);
             ui.showTaskMarked(tasks.get(index));
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
@@ -141,12 +139,9 @@ public class MemoMax {
     private static void handleUnmark(String[] inputParts) {
         try {
             int taskNumber = Parser.parseTaskNumber(inputParts, "unmark");
-            Parser.validateListNotEmpty(tasks.size());
-            Parser.validateTaskExists(taskNumber, tasks.size());
             int index = taskNumber - 1;
-            validateNotAlreadyUnmarked(index);
 
-            tasks.get(index).unmark();
+            tasks.unmark(index);
             ui.showTaskUnmarked(tasks.get(index));
         } catch (MemoMaxException e) {
             ui.showErrorMessage(e.getMessage());
@@ -163,12 +158,8 @@ public class MemoMax {
     private static void handleDelete(String[] inputParts) {
         try {
             int taskNumber = Parser.parseTaskNumber(inputParts, "delete");
-            Parser.validateListNotEmpty(tasks.size());
-            Parser.validateTaskExists(taskNumber, tasks.size());
-
             int index = taskNumber - 1;
-            Task taskToRemove = tasks.get(index);
-            tasks.remove(index);
+            Task taskToRemove = tasks.delete(index);
 
             ui.showTaskDeleted(taskToRemove, tasks.size());
         } catch (MemoMaxException e) {
@@ -257,31 +248,5 @@ public class MemoMax {
      */
     private static void handleUnknownCommand() {
         ui.showUnknownCommand();
-    }
-
-    // Helper validation methods
-
-    /**
-     * Validates that a task is not already marked as done.
-     *
-     * @param index The index of the task to check
-     * @throws MemoMaxException if the task is already marked
-     */
-    private static void validateNotAlreadyMarked(int index) throws MemoMaxException {
-        if (tasks.get(index).getStatusIcon().equals("[X]")) {
-            throw new MemoMaxException("Task " + (index + 1) + " is already marked as done!");
-        }
-    }
-
-    /**
-     * Validates that a task is not already marked as not done.
-     *
-     * @param index The index of the task to check
-     * @throws MemoMaxException if the task is already unmarked
-     */
-    private static void validateNotAlreadyUnmarked(int index) throws MemoMaxException {
-        if (tasks.get(index).getStatusIcon().equals("[ ]")) {
-            throw new MemoMaxException("Task " + (index + 1) + " is already not done!");
-        }
     }
 }
