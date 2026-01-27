@@ -19,6 +19,7 @@ public class Event extends Task {
      * @param description Event description
      * @param from Start time
      * @param to End time
+     * @throws MemoMaxException if the date format is invalid
      */
     public Event(String description, String from, String to) throws MemoMaxException {
         super(description);

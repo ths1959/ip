@@ -87,7 +87,7 @@ public class Storage {
         }
     }
 
-        /**
+    /**
      * Ensures directory and file exist.
      * Creates them if they don't exist.
      *

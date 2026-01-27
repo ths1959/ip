@@ -17,6 +17,7 @@ public class Deadline extends Task{
      *
      * @param description Task description
      * @param by Due date/time
+     * @throws MemoMaxException if the date format is invalid
      */
     public Deadline(String description, String by) throws MemoMaxException {
         super(description);

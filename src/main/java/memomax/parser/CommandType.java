@@ -8,8 +8,10 @@ public enum CommandType {
     TODO, DEADLINE, EVENT, HELP, UNKNOWN;
 
     /**
-     * Converts string to CommandType.
-     * Returns UNKNOWN for invalid commands.
+     * Parses a string input into its corresponding CommandType.
+     *
+     * @param command The raw command string from user input
+     * @return The matching CommandType, or UNKNOWN if no match is found
      */
     public static CommandType parseCommand(String command) {
         if (command == null || command.trim().isEmpty()) {

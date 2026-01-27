@@ -58,7 +58,7 @@ public class Parser {
      *
      * @param userInput The full user input string
      * @return String array [description, dueDate]
-     * @throws MemoMaxException if format is invalid
+     * @throws MemoMaxException if format is invalid or parts are missing
      */
     public static String[] parseDeadline(String userInput) throws MemoMaxException {
         if (userInput.trim().equals("deadline")) {
@@ -98,7 +98,7 @@ public class Parser {
      *
      * @param userInput The full user input string
      * @return String array [description, fromTime, toTime]
-     * @throws MemoMaxException if format is invalid
+     * @throws MemoMaxException if format is invalid or parts are missing
      */
     public static String[] parseEvent(String userInput) throws MemoMaxException {
         boolean hasFrom = userInput.contains("/from");

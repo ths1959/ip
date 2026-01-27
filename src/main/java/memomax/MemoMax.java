@@ -12,11 +12,6 @@ import memomax.task.Event;
 import memomax.ui.Ui;
 import java.util.ArrayList;
 
-/*
- Note: ChatGPT was consulted for adherence towards Javadoc documentation standards.
- Core logic, structure, and error messages remain my own implementation.
-*/
-
 /**
  * Main chatbot class for MemoMax.
  * Handles user commands and manages task list.
@@ -182,7 +177,8 @@ public class MemoMax {
     }
 
     /**
-     * Adds a new todo task.
+     * Adds a new todo task to the list and saves the change to storage.
+     * Parses the user input for the description.
      *
      * @param userInput The user input string
      */
@@ -201,7 +197,8 @@ public class MemoMax {
     }
 
     /**
-     * Adds a new deadline task.
+     * Adds a new deadline task to the list and saves the change to storage.
+     * Parses the user input for the description and the deadline date/time.
      *
      * @param userInput The user input string
      */
@@ -221,7 +218,8 @@ public class MemoMax {
     }
 
     /**
-     * Adds a new event task.
+     * Adds a new event task to the list and saves the change to storage.
+     * Parses the user input for the description and the start and end date/time.
      *
      * @param userInput The user input string
      */
