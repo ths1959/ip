@@ -12,11 +12,6 @@ import memomax.task.Event;
 import memomax.ui.Ui;
 import java.util.ArrayList;
 
-/*
- Note: ChatGPT was consulted for adherence towards Javadoc documentation standards.
- Core logic, structure, and error messages remain my own implementation.
-*/
-
 /**
  * Main chatbot class for MemoMax.
  * Handles user commands and manages task list.

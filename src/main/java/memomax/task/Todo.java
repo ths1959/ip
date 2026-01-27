@@ -2,23 +2,23 @@ package memomax.task;
 
 /**
  * Represents a todo task.
- * Extends Task with specific todo formatting.
+ * Extends the Task with specific todo formatting.
  */
 public class Todo extends Task {
 
     /**
      * Creates a new todo task.
      *
-     * @param description Todo description
+     * @param description The description of the todo task.
      */
     public Todo(String description) {
         super(description);
     }
 
     /**
-     * Returns formatted todo string.
+     * Returns the formatted todo string.
      *
-     * @return "[T]" prefix with task details
+     * @return A string containing the "[T]" prefix and task details.
      */
     @Override
     public String toString() {
@@ -26,9 +26,9 @@ public class Todo extends Task {
     }
 
     /**
-     * Returns Todo data in file storage format.
+     * Returns the todo data in a file storage format.
      *
-     * @return string representation for file storage
+     * @return A string representation formatted for file storage
      */
     @Override
     public String toFileFormat() {

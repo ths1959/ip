@@ -1,8 +1,9 @@
 package memomax.tasklist;
 
-import memomax.task.Task;
-import memomax.exception.MemoMaxException;
 import java.util.ArrayList;
+
+import memomax.exception.MemoMaxException;
+import memomax.task.Task;
 
 /**
  * Manages a collection of tasks.
@@ -21,7 +22,7 @@ public class TaskList {
     /**
      * Creates a TaskList with existing tasks.
      *
-     * @param tasks The list of tasks to initialize with
+     * @param tasks The list of tasks to initialize with.
      */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = new ArrayList<>(tasks);
@@ -30,7 +31,7 @@ public class TaskList {
     /**
      * Adds a task to the list.
      *
-     * @param task The task to add
+     * @param task The task to add.
      */
     public void add(Task task) {
         tasks.add(task);
@@ -39,9 +40,9 @@ public class TaskList {
     /**
      * Removes a task from the list.
      *
-     * @param index The index of the task to remove (0-based)
-     * @return The removed task
-     * @throws MemoMaxException if index is invalid
+     * @param index The index of the task to remove (0-based).
+     * @return The removed task.
+     * @throws MemoMaxException If the index is invalid.
      */
     public Task delete(int index) throws MemoMaxException {
         validateIndex(index);
@@ -51,9 +52,9 @@ public class TaskList {
     /**
      * Gets a task from the list.
      *
-     * @param index The index of the task to get (0-based)
-     * @return The task at the specified index
-     * @throws MemoMaxException if index is invalid
+     * @param index The index of the task to get (0-based).
+     * @return The task at the specified index.
+     * @throws MemoMaxException If the index is invalid.
      */
     public Task get(int index) throws MemoMaxException {
         validateIndex(index);
@@ -63,8 +64,8 @@ public class TaskList {
     /**
      * Marks a task as done.
      *
-     * @param index The index of the task to mark (0-based)
-     * @throws MemoMaxException if index is invalid or task is already marked
+     * @param index The index of the task to mark (0-based).
+     * @throws MemoMaxException If the index is invalid or task is already marked.
      */
     public void mark(int index) throws MemoMaxException {
         validateIndex(index);
@@ -81,8 +82,8 @@ public class TaskList {
     /**
      * Marks a task as not done.
      *
-     * @param index The index of the task to unmark (0-based)
-     * @throws MemoMaxException if index is invalid or task is already unmarked
+     * @param index The index of the task to unmark (0-based).
+     * @throws MemoMaxException If the index is invalid or task is already unmarked.
      */
     public void unmark(int index) throws MemoMaxException {
         validateIndex(index);
@@ -99,7 +100,7 @@ public class TaskList {
     /**
      * Returns all tasks in the list.
      *
-     * @return A copy of the task list
+     * @return A copy of the task list.
      */
     public ArrayList<Task> getAllTasks() {
         return new ArrayList<>(tasks);
@@ -108,7 +109,7 @@ public class TaskList {
     /**
      * Returns the number of tasks in the list.
      *
-     * @return The size of the task list
+     * @return The size of the task list.
      */
     public int size() {
         return tasks.size();
@@ -117,7 +118,7 @@ public class TaskList {
     /**
      * Checks if the task list is empty.
      *
-     * @return true if the list is empty, false otherwise
+     * @return True if the list is empty, false otherwise.
      */
     public boolean isEmpty() {
         return tasks.isEmpty();
@@ -126,8 +127,8 @@ public class TaskList {
     /**
      * Validates that an index is within bounds.
      *
-     * @param index The index to validate (0-based)
-     * @throws MemoMaxException if index is out of bounds
+     * @param index The index to validate (0-based).
+     * @throws MemoMaxException If the index is out of bounds.
      */
     private void validateIndex(int index) throws MemoMaxException {
         if (index < 0 || index >= tasks.size()) {

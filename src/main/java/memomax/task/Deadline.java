@@ -1,22 +1,25 @@
 package memomax.task;
 
-import memomax.exception.MemoMaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import memomax.exception.MemoMaxException;
+
 /**
- * Represents a deadline task with due date.
- * Extends Task with deadline information.
+ * Represents a deadline task with a due date.
+ * Extends the Task with deadline-specific information.
  */
-public class Deadline extends Task{
-    protected LocalDateTime by;
+public class Deadline extends Task {
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    protected LocalDateTime by;
+
 
     /**
      * Creates a new deadline task.
      *
-     * @param description Task description
-     * @param by Due date/time
+     * @param description Task description.
+     * @param by Due date and time.
+     * @throws MemoMaxException If the date format is invalid.
      */
     public Deadline(String description, String by) throws MemoMaxException {
         super(description);
@@ -28,9 +31,9 @@ public class Deadline extends Task{
     }
 
     /**
-     * Returns formatted deadline string with due date.
+     * Returns a formatted deadline string with the due date.
      *
-     * @return "[D]" prefix with task details and deadline
+     * @return A string containing the "[D]" prefix, task details, and deadline.
      */
     @Override
     public String toString() {
@@ -39,9 +42,9 @@ public class Deadline extends Task{
     }
 
     /**
-     * Returns Deadline data in file storage format.
+     * Returns the Deadline data in a file storage format.
      *
-     * @return string representation for file storage
+     * @return A string representation formatted for file storage.
      */
     @Override
     public String toFileFormat() {

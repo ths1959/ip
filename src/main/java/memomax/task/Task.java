@@ -2,16 +2,16 @@ package memomax.task;
 
 /**
  * Represents a task in the MemoMax application.
- * Base class for different task types with common functionality.
+ * Serves as the base class for different task types with common functionality.
  */
 public class Task {
     protected String description;
     protected boolean isDone;
 
     /**
-     * Creates a new task with given description.
+     * Creates a new task with the given description.
      *
-     * @param description Task description
+     * @param description The description of the task.
      */
     Task(String description) {
         this.description = description;
@@ -35,7 +35,7 @@ public class Task {
     /**
      * Returns the status icon for display.
      *
-     * @return "[X]" if done, "[ ]" if not done
+     * @return A string "[X]" if done, or "[ ]" if not done.
      */
     public String getStatusIcon() {
         if (isDone) {
@@ -46,18 +46,18 @@ public class Task {
     }
 
     /**
-     * Returns string representation of the task.
+     * Returns the string representation of the task.
      *
-     * @return Formatted task string with status and description
+     * @return A formatted task string with status and description.
      */
     public String toString() {
         return getStatusIcon() + " " + this.description;
     }
 
     /**
-     * Returns task data in file storage format.
+     * Returns the task data in a file storage format.
      *
-     * @return string representation for file storage
+     * @return A string representation formatted for file storage.
      */
     public String toFileFormat() {
         return "T | " + (isDone ? "1" : "0") + " | " + description;
