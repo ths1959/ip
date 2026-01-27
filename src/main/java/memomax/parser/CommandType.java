@@ -5,7 +5,7 @@ package memomax.parser;
  */
 public enum CommandType {
     BYE, LIST, MARK, UNMARK, DELETE,
-    TODO, DEADLINE, EVENT, HELP, UNKNOWN;
+    TODO, DEADLINE, EVENT, HELP, FIND, UNKNOWN;
 
     /**
      * Converts string to CommandType.
@@ -17,26 +17,28 @@ public enum CommandType {
         }
         String lowerCommand = command.toLowerCase().trim();
         switch (lowerCommand) {
-            case "bye":
-                return BYE;
-            case "list":
-                return LIST;
-            case "mark":
-                return MARK;
-            case "unmark":
-                return UNMARK;
-            case "delete":
-                return DELETE;
-            case "todo":
-                return TODO;
-            case "deadline":
-                return DEADLINE;
-            case "event":
-                return EVENT;
-            case "help":
-                return HELP;
-            default:
-                return UNKNOWN;
+        case "bye":
+            return BYE;
+        case "list":
+            return LIST;
+        case "mark":
+            return MARK;
+        case "unmark":
+            return UNMARK;
+        case "delete":
+            return DELETE;
+        case "todo":
+            return TODO;
+        case "deadline":
+            return DEADLINE;
+        case "event":
+            return EVENT;
+        case "help":
+            return HELP;
+        case "find":
+            return FIND;
+        default:
+            return UNKNOWN;
         }
     }
 }

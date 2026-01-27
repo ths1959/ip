@@ -56,35 +56,38 @@ public class MemoMax {
             CommandType commandType = CommandType.parseCommand(inputParts[0]);
 
             switch (commandType) {
-                case BYE:
-                    break;
-                case LIST:
-                    handleList();
-                    break;
-                case MARK:
-                    handleMark(inputParts);
-                    break;
-                case UNMARK:
-                    handleUnmark(inputParts);
-                    break;
-                case DELETE:
-                    handleDelete(inputParts);
-                    break;
-                case TODO:
-                    handleTodo(userInput);
-                    break;
-                case DEADLINE:
-                    handleDeadline(userInput);
-                    break;
-                case EVENT:
-                    handleEvent(userInput);
-                    break;
-                case HELP:
-                    handleHelp(inputParts);
-                    break;
-                case UNKNOWN:
-                    handleUnknownCommand();
-                    break;
+            case BYE:
+                break;
+            case LIST:
+                handleList();
+                break;
+            case MARK:
+                handleMark(inputParts);
+                break;
+            case UNMARK:
+                handleUnmark(inputParts);
+                break;
+            case DELETE:
+                handleDelete(inputParts);
+                break;
+            case TODO:
+                handleTodo(userInput);
+                break;
+            case DEADLINE:
+                handleDeadline(userInput);
+                break;
+            case EVENT:
+                handleEvent(userInput);
+                break;
+            case HELP:
+                handleHelp(inputParts);
+                break;
+            case FIND:
+                handleFind(userInput);
+                break;
+            case UNKNOWN:
+                handleUnknownCommand();
+                break;
             }
 
             if (commandType == CommandType.BYE) {
@@ -179,6 +182,21 @@ public class MemoMax {
         }
 
         saveTasksToFile();
+    }
+
+    /**
+     * Finds tasks containing the search keyword.
+     *
+     * @param userInput The user input string.
+     */
+    private static void handleFind(String userInput) {
+        try {
+            String keyword = Parser.parseFind(userInput);
+            ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
+            ui.showFindResults(matchingTasks, keyword);
+        } catch (MemoMaxException e) {
+            ui.showErrorMessage(e.getMessage());
+        }
     }
 
     /**

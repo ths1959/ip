@@ -1,6 +1,8 @@
 package memomax.ui;
 
 import memomax.task.Task;
+
+import java.time.format.SignStyle;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -137,6 +139,24 @@ public class Ui {
     }
 
     /**
+     * Displays search results for the find command.
+     *
+     * @param matchingTasks List of tasks matching the specified keyword.
+     * @param keyword The search keyword.
+     */
+    public void showFindResults(ArrayList<Task> matchingTasks, String keyword) {
+        if (matchingTasks.isEmpty()) {
+            System.out.println("No tasks found containing: '" + keyword + "'");
+        } else {
+            System.out.println("Here are the matching tasks in your list:");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                System.out.println((i + 1) + "." + matchingTasks.get(i));
+            }
+        }
+        System.out.println(DIVIDER);
+    }
+
+    /**
      * Displays the help information.
      */
     public void showHelp() {
@@ -148,7 +168,8 @@ public class Ui {
         System.out.println("5. Mark as done: mark <number>");
         System.out.println("6. Mark as not done: unmark <number>");
         System.out.println("7. Delete a task: delete <number>");
-        System.out.println("8. Say goodbye: bye");
+        System.out.println("8. Find tasks: find <keyword>");
+        System.out.println("9. Say goodbye: bye");
         System.out.println(DIVIDER);
     }
 
