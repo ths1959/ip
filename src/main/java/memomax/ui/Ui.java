@@ -1,11 +1,12 @@
 package memomax.ui;
 
-import memomax.task.Task;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import memomax.task.Task;
+
 /**
- * Handles user interface display for MemoMax.
+ * Handles the user interface display for MemoMax.
  * Manages formatted output and error messages.
  */
 public class Ui {
@@ -22,16 +23,16 @@ public class Ui {
     /**
      * Reads a command from the user.
      *
-     * @return The user's input as a string
+     * @return The user's input as a string.
      */
     public String readCommand() {
         return scanner.nextLine();
     }
 
     /**
-     * Displays an error message with help prompt.
+     * Displays an error message with a help prompt.
      *
-     * @param message Error message to display
+     * @param message The error message to display.
      */
     public void showErrorMessage(String message) {
         System.out.println("Oops! " + message);
@@ -40,9 +41,9 @@ public class Ui {
     }
 
     /**
-     * Shows a storage/file system error message.
+     * Shows a storage or file system error message.
      *
-     * @param message the storage error message to display
+     * @param message The storage error message to display.
      */
     public void showStorageError(String message) {
         System.out.println("[Storage] " + message);
@@ -52,7 +53,7 @@ public class Ui {
     /**
      * Shows the welcome message with logo.
      *
-     * @param logo The ASCII art logo to display
+     * @param logo The ASCII art logo to display.
      */
     public void showWelcome(String logo) {
         System.out.println("Hello! I'm MemoMax");
@@ -71,8 +72,8 @@ public class Ui {
     /**
      * Displays a formatted list of tasks.
      *
-     * @param tasks The list of tasks to display
-     * @param isEmpty Whether the task list is empty
+     * @param tasks The list of tasks to display.
+     * @param isEmpty Whether the task list is empty.
      */
     public void showTaskList(ArrayList<Task> tasks, boolean isEmpty) {
         if (isEmpty) {
@@ -91,8 +92,8 @@ public class Ui {
     /**
      * Displays a task added confirmation.
      *
-     * @param task The task that was added
-     * @param taskCount The new total number of tasks
+     * @param task The task that was added.
+     * @param taskCount The new total number of tasks.
      */
     public void showTasksAdded(Task task, int taskCount) {
         System.out.println("Got it. I've added this task:");
@@ -104,7 +105,7 @@ public class Ui {
     /**
      * Displays a task marked as done confirmation.
      *
-     * @param task The task that was marked
+     * @param task The task that was marked.
      */
     public void showTaskMarked(Task task) {
         System.out.println("Nice! I've marked this task as done:");
@@ -115,7 +116,7 @@ public class Ui {
     /**
      * Displays a task marked as not done confirmation.
      *
-     * @param task The task that was unmarked
+     * @param task The task that was unmarked.
      */
     public void showTaskUnmarked(Task task) {
         System.out.println("OK, I've marked this task as not done yet:");
@@ -126,8 +127,8 @@ public class Ui {
     /**
      * Displays a task deleted confirmation.
      *
-     * @param task The task that was deleted
-     * @param taskCount The new total number of tasks
+     * @param task The task that was deleted.
+     * @param taskCount The new total number of tasks.
      */
     public void showTaskDeleted(Task task, int taskCount) {
         System.out.println("Noted. I've removed this task:");
@@ -153,7 +154,7 @@ public class Ui {
     }
 
     /**
-     * Displays unknown command message.
+     * Displays the unknown command message.
      */
     public void showUnknownCommand() {
         System.out.println("Invalid command");

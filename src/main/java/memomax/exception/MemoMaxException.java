@@ -1,7 +1,7 @@
 package memomax.exception;
 
 /**
- * Exception specific to MemoMax chatbot errors.
+ * Represents an exception specific to MemoMax chatbot errors.
  * Provides user-friendly error messages.
  */
 public class MemoMaxException extends Exception {

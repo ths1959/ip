@@ -1,16 +1,16 @@
 package memomax.storage;
 
-import memomax.exception.MemoMaxException;
-import memomax.task.Task;
-import memomax.task.Todo;
-import memomax.task.Deadline;
-import memomax.task.Event;
-import java.io.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import memomax.exception.MemoMaxException;
+import memomax.task.Task;
+import memomax.task.Todo;
+import memomax.task.Deadline;
+import memomax.task.Event;
 
 /**
  * Handles loading and saving tasks to file.
@@ -20,16 +20,19 @@ public class Storage {
 
     /**
      * Creates Storage with given file path.
+     *
+     * @param filePath The path of the file to store tasks.
      */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
     /**
-     * Loads tasks from storage file.
-     * Returns empty list if file doesn't exist.
+     * Loads tasks from the storage file.
+     * Returns an empty list if the file does not exist.
      *
-     * @throws MemoMaxException if file cannot be read or has corrupted data
+     * @return An ArrayList of tasks.
+     * @throws MemoMaxException If the file cannot be read or has corrupted data.
      */
     public ArrayList<Task> load() throws MemoMaxException {
         ArrayList<Task> tasks = new ArrayList<>();
@@ -59,10 +62,11 @@ public class Storage {
     }
 
     /**
-     * Saves tasks to storage file.
-     * Creates data folder if it doesn't exist.
+     * Saves tasks to the storage file.
+     * Creates the data folder if it does not exist.
      *
-     * @throws MemoMaxException if file cannot be written
+     * @param tasks The list of tasks to be saved.
+     * @throws MemoMaxException If file cannot be written.
      */
     public void save(ArrayList<Task> tasks) throws MemoMaxException {
         try {
@@ -88,10 +92,10 @@ public class Storage {
     }
 
     /**
-     * Ensures directory and file exist.
-     * Creates them if they don't exist.
+     * Ensures the directory and file exist.
+     * Creates them if they do not exist.
      *
-     * @throws MemoMaxException if directory or file cannot be created
+     * @throws MemoMaxException If the directory or file cannot be created.
      */
     private void ensureDirectoryAndFileExist() throws MemoMaxException {
         File file = new File(filePath);
@@ -113,13 +117,17 @@ public class Storage {
                 }
             }
         } catch (IOException e) {
-            throw new MemoMaxException("Failed to create file or directory: " + e.getMessage());
+            throw new MemoMaxException("Failed to create file or directory: "
+                    + e.getMessage());
         }
     }
 
     /**
-     * Parses a storage file line into Task object.
-     * Returns null if line format is invalid.
+     * Parses a storage file line into a Task object.
+     * Returns null if the line format is invalid.
+     *
+     * @param line A single line from the storage file.
+     * @return The parsed Task object.
      */
     private Task parseTask(String line) {
         if (line == null || line.trim().isEmpty()) {

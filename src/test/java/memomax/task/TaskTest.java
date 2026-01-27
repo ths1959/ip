@@ -1,8 +1,14 @@
 package memomax.task;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Test;
+
+/**
+ * Tests the functionality of the Task class.
+ * Ensures that task creation, status change, and string formatting work correctly.
+ */
 public class TaskTest {
 
     @Test

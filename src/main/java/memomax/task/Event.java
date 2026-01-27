@@ -1,25 +1,26 @@
 package memomax.task;
 
-import memomax.exception.MemoMaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import memomax.exception.MemoMaxException;
+
 /**
  * Represents an event task with start and end times.
- * Extends Task with time interval information.
+ * Extends the Task class with time interval information.
  */
 public class Event extends Task {
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     protected LocalDateTime from;
     protected LocalDateTime to;
-    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     /**
      * Creates a new event task.
      *
-     * @param description Event description
-     * @param from Start time
-     * @param to End time
-     * @throws MemoMaxException if the date format is invalid
+     * @param description Event description.
+     * @param from Start time.
+     * @param to End time.
+     * @throws MemoMaxException If the date format is invalid.
      */
     public Event(String description, String from, String to) throws MemoMaxException {
         super(description);
@@ -32,9 +33,9 @@ public class Event extends Task {
     }
 
     /**
-     * Returns formatted event string with time interval.
+     * Returns a formatted event string with time interval.
      *
-     * @return "[E]" prefix with task details and time interval
+     * @return A string with the "[E]" prefix, task details, and time interval.
      */
     @Override
     public String toString() {
@@ -44,9 +45,9 @@ public class Event extends Task {
     }
 
     /**
-     * Returns Event data in file storage format.
+     * Returns event data in file storage format.
      *
-     * @return string representation for file storage
+     * @return A string representation formatted for file storage.
      */
     @Override
     public String toFileFormat() {

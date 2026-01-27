@@ -1,17 +1,15 @@
 package memomax.parser;
 
 /**
- * Command types supported by MemoMax.
+ * Represents command types supported by MemoMax.
  */
 public enum CommandType {
     BYE, LIST, MARK, UNMARK, DELETE,
     TODO, DEADLINE, EVENT, HELP, UNKNOWN;
 
     /**
-     * Parses a string input into its corresponding CommandType.
-     *
-     * @param command The raw command string from user input
-     * @return The matching CommandType, or UNKNOWN if no match is found
+     * Parses a string to a CommandType.
+     * Returns UNKNOWN for invalid commands.
      */
     public static CommandType parseCommand(String command) {
         if (command == null || command.trim().isEmpty()) {
@@ -19,26 +17,26 @@ public enum CommandType {
         }
         String lowerCommand = command.toLowerCase().trim();
         switch (lowerCommand) {
-            case "bye":
-                return BYE;
-            case "list":
-                return LIST;
-            case "mark":
-                return MARK;
-            case "unmark":
-                return UNMARK;
-            case "delete":
-                return DELETE;
-            case "todo":
-                return TODO;
-            case "deadline":
-                return DEADLINE;
-            case "event":
-                return EVENT;
-            case "help":
-                return HELP;
-            default:
-                return UNKNOWN;
+        case "bye":
+            return BYE;
+        case "list":
+            return LIST;
+        case "mark":
+            return MARK;
+        case "unmark":
+            return UNMARK;
+        case "delete":
+            return DELETE;
+        case "todo":
+            return TODO;
+        case "deadline":
+            return DEADLINE;
+        case "event":
+            return EVENT;
+        case "help":
+            return HELP;
+        default:
+            return UNKNOWN;
         }
     }
 }
