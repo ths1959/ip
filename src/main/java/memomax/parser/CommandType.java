@@ -1,14 +1,14 @@
 package memomax.parser;
 
 /**
- * Represents command types supported by MemoMax.
+ * Command types supported by MemoMax.
  */
 public enum CommandType {
     BYE, LIST, MARK, UNMARK, DELETE,
-    TODO, DEADLINE, EVENT, HELP, UNKNOWN;
+    TODO, DEADLINE, EVENT, HELP, FIND, UNKNOWN;
 
     /**
-     * Parses a string to a CommandType.
+     * Converts string to CommandType.
      * Returns UNKNOWN for invalid commands.
      */
     public static CommandType parseCommand(String command) {
@@ -35,6 +35,8 @@ public enum CommandType {
             return EVENT;
         case "help":
             return HELP;
+        case "find":
+            return FIND;
         default:
             return UNKNOWN;
         }

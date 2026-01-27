@@ -6,7 +6,7 @@ import java.util.Scanner;
 import memomax.task.Task;
 
 /**
- * Handles the user interface display for MemoMax.
+ * Handles user interface display for MemoMax.
  * Manages formatted output and error messages.
  */
 public class Ui {
@@ -23,16 +23,16 @@ public class Ui {
     /**
      * Reads a command from the user.
      *
-     * @return The user's input as a string.
+     * @return The user's input as a string
      */
     public String readCommand() {
         return scanner.nextLine();
     }
 
     /**
-     * Displays an error message with a help prompt.
+     * Displays an error message with help prompt.
      *
-     * @param message The error message to display.
+     * @param message Error message to display
      */
     public void showErrorMessage(String message) {
         System.out.println("Oops! " + message);
@@ -41,9 +41,9 @@ public class Ui {
     }
 
     /**
-     * Shows a storage or file system error message.
+     * Shows a storage/file system error message.
      *
-     * @param message The storage error message to display.
+     * @param message the storage error message to display
      */
     public void showStorageError(String message) {
         System.out.println("[Storage] " + message);
@@ -53,7 +53,7 @@ public class Ui {
     /**
      * Shows the welcome message with logo.
      *
-     * @param logo The ASCII art logo to display.
+     * @param logo The ASCII art logo to display
      */
     public void showWelcome(String logo) {
         System.out.println("Hello! I'm MemoMax");
@@ -72,8 +72,8 @@ public class Ui {
     /**
      * Displays a formatted list of tasks.
      *
-     * @param tasks The list of tasks to display.
-     * @param isEmpty Whether the task list is empty.
+     * @param tasks The list of tasks to display
+     * @param isEmpty Whether the task list is empty
      */
     public void showTaskList(ArrayList<Task> tasks, boolean isEmpty) {
         if (isEmpty) {
@@ -92,8 +92,8 @@ public class Ui {
     /**
      * Displays a task added confirmation.
      *
-     * @param task The task that was added.
-     * @param taskCount The new total number of tasks.
+     * @param task The task that was added
+     * @param taskCount The new total number of tasks
      */
     public void showTasksAdded(Task task, int taskCount) {
         System.out.println("Got it. I've added this task:");
@@ -105,7 +105,7 @@ public class Ui {
     /**
      * Displays a task marked as done confirmation.
      *
-     * @param task The task that was marked.
+     * @param task The task that was marked
      */
     public void showTaskMarked(Task task) {
         System.out.println("Nice! I've marked this task as done:");
@@ -116,7 +116,7 @@ public class Ui {
     /**
      * Displays a task marked as not done confirmation.
      *
-     * @param task The task that was unmarked.
+     * @param task The task that was unmarked
      */
     public void showTaskUnmarked(Task task) {
         System.out.println("OK, I've marked this task as not done yet:");
@@ -127,13 +127,31 @@ public class Ui {
     /**
      * Displays a task deleted confirmation.
      *
-     * @param task The task that was deleted.
-     * @param taskCount The new total number of tasks.
+     * @param task The task that was deleted
+     * @param taskCount The new total number of tasks
      */
     public void showTaskDeleted(Task task, int taskCount) {
         System.out.println("Noted. I've removed this task:");
         System.out.println(" " + task.toString());
         System.out.println("Now you have " + taskCount + " task(s) in the list.");
+        System.out.println(DIVIDER);
+    }
+
+    /**
+     * Displays search results for the find command.
+     *
+     * @param matchingTasks List of tasks matching the specified keyword.
+     * @param keyword The search keyword.
+     */
+    public void showFindResults(ArrayList<Task> matchingTasks, String keyword) {
+        if (matchingTasks.isEmpty()) {
+            System.out.println("No tasks found containing: '" + keyword + "'");
+        } else {
+            System.out.println("Here are the matching tasks in your list:");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                System.out.println((i + 1) + "." + matchingTasks.get(i));
+            }
+        }
         System.out.println(DIVIDER);
     }
 
@@ -149,12 +167,13 @@ public class Ui {
         System.out.println("5. Mark as done: mark <number>");
         System.out.println("6. Mark as not done: unmark <number>");
         System.out.println("7. Delete a task: delete <number>");
-        System.out.println("8. Say goodbye: bye");
+        System.out.println("8. Find tasks: find <keyword>");
+        System.out.println("9. Say goodbye: bye");
         System.out.println(DIVIDER);
     }
 
     /**
-     * Displays the unknown command message.
+     * Displays unknown command message.
      */
     public void showUnknownCommand() {
         System.out.println("Invalid command");

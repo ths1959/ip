@@ -54,6 +54,26 @@ public class Parser {
     }
 
     /**
+     * Parses a find command and extracts the keyword.
+     *
+     * @param userInput The full user input string.
+     * @return The search keyword.
+     * @throws MemoMaxException If the keyword is empty.
+     */
+    public static String parseFind(String userInput) throws MemoMaxException {
+        if (userInput.trim().equals("find")) {
+            throw new MemoMaxException("Find needs a keyword. Example: find book");
+        }
+
+        String keyword = userInput.substring("find ".length()).trim();
+        if (keyword.isEmpty()) {
+            throw new MemoMaxException("Find keyword cannot be empty. Example: find book");
+        }
+
+        return keyword;
+    }
+
+    /**
      * Parses a deadline command into description and due date.
      *
      * @param userInput The full user input string.
