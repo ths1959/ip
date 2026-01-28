@@ -73,6 +73,24 @@ Here is/are the task(s) in your list:
 4.[D][ ] test2 (by: Jun 15 2025, 9:00 am)
 You have 4 task(s) in the list.
     ____________________________________________________________
+Here are the matching tasks in your list:
+1.[T][ ] read book
+2.[D][ ] return book (by: Feb 01 2025, 6:00 pm)
+    ____________________________________________________________
+Here are the matching tasks in your list:
+1.[D][ ] test1 (by: Dec 31 2025, 11:59 pm)
+2.[D][ ] test2 (by: Jun 15 2025, 9:00 am)
+    ____________________________________________________________
+Here are the matching tasks in your list:
+1.[D][ ] return book (by: Feb 01 2025, 6:00 pm)
+2.[D][ ] test1 (by: Dec 31 2025, 11:59 pm)
+3.[D][ ] test2 (by: Jun 15 2025, 9:00 am)
+    ____________________________________________________________
+Oops! Find needs a keyword. Example: find book
+Enter 'help' for more information
+    ____________________________________________________________
+No tasks found containing: 'xyz'
+    ____________________________________________________________
 Nice! I've marked this task as done:
  [T][X] read book
     ____________________________________________________________
@@ -107,6 +125,12 @@ Here is/are the task(s) in your list:
 4.[D][ ] test2 (by: Jun 15 2025, 9:00 am)
 You have 4 task(s) in the list.
     ____________________________________________________________
+Here are the matching tasks in your list:
+1.[T][X] read book
+    ____________________________________________________________
+Here are the matching tasks in your list:
+1.[D][ ] return book (by: Feb 01 2025, 6:00 pm)
+    ____________________________________________________________
 Oops! Task number must be positive. Example: delete 1
 Enter 'help' for more information
     ____________________________________________________________
@@ -126,9 +150,19 @@ Here is/are the task(s) in your list:
 3.[D][ ] test2 (by: Jun 15 2025, 9:00 am)
 You have 3 task(s) in the list.
     ____________________________________________________________
+Here are the matching tasks in your list:
+1.[D][ ] return book (by: Feb 01 2025, 6:00 pm)
+    ____________________________________________________________
 Noted. I've removed this task:
  [D][ ] return book (by: Feb 01 2025, 6:00 pm)
 Now you have 2 task(s) in the list.
+    ____________________________________________________________
+Here is/are the task(s) in your list:
+1.[D][ ] test1 (by: Dec 31 2025, 11:59 pm)
+2.[D][ ] test2 (by: Jun 15 2025, 9:00 am)
+You have 2 task(s) in the list.
+    ____________________________________________________________
+No tasks found containing: 'team'
     ____________________________________________________________
 Invalid command
 Type 'help' for more options
@@ -141,7 +175,8 @@ Here's what I can help with:
 5. Mark as done: mark <number>
 6. Mark as not done: unmark <number>
 7. Delete a task: delete <number>
-8. Say goodbye: bye
+8. Find tasks: find <keyword>
+9. Say goodbye: bye
     ____________________________________________________________
 Bye. Hope to see you again soon!
     ____________________________________________________________
