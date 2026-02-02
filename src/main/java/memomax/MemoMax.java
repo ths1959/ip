@@ -1,16 +1,17 @@
 package memomax;
 
+import java.util.ArrayList;
+
 import memomax.exception.MemoMaxException;
-import memomax.parser.Parser;
 import memomax.parser.CommandType;
+import memomax.parser.Parser;
 import memomax.storage.Storage;
-import memomax.tasklist.TaskList;
-import memomax.task.Task;
-import memomax.task.Todo;
 import memomax.task.Deadline;
 import memomax.task.Event;
+import memomax.task.Task;
+import memomax.task.Todo;
+import memomax.tasklist.TaskList;
 import memomax.ui.Ui;
-import java.util.ArrayList;
 
 /*
  Note: ChatGPT was consulted for adherence towards Javadoc documentation standards.
@@ -86,6 +87,9 @@ public class MemoMax {
                 handleFind(userInput);
                 break;
             case UNKNOWN:
+                handleUnknownCommand();
+                break;
+            default:
                 handleUnknownCommand();
                 break;
             }
