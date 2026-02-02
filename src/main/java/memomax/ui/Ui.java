@@ -10,7 +10,7 @@ import memomax.task.Task;
  * Manages formatted output and error messages.
  */
 public class Ui {
-    private static final String DIVIDER = "    ____________________________________________________________";
+    private static final String DIVIDER = "    ________________________________________________________";
     private final Scanner scanner;
 
     /**
@@ -33,40 +33,45 @@ public class Ui {
      * Displays an error message with help prompt.
      *
      * @param message Error message to display
+     * @return The formatted error message
      */
-    public void showErrorMessage(String message) {
-        System.out.println("Oops! " + message);
-        System.out.println("Enter 'help' for more information");
-        System.out.println(DIVIDER);
+    public String showErrorMessage(String message) {
+        return "Oops! " + message + "\n"
+                + "Enter 'help' for more information\n"
+                + DIVIDER;
     }
 
     /**
      * Shows a storage/file system error message.
      *
      * @param message the storage error message to display
+     * @return The formatted storage error message
      */
-    public void showStorageError(String message) {
-        System.out.println("[Storage] " + message);
-        System.out.println(DIVIDER);
+    public String showStorageError(String message) {
+        return "[Storage] " + message + "\n"
+                + DIVIDER;
     }
 
     /**
      * Shows the welcome message with logo.
      *
      * @param logo The ASCII art logo to display
+     * @return The formatted welcome message
      */
-    public void showWelcome(String logo) {
-        System.out.println("Hello! I'm MemoMax");
-        System.out.println("What can I do for you?" + logo);
-        System.out.println(DIVIDER);
+    public String showWelcome(String logo) {
+        return "Hello! I'm MemoMax\n"
+                + "What can I do for you?" + logo + "\n"
+                + DIVIDER;
     }
 
     /**
      * Shows the goodbye message.
+     *
+     * @return The formatted goodbye message
      */
-    public void showGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(DIVIDER);
+    public String showGoodbye() {
+        return "Bye. Hope to see you again soon!\n"
+                + DIVIDER;
     }
 
     /**
@@ -74,18 +79,19 @@ public class Ui {
      *
      * @param tasks The list of tasks to display
      * @param isEmpty Whether the task list is empty
+     * @return The formatted task list string
      */
-    public void showTaskList(ArrayList<Task> tasks, boolean isEmpty) {
+    public String showTaskList(ArrayList<Task> tasks, boolean isEmpty) {
         if (isEmpty) {
-            System.out.println("There are currently no tasks in your list");
-            System.out.println(DIVIDER);
+            return "There are currently no tasks in your list\n" + DIVIDER;
         } else {
-            System.out.println("Here is/are the task(s) in your list:");
+            StringBuilder sb = new StringBuilder("Here is/are the task(s) in your list:\n");
             for (int i = 0; i < tasks.size(); i++) {
-                System.out.println((i + 1) + "." + tasks.get(i).toString());
+                sb.append((i + 1)).append(".").append(tasks.get(i).toString()).append("\n");
             }
-            System.out.println("You have " + tasks.size() + " task(s) in the list.");
-            System.out.println(DIVIDER);
+            sb.append("You have ").append(tasks.size()).append(" task(s) in the list.\n");
+            sb.append(DIVIDER);
+            return sb.toString();
         }
     }
 
@@ -94,34 +100,37 @@ public class Ui {
      *
      * @param task The task that was added
      * @param taskCount The new total number of tasks
+     * @return The formatted confirmation message
      */
-    public void showTasksAdded(Task task, int taskCount) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println(" " + task.toString());
-        System.out.println("Now you have " + taskCount + " task(s) in the list.");
-        System.out.println(DIVIDER);
+    public String showTasksAdded(Task task, int taskCount) {
+        return "Got it. I've added this task:\n"
+                + " " + task.toString() + "\n"
+                + "Now you have " + taskCount + " task(s) in the list.\n"
+                + DIVIDER;
     }
 
     /**
      * Displays a task marked as done confirmation.
      *
      * @param task The task that was marked
+     * @return The formatted confirmation message
      */
-    public void showTaskMarked(Task task) {
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(" " + task.toString());
-        System.out.println(DIVIDER);
+    public String showTaskMarked(Task task) {
+        return "Nice! I've marked this task as done:\n"
+                + " " + task.toString() + "\n"
+                + DIVIDER;
     }
 
     /**
      * Displays a task marked as not done confirmation.
      *
      * @param task The task that was unmarked
+     * @return The formatted confirmation message
      */
-    public void showTaskUnmarked(Task task) {
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(" " + task.toString());
-        System.out.println(DIVIDER);
+    public String showTaskUnmarked(Task task) {
+        return "OK, I've marked this task as not done yet:\n"
+                + " " + task.toString() + "\n"
+                + DIVIDER;
     }
 
     /**
@@ -129,12 +138,13 @@ public class Ui {
      *
      * @param task The task that was deleted
      * @param taskCount The new total number of tasks
+     * @return The formatted confirmation message
      */
-    public void showTaskDeleted(Task task, int taskCount) {
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(" " + task.toString());
-        System.out.println("Now you have " + taskCount + " task(s) in the list.");
-        System.out.println(DIVIDER);
+    public String showTaskDeleted(Task task, int taskCount) {
+        return "Noted. I've removed this task:\n"
+                + " " + task.toString() + "\n"
+                + "Now you have " + taskCount + " task(s) in the list.\n"
+                + DIVIDER;
     }
 
     /**
@@ -142,42 +152,49 @@ public class Ui {
      *
      * @param matchingTasks List of tasks matching the specified keyword.
      * @param keyword The search keyword.
+     * @return The formatted find results
      */
-    public void showFindResults(ArrayList<Task> matchingTasks, String keyword) {
+    public String showFindResults(ArrayList<Task> matchingTasks, String keyword) {
+        StringBuilder sb = new StringBuilder();
         if (matchingTasks.isEmpty()) {
-            System.out.println("No tasks found containing: '" + keyword + "'");
+            sb.append("No tasks found containing: '").append(keyword).append("'\n");
         } else {
-            System.out.println("Here are the matching tasks in your list:");
+            sb.append("Here are the matching tasks in your list:\n");
             for (int i = 0; i < matchingTasks.size(); i++) {
-                System.out.println((i + 1) + "." + matchingTasks.get(i));
+                sb.append((i + 1)).append(".").append(matchingTasks.get(i)).append("\n");
             }
         }
-        System.out.println(DIVIDER);
+        sb.append(DIVIDER);
+        return sb.toString();
     }
 
     /**
      * Displays the help information.
+     *
+     * @return The formatted help information
      */
-    public void showHelp() {
-        System.out.println("Here's what I can help with:");
-        System.out.println("1. Add a task: todo <description>");
-        System.out.println("2. Add a deadline: deadline <task> /by yyyy-MM-dd HHmm");
-        System.out.println("3. Add an event: event <task> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm");
-        System.out.println("4. See all tasks: list");
-        System.out.println("5. Mark as done: mark <number>");
-        System.out.println("6. Mark as not done: unmark <number>");
-        System.out.println("7. Delete a task: delete <number>");
-        System.out.println("8. Find tasks: find <keyword>");
-        System.out.println("9. Say goodbye: bye");
-        System.out.println(DIVIDER);
+    public String showHelp() {
+        return "Here's what I can help with:\n"
+                + "1. Add a task: todo <description>\n"
+                + "2. Add a deadline: deadline <task> /by yyyy-MM-dd HHmm\n"
+                + "3. Add an event: event <task> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm\n"
+                + "4. See all tasks: list\n"
+                + "5. Mark as done: mark <number>\n"
+                + "6. Mark as not done: unmark <number>\n"
+                + "7. Delete a task: delete <number>\n"
+                + "8. Find tasks: find <keyword>\n"
+                + "9. Say goodbye: bye\n"
+                + DIVIDER;
     }
 
     /**
      * Displays unknown command message.
+     *
+     * @return The formatted unknown command message
      */
-    public void showUnknownCommand() {
-        System.out.println("Invalid command");
-        System.out.println("Type 'help' for more options");
-        System.out.println(DIVIDER);
+    public String showUnknownCommand() {
+        return "Invalid command\n"
+                + "Type 'help' for more options\n"
+                + DIVIDER;
     }
 }
