@@ -13,11 +13,6 @@ import memomax.task.Todo;
 import memomax.tasklist.TaskList;
 import memomax.ui.Ui;
 
-/*
- Note: ChatGPT was consulted for adherence towards Javadoc documentation standards.
- Core logic, structure, and error messages remain my own implementation.
-*/
-
 /**
  * Main chatbot class for MemoMax.
  * Handles user commands and manages task list.
@@ -45,6 +40,47 @@ public class MemoMax {
         runChatbotLoop();
 
         ui.showGoodbye();
+    }
+
+    /**
+     * Processes user input and returns MemoMax's response for the GUI.
+     * This method acts as a bridge for Level-10 integration.
+     *
+     * @param input The raw user input string.
+     * @return The response message from MemoMax.
+     */
+    public String getResponse(String input) {
+        if (tasks.isEmpty()) {
+            loadTasksFromFile();
+        }
+
+        String[] inputParts = input.split(" ");
+        CommandType commandType = CommandType.parseCommand(inputParts[0]);
+
+        switch (commandType) {
+        case BYE:
+            return ui.showGoodbye();
+        case LIST:
+            return handleList();
+        case MARK:
+            return handleMark(inputParts);
+        case UNMARK:
+            return handleUnmark(inputParts);
+        case DELETE:
+            return handleDelete(inputParts);
+        case TODO:
+            return handleTodo(input);
+        case DEADLINE:
+            return handleDeadline(input);
+        case EVENT:
+            return handleEvent(input);
+        case HELP:
+            return handleHelp(inputParts);
+        case FIND:
+            return handleFind(input);
+        default:
+            return handleUnknownCommand();
+        }
     }
 
     /**
@@ -86,9 +122,6 @@ public class MemoMax {
             case FIND:
                 handleFind(userInput);
                 break;
-            case UNKNOWN:
-                handleUnknownCommand();
-                break;
             default:
                 handleUnknownCommand();
                 break;
@@ -127,8 +160,8 @@ public class MemoMax {
     /**
      * Displays all tasks in the list.
      */
-    private static void handleList() {
-        ui.showTaskList(tasks.getAllTasks(), tasks.isEmpty());
+    private static String handleList() {
+        return ui.showTaskList(tasks.getAllTasks(), tasks.isEmpty());
     }
 
     /**
@@ -136,18 +169,19 @@ public class MemoMax {
      *
      * @param inputParts The split input parts
      */
-    private static void handleMark(String[] inputParts) {
+    private static String handleMark(String[] inputParts) {
+        String response;
         try {
             int taskNumber = Parser.parseTaskNumber(inputParts, "mark");
             int index = taskNumber - 1;
 
             tasks.mark(index);
-            ui.showTaskMarked(tasks.get(index));
+            response = ui.showTaskMarked(tasks.get(index));
+            saveTasksToFile();
         } catch (MemoMaxException e) {
-            ui.showErrorMessage(e.getMessage());
+            response = ui.showErrorMessage(e.getMessage());
         }
-
-        saveTasksToFile();
+        return response;
     }
 
     /**
@@ -155,18 +189,19 @@ public class MemoMax {
      *
      * @param inputParts The split input parts
      */
-    private static void handleUnmark(String[] inputParts) {
+    private static String handleUnmark(String[] inputParts) {
+        String response;
         try {
             int taskNumber = Parser.parseTaskNumber(inputParts, "unmark");
             int index = taskNumber - 1;
 
             tasks.unmark(index);
-            ui.showTaskUnmarked(tasks.get(index));
+            response = ui.showTaskUnmarked(tasks.get(index));
+            saveTasksToFile();
         } catch (MemoMaxException e) {
-            ui.showErrorMessage(e.getMessage());
+            response = ui.showErrorMessage(e.getMessage());
         }
-
-        saveTasksToFile();
+        return response;
     }
 
     /**
@@ -174,18 +209,19 @@ public class MemoMax {
      *
      * @param inputParts The split input parts
      */
-    private static void handleDelete(String[] inputParts) {
+    private static String handleDelete(String[] inputParts) {
+        String response;
         try {
             int taskNumber = Parser.parseTaskNumber(inputParts, "delete");
             int index = taskNumber - 1;
             Task taskToRemove = tasks.delete(index);
 
-            ui.showTaskDeleted(taskToRemove, tasks.size());
+            response = ui.showTaskDeleted(taskToRemove, tasks.size());
+            saveTasksToFile();
         } catch (MemoMaxException e) {
-            ui.showErrorMessage(e.getMessage());
+            response = ui.showErrorMessage(e.getMessage());
         }
-
-        saveTasksToFile();
+        return response;
     }
 
     /**
@@ -193,13 +229,13 @@ public class MemoMax {
      *
      * @param userInput The user input string.
      */
-    private static void handleFind(String userInput) {
+    private static String handleFind(String userInput) {
         try {
             String keyword = Parser.parseFind(userInput);
             ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
-            ui.showFindResults(matchingTasks, keyword);
+            return ui.showFindResults(matchingTasks, keyword);
         } catch (MemoMaxException e) {
-            ui.showErrorMessage(e.getMessage());
+            return ui.showErrorMessage(e.getMessage());
         }
     }
 
@@ -208,18 +244,19 @@ public class MemoMax {
      *
      * @param userInput The user input string
      */
-    private static void handleTodo(String userInput) {
+    private static String handleTodo(String userInput) {
+        String response;
         try {
             String description = Parser.parseTodo(userInput);
             Task newTask = new Todo(description);
             tasks.add(newTask);
 
-            ui.showTasksAdded(newTask, tasks.size());
+            response = ui.showTasksAdded(newTask, tasks.size());
+            saveTasksToFile();
         } catch (MemoMaxException e) {
-            ui.showErrorMessage(e.getMessage());
+            response = ui.showErrorMessage(e.getMessage());
         }
-
-        saveTasksToFile();
+        return response;
     }
 
     /**
@@ -227,19 +264,20 @@ public class MemoMax {
      *
      * @param userInput The user input string
      */
-    private static void handleDeadline(String userInput) {
+    private static String handleDeadline(String userInput) {
+        String response;
         try {
             String[] parsed = Parser.parseDeadline(userInput);
             String action = parsed[0];
             String date = parsed[1];
             Task newTask = new Deadline(action, date);
             tasks.add(newTask);
-            ui.showTasksAdded(newTask, tasks.size());
+            response = ui.showTasksAdded(newTask, tasks.size());
+            saveTasksToFile();
         } catch (MemoMaxException e) {
-            ui.showErrorMessage(e.getMessage());
+            response = ui.showErrorMessage(e.getMessage());
         }
-
-        saveTasksToFile();
+        return response;
     }
 
     /**
@@ -247,7 +285,8 @@ public class MemoMax {
      *
      * @param userInput The user input string
      */
-    private static void handleEvent(String userInput) {
+    private static String handleEvent(String userInput) {
+        String response;
         try {
             String[] parsed = Parser.parseEvent(userInput);
             String event = parsed[0];
@@ -256,12 +295,12 @@ public class MemoMax {
 
             Task newTask = new Event(event, from, to);
             tasks.add(newTask);
-            ui.showTasksAdded(newTask, tasks.size());
+            response = ui.showTasksAdded(newTask, tasks.size());
+            saveTasksToFile();
         } catch (MemoMaxException e) {
-            ui.showErrorMessage(e.getMessage());
+            response = ui.showErrorMessage(e.getMessage());
         }
-
-        saveTasksToFile();
+        return response;
     }
 
     /**
@@ -269,18 +308,18 @@ public class MemoMax {
      *
      * @param inputParts The split input parts
      */
-    private static void handleHelp(String[] inputParts) {
+    private static String handleHelp(String[] inputParts) {
         if (inputParts.length != 1) {
-            ui.showUnknownCommand();
+            return ui.showUnknownCommand();
         } else {
-            ui.showHelp();
+            return ui.showHelp();
         }
     }
 
     /**
      * Handles unknown commands.
      */
-    private static void handleUnknownCommand() {
-        ui.showUnknownCommand();
+    private static String handleUnknownCommand() {
+        return ui.showUnknownCommand();
     }
 }
