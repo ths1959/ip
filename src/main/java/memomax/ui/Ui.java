@@ -30,15 +30,31 @@ public class Ui {
     }
 
     /**
+     * Helper method to build a formatted message using varargs.
+     *
+     * @param lines Variable number of strings to be joined by newlines.
+     * @return A single formatted string ending with a divider.
+     */
+    private String buildMessage(String... lines) {
+        StringBuilder sb = new StringBuilder();
+        for (String line : lines) {
+            sb.append(line).append("\n");
+        }
+        sb.append(DIVIDER);
+        return sb.toString();
+    }
+
+    /**
      * Displays an error message with help prompt.
      *
      * @param message Error message to display
      * @return The formatted error message
      */
     public String showErrorMessage(String message) {
-        return "Oops! " + message + "\n"
-                + "Enter 'help' for more information\n"
-                + DIVIDER;
+        return buildMessage(
+                "Oops! " + message,
+                "Enter 'help' for more information"
+        );
     }
 
     /**
@@ -48,8 +64,7 @@ public class Ui {
      * @return The formatted storage error message
      */
     public String showStorageError(String message) {
-        return "[Storage] " + message + "\n"
-                + DIVIDER;
+        return buildMessage("[Storage] " + message);
     }
 
     /**
@@ -59,9 +74,10 @@ public class Ui {
      * @return The formatted welcome message
      */
     public String showWelcome(String logo) {
-        return "Hello! I'm MemoMax\n"
-                + "What can I do for you?" + logo + "\n"
-                + DIVIDER;
+        return buildMessage(
+                "Hello! I'm MemoMax",
+                "What can I do for you?" + logo
+        );
     }
 
     /**
@@ -70,8 +86,7 @@ public class Ui {
      * @return The formatted goodbye message
      */
     public String showGoodbye() {
-        return "Bye. Hope to see you again soon!\n"
-                + DIVIDER;
+        return buildMessage("Bye. Hope to see you again soon!");
     }
 
     /**
@@ -83,15 +98,15 @@ public class Ui {
      */
     public String showTaskList(ArrayList<Task> tasks, boolean isEmpty) {
         if (isEmpty) {
-            return "There are currently no tasks in your list\n" + DIVIDER;
+            return buildMessage("There are currently no tasks in your list");
         } else {
-            StringBuilder sb = new StringBuilder("Here is/are the task(s) in your list:\n");
+            ArrayList<String> lines = new ArrayList<>();
+            lines.add("Here is/are the task(s) in your list:");
             for (int i = 0; i < tasks.size(); i++) {
-                sb.append((i + 1)).append(".").append(tasks.get(i).toString()).append("\n");
+                lines.add((i + 1) + "." + tasks.get(i).toString());
             }
-            sb.append("You have ").append(tasks.size()).append(" task(s) in the list.\n");
-            sb.append(DIVIDER);
-            return sb.toString();
+            lines.add("You have " + tasks.size() + " task(s) in the list.");
+            return buildMessage(lines.toArray(new String[0]));
         }
     }
 
@@ -103,10 +118,11 @@ public class Ui {
      * @return The formatted confirmation message
      */
     public String showTasksAdded(Task task, int taskCount) {
-        return "Got it. I've added this task:\n"
-                + " " + task.toString() + "\n"
-                + "Now you have " + taskCount + " task(s) in the list.\n"
-                + DIVIDER;
+        return buildMessage(
+                "Got it. I've added this task:",
+                " " + task.toString(),
+                "Now you have " + taskCount + " task(s) in the list."
+        );
     }
 
     /**
@@ -116,9 +132,10 @@ public class Ui {
      * @return The formatted confirmation message
      */
     public String showTaskMarked(Task task) {
-        return "Nice! I've marked this task as done:\n"
-                + " " + task.toString() + "\n"
-                + DIVIDER;
+        return buildMessage(
+                "Nice! I've marked this task as done:",
+                " " + task.toString()
+        );
     }
 
     /**
@@ -128,9 +145,10 @@ public class Ui {
      * @return The formatted confirmation message
      */
     public String showTaskUnmarked(Task task) {
-        return "OK, I've marked this task as not done yet:\n"
-                + " " + task.toString() + "\n"
-                + DIVIDER;
+        return buildMessage(
+                "OK, I've marked this task as not done yet:",
+                " " + task.toString()
+        );
     }
 
     /**
@@ -141,10 +159,11 @@ public class Ui {
      * @return The formatted confirmation message
      */
     public String showTaskDeleted(Task task, int taskCount) {
-        return "Noted. I've removed this task:\n"
-                + " " + task.toString() + "\n"
-                + "Now you have " + taskCount + " task(s) in the list.\n"
-                + DIVIDER;
+        return buildMessage(
+                "Noted. I've removed this task:",
+                " " + task.toString(),
+                "Now you have " + taskCount + " task(s) in the list."
+        );
     }
 
     /**
@@ -155,17 +174,16 @@ public class Ui {
      * @return The formatted find results
      */
     public String showFindResults(ArrayList<Task> matchingTasks, String keyword) {
-        StringBuilder sb = new StringBuilder();
+        ArrayList<String> lines = new ArrayList<>();
         if (matchingTasks.isEmpty()) {
-            sb.append("No tasks found containing: '").append(keyword).append("'\n");
+            lines.add("No tasks found containing: '" + keyword + "'");
         } else {
-            sb.append("Here are the matching tasks in your list:\n");
+            lines.add("Here are the matching tasks in your list:");
             for (int i = 0; i < matchingTasks.size(); i++) {
-                sb.append((i + 1)).append(".").append(matchingTasks.get(i)).append("\n");
+                lines.add((i + 1) + "." + matchingTasks.get(i));
             }
         }
-        sb.append(DIVIDER);
-        return sb.toString();
+        return buildMessage(lines.toArray(new String[0]));
     }
 
     /**
@@ -174,17 +192,18 @@ public class Ui {
      * @return The formatted help information
      */
     public String showHelp() {
-        return "Here's what I can help with:\n"
-                + "1. Add a task: todo <description>\n"
-                + "2. Add a deadline: deadline <task> /by yyyy-MM-dd HHmm\n"
-                + "3. Add an event: event <task> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm\n"
-                + "4. See all tasks: list\n"
-                + "5. Mark as done: mark <number>\n"
-                + "6. Mark as not done: unmark <number>\n"
-                + "7. Delete a task: delete <number>\n"
-                + "8. Find tasks: find <keyword>\n"
-                + "9. Say goodbye: bye\n"
-                + DIVIDER;
+        return buildMessage(
+                "Here's what I can help with:",
+                "1. Add a task: todo <description>",
+                "2. Add a deadline: deadline <task> /by yyyy-MM-dd HHmm",
+                "3. Add an event: event <task> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm",
+                "4. See all tasks: list",
+                "5. Mark as done: mark <number>",
+                "6. Mark as not done: unmark <number>",
+                "7. Delete a task: delete <number>",
+                "8. Find tasks: find <keyword>",
+                "9. Say goodbye: bye"
+        );
     }
 
     /**
@@ -193,8 +212,9 @@ public class Ui {
      * @return The formatted unknown command message
      */
     public String showUnknownCommand() {
-        return "Invalid command\n"
-                + "Type 'help' for more options\n"
-                + DIVIDER;
+        return buildMessage(
+                "Invalid command",
+                "Type 'help' for more options"
+        );
     }
 }
