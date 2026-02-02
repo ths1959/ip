@@ -33,7 +33,6 @@ public class MemoMax {
                 + "| |\\/| ||  _|  | |\\/| || | | || |\\/| |  / _ \\   \\  / \n"
                 + "| |  | || |___ | |  | || |_| || |  | | / ___ \\  /  \\ \n"
                 + "|_|  |_||_____||_|  |_| \\___/ |_|  |_|/_/   \\_\\/_/\\_\\\n";
-        
         String welcomeMessage = ui.showWelcome(logo);
         System.out.println(welcomeMessage);
 
