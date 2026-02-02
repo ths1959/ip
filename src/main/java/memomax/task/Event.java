@@ -40,8 +40,8 @@ public class Event extends Task {
     @Override
     public String toString() {
         DateTimeFormatter outFmt = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
-        return "[E]" + super.toString() + " (from: " + from.format(outFmt) +
-                " to: " + to.format(outFmt) + ")";
+        return "[E]" + super.toString() + " (from: " + from.format(outFmt)
+                + " to: " + to.format(outFmt) + ")";
     }
 
     /**
@@ -51,7 +51,7 @@ public class Event extends Task {
      */
     @Override
     public String toFileFormat() {
-        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " +
-                from.format(INPUT_FORMAT) + " | " + to.format(INPUT_FORMAT);
+        return "E | " + (isDone ? "1" : "0") + " | " + description + " | "
+                + from.format(INPUT_FORMAT) + " | " + to.format(INPUT_FORMAT);
     }
 }

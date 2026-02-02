@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import memomax.exception.MemoMaxException;
-import memomax.task.Task;
-import memomax.task.Todo;
 import memomax.task.Deadline;
 import memomax.task.Event;
+import memomax.task.Task;
+import memomax.task.Todo;
 
 /**
  * Handles loading and saving tasks to file.
