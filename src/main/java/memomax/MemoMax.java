@@ -33,13 +33,16 @@ public class MemoMax {
                 + "| |\\/| ||  _|  | |\\/| || | | || |\\/| |  / _ \\   \\  / \n"
                 + "| |  | || |___ | |  | || |_| || |  | | / ___ \\  /  \\ \n"
                 + "|_|  |_||_____||_|  |_| \\___/ |_|  |_|/_/   \\_\\/_/\\_\\\n";
-        ui.showWelcome(logo);
+        
+        String welcomeMessage = ui.showWelcome(logo);
+        System.out.println(welcomeMessage);
 
         loadTasksFromFile();
 
         runChatbotLoop();
 
-        ui.showGoodbye();
+        String goodbyeMessage = ui.showGoodbye();
+        System.out.println(goodbyeMessage);
     }
 
     /**
@@ -141,7 +144,8 @@ public class MemoMax {
             ArrayList<Task> loadedTasks = storage.load();
             tasks = new TaskList(loadedTasks);
         } catch (MemoMaxException e) {
-            ui.showStorageError("Failed to load saved tasks: " + e.getMessage());
+            String storageErrorMessage = ui.showStorageError("Failed to load saved tasks: " + e.getMessage());
+            System.err.println(storageErrorMessage);
             tasks = new TaskList();
         }
     }
@@ -153,7 +157,8 @@ public class MemoMax {
         try {
             storage.save(tasks.getAllTasks());
         } catch (MemoMaxException e) {
-            ui.showStorageError("Failed to save tasks: " + e.getMessage());
+            String storageErrorMessage = ui.showStorageError("Failed to save tasks: " + e.getMessage());
+            System.err.println(storageErrorMessage);
         }
     }
 
@@ -161,7 +166,9 @@ public class MemoMax {
      * Displays all tasks in the list.
      */
     private static String handleList() {
-        return ui.showTaskList(tasks.getAllTasks(), tasks.isEmpty());
+        String listOutput = ui.showTaskList(tasks.getAllTasks(), tasks.isEmpty());
+        System.out.println(listOutput);
+        return listOutput;
     }
 
     /**
@@ -181,6 +188,7 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             response = ui.showErrorMessage(e.getMessage());
         }
+        System.out.println(response);
         return response;
     }
 
@@ -201,6 +209,7 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             response = ui.showErrorMessage(e.getMessage());
         }
+        System.out.println(response);
         return response;
     }
 
@@ -221,6 +230,7 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             response = ui.showErrorMessage(e.getMessage());
         }
+        System.out.println(response);
         return response;
     }
 
@@ -230,13 +240,16 @@ public class MemoMax {
      * @param userInput The user input string.
      */
     private static String handleFind(String userInput) {
+        String response;
         try {
             String keyword = Parser.parseFind(userInput);
             ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
-            return ui.showFindResults(matchingTasks, keyword);
+            response = ui.showFindResults(matchingTasks, keyword);
         } catch (MemoMaxException e) {
-            return ui.showErrorMessage(e.getMessage());
+            response = ui.showErrorMessage(e.getMessage());
         }
+        System.out.println(response);
+        return response;
     }
 
     /**
@@ -256,6 +269,7 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             response = ui.showErrorMessage(e.getMessage());
         }
+        System.out.println(response);
         return response;
     }
 
@@ -277,6 +291,7 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             response = ui.showErrorMessage(e.getMessage());
         }
+        System.out.println(response);
         return response;
     }
 
@@ -300,6 +315,7 @@ public class MemoMax {
         } catch (MemoMaxException e) {
             response = ui.showErrorMessage(e.getMessage());
         }
+        System.out.println(response);
         return response;
     }
 
@@ -309,17 +325,22 @@ public class MemoMax {
      * @param inputParts The split input parts
      */
     private static String handleHelp(String[] inputParts) {
+        String response;
         if (inputParts.length != 1) {
-            return ui.showUnknownCommand();
+            response = ui.showUnknownCommand();
         } else {
-            return ui.showHelp();
+            response = ui.showHelp();
         }
+        System.out.println(response);
+        return response;
     }
 
     /**
      * Handles unknown commands.
      */
     private static String handleUnknownCommand() {
-        return ui.showUnknownCommand();
+        String response = ui.showUnknownCommand();
+        System.out.println(response);
+        return response;
     }
 }
