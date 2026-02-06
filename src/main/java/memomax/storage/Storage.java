@@ -103,16 +103,16 @@ public class Storage {
 
         try {
             if (parentDir != null && !parentDir.exists()) {
-                boolean dirsCreated = parentDir.mkdirs();
-                if (!dirsCreated) {
+                boolean isParentDirCreated = parentDir.mkdirs();
+                if (!isParentDirCreated) {
                     throw new MemoMaxException("Failed to create directory: "
                             + parentDir.getPath());
                 }
             }
 
             if (!file.exists()) {
-                boolean fileCreated = file.createNewFile();
-                if (!fileCreated) {
+                boolean isNewFileCreated = file.createNewFile();
+                if (!isNewFileCreated) {
                     throw new MemoMaxException("Failed to create file: " + filePath);
                 }
             }

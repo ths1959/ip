@@ -19,8 +19,8 @@ import memomax.ui.Ui;
  */
 public class MemoMax {
     private static TaskList tasks = new TaskList();
-    private static final Ui ui = new Ui();
-    private static final Storage storage = new Storage("./data/MemoMax.txt");
+    private static final Ui UI = new Ui();
+    private static final Storage STORAGE = new Storage("./data/MemoMax.txt");
 
     /**
      * Main entry point for the chatbot.
@@ -33,14 +33,14 @@ public class MemoMax {
                 + "| |\\/| ||  _|  | |\\/| || | | || |\\/| |  / _ \\   \\  / \n"
                 + "| |  | || |___ | |  | || |_| || |  | | / ___ \\  /  \\ \n"
                 + "|_|  |_||_____||_|  |_| \\___/ |_|  |_|/_/   \\_\\/_/\\_\\\n";
-        String welcomeMessage = ui.showWelcome(logo);
+        String welcomeMessage = UI.showWelcome(logo);
         System.out.println(welcomeMessage);
 
         loadTasksFromFile();
 
         runChatbotLoop();
 
-        String goodbyeMessage = ui.showGoodbye();
+        String goodbyeMessage = UI.showGoodbye();
         System.out.println(goodbyeMessage);
     }
 
@@ -61,7 +61,7 @@ public class MemoMax {
 
         switch (commandType) {
         case BYE:
-            return ui.showGoodbye();
+            return UI.showGoodbye();
         case LIST:
             return handleList();
         case MARK:
@@ -90,7 +90,7 @@ public class MemoMax {
      */
     private static void runChatbotLoop() {
         while (true) {
-            String userInput = ui.readCommand();
+            String userInput = UI.readCommand();
             String[] inputParts = userInput.split(" ");
             CommandType commandType = CommandType.parseCommand(inputParts[0]);
 
@@ -140,10 +140,10 @@ public class MemoMax {
      */
     private static void loadTasksFromFile() {
         try {
-            ArrayList<Task> loadedTasks = storage.load();
+            ArrayList<Task> loadedTasks = STORAGE.load();
             tasks = new TaskList(loadedTasks);
         } catch (MemoMaxException e) {
-            String storageErrorMessage = ui.showStorageError("Failed to load saved tasks: " + e.getMessage());
+            String storageErrorMessage = UI.showStorageError("Failed to load saved tasks: " + e.getMessage());
             System.err.println(storageErrorMessage);
             tasks = new TaskList();
         }
@@ -154,9 +154,9 @@ public class MemoMax {
      */
     private static void saveTasksToFile() {
         try {
-            storage.save(tasks.getAllTasks());
+            STORAGE.save(tasks.getAllTasks());
         } catch (MemoMaxException e) {
-            String storageErrorMessage = ui.showStorageError("Failed to save tasks: " + e.getMessage());
+            String storageErrorMessage = UI.showStorageError("Failed to save tasks: " + e.getMessage());
             System.err.println(storageErrorMessage);
         }
     }
@@ -165,7 +165,7 @@ public class MemoMax {
      * Displays all tasks in the list.
      */
     private static String handleList() {
-        String listOutput = ui.showTaskList(tasks.getAllTasks(), tasks.isEmpty());
+        String listOutput = UI.showTaskList(tasks.getAllTasks(), tasks.isEmpty());
         System.out.println(listOutput);
         return listOutput;
     }
@@ -182,10 +182,10 @@ public class MemoMax {
             int index = taskNumber - 1;
 
             tasks.mark(index);
-            response = ui.showTaskMarked(tasks.get(index));
+            response = UI.showTaskMarked(tasks.get(index));
             saveTasksToFile();
         } catch (MemoMaxException e) {
-            response = ui.showErrorMessage(e.getMessage());
+            response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
         return response;
@@ -203,10 +203,10 @@ public class MemoMax {
             int index = taskNumber - 1;
 
             tasks.unmark(index);
-            response = ui.showTaskUnmarked(tasks.get(index));
+            response = UI.showTaskUnmarked(tasks.get(index));
             saveTasksToFile();
         } catch (MemoMaxException e) {
-            response = ui.showErrorMessage(e.getMessage());
+            response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
         return response;
@@ -224,10 +224,10 @@ public class MemoMax {
             int index = taskNumber - 1;
             Task taskToRemove = tasks.delete(index);
 
-            response = ui.showTaskDeleted(taskToRemove, tasks.size());
+            response = UI.showTaskDeleted(taskToRemove, tasks.size());
             saveTasksToFile();
         } catch (MemoMaxException e) {
-            response = ui.showErrorMessage(e.getMessage());
+            response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
         return response;
@@ -243,9 +243,9 @@ public class MemoMax {
         try {
             String keyword = Parser.parseFind(userInput);
             ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
-            response = ui.showFindResults(matchingTasks, keyword);
+            response = UI.showFindResults(matchingTasks, keyword);
         } catch (MemoMaxException e) {
-            response = ui.showErrorMessage(e.getMessage());
+            response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
         return response;
@@ -263,10 +263,10 @@ public class MemoMax {
             Task newTask = new Todo(description);
             tasks.add(newTask);
 
-            response = ui.showTasksAdded(newTask, tasks.size());
+            response = UI.showTasksAdded(newTask, tasks.size());
             saveTasksToFile();
         } catch (MemoMaxException e) {
-            response = ui.showErrorMessage(e.getMessage());
+            response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
         return response;
@@ -281,14 +281,14 @@ public class MemoMax {
         String response;
         try {
             String[] parsed = Parser.parseDeadline(userInput);
-            String action = parsed[0];
+            String taskDescription = parsed[0];
             String date = parsed[1];
-            Task newTask = new Deadline(action, date);
+            Task newTask = new Deadline(taskDescription, date);
             tasks.add(newTask);
-            response = ui.showTasksAdded(newTask, tasks.size());
+            response = UI.showTasksAdded(newTask, tasks.size());
             saveTasksToFile();
         } catch (MemoMaxException e) {
-            response = ui.showErrorMessage(e.getMessage());
+            response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
         return response;
@@ -309,10 +309,10 @@ public class MemoMax {
 
             Task newTask = new Event(event, from, to);
             tasks.add(newTask);
-            response = ui.showTasksAdded(newTask, tasks.size());
+            response = UI.showTasksAdded(newTask, tasks.size());
             saveTasksToFile();
         } catch (MemoMaxException e) {
-            response = ui.showErrorMessage(e.getMessage());
+            response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
         return response;
@@ -326,9 +326,9 @@ public class MemoMax {
     private static String handleHelp(String[] inputParts) {
         String response;
         if (inputParts.length != 1) {
-            response = ui.showUnknownCommand();
+            response = UI.showUnknownCommand();
         } else {
-            response = ui.showHelp();
+            response = UI.showHelp();
         }
         System.out.println(response);
         return response;
@@ -338,7 +338,7 @@ public class MemoMax {
      * Handles unknown commands.
      */
     private static String handleUnknownCommand() {
-        String response = ui.showUnknownCommand();
+        String response = UI.showUnknownCommand();
         System.out.println(response);
         return response;
     }

@@ -36,24 +36,22 @@ public class UiTest {
 
     @Test
     public void showTaskList_emptyList_printsNoTasksMessage() {
-        ui.showTaskList(new ArrayList<>(), true);
-        assertTrue(outContent.toString().contains("no tasks in your list"));
+        String result = ui.showTaskList(new ArrayList<>(), true);
+        assertTrue(result.contains("currently no tasks in your list"));
     }
 
     @Test
     public void showFindResults_noMatches_printsNoFoundMessage() {
-        ui.showFindResults(new ArrayList<>(), "book");
-        assertTrue(outContent.toString().contains("No tasks found containing: 'book'"));
+        String result = ui.showFindResults(new ArrayList<>(), "book");
+        assertTrue(result.contains("No tasks found containing: 'book'"));
     }
 
     @Test
     public void showFindResults_withMatches_printsTasks() {
         ArrayList<Task> matches = new ArrayList<>();
         matches.add(new Todo("read book"));
-        ui.showFindResults(matches, "book");
-
-        String output = outContent.toString();
-        assertTrue(output.contains("matching tasks"));
-        assertTrue(output.contains("read book"));
+        String result = ui.showFindResults(matches, "book");
+        assertTrue(result.contains("matching tasks in your list"));
+        assertTrue(result.contains("read book"));
     }
 }
