@@ -1,5 +1,7 @@
 package memomax.gui;
 
+import java.util.Objects;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -10,7 +12,9 @@ import javafx.scene.layout.VBox;
 import memomax.MemoMax;
 
 /**
- * Controller for MainWindow. Provides the layout for the other controls.
+ * Controller for the main GUI of the MemoMax application.
+ * Provides the layout for the other controls and manages the interaction between
+ * the user interface and the MemoMax logic.
  */
 public class MainWindow extends AnchorPane {
     @FXML
@@ -24,16 +28,40 @@ public class MainWindow extends AnchorPane {
 
     private MemoMax memoMax;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image memoMaxImage = new Image(this.getClass().getResourceAsStream("/images/DaMemoMax.png"));
+    private final Image userImage = new Image(Objects.requireNonNull(this.getClass()
+            .getResourceAsStream("/images/DaUser.png")));
+    private final Image memoMaxImage = new Image(Objects.requireNonNull(this.getClass()
+            .getResourceAsStream("/images/DaMemoMax.png")));
 
+    /**
+     * Initializes the controller after the FXML file has been loaded.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        String imageUrl = Objects.requireNonNull(getClass().getResource("/images/background.png"))
+                .toExternalForm();
+        scrollPane.setStyle("-fx-background-color: transparent; "
+            + "-fx-background: transparent; "
+            + "-fx-background-image: url('" + imageUrl + "'); "
+            + "-fx-background-size: cover; "
+            + "-fx-background-position: center; "
+            + "-fx-background-repeat: no-repeat;");
+
+        dialogContainer.setStyle("-fx-background-color: transparent;");
     }
 
+    /**
+     * Sets the MemoMax logic instance for this window.
+     * Also triggers the initial greeting message from MemoMax to be displayed in the GUI.
+     *
+     * @param m The MemoMax logic instance to be used by the GUI.
+     */
     public void setMemoMax(MemoMax m) {
         memoMax = m;
+        dialogContainer.getChildren().addAll(
+                DialogBox.getMemoMaxDialog(memoMax.getGreeting(), memoMaxImage)
+        );
     }
 
     /**

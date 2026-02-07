@@ -10,7 +10,6 @@ import memomax.task.Task;
  * Manages formatted output and error messages.
  */
 public class Ui {
-    private static final String DIVIDER = "    ________________________________________________________";
     private final Scanner scanner;
 
     /**
@@ -33,14 +32,13 @@ public class Ui {
      * Helper method to build a formatted message using varargs.
      *
      * @param lines Variable number of strings to be joined by newlines.
-     * @return A single formatted string ending with a divider.
+     * @return A single formatted string.
      */
     private String buildMessage(String... lines) {
         StringBuilder sb = new StringBuilder();
         for (String line : lines) {
             sb.append(line).append("\n");
         }
-        sb.append(DIVIDER);
         return sb.toString();
     }
 
@@ -70,13 +68,12 @@ public class Ui {
     /**
      * Shows the welcome message with logo.
      *
-     * @param logo The ASCII art logo to display
      * @return The formatted welcome message
      */
-    public String showWelcome(String logo) {
+    public String showWelcome() {
         return buildMessage(
                 "Hello! I'm MemoMax",
-                "What can I do for you?" + logo
+                "What can I do for you?"
         );
     }
 

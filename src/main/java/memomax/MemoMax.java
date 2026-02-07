@@ -28,12 +28,7 @@ public class MemoMax {
      * @param args Command line arguments
      */
     public static void main(String[] args) {
-        String logo = " __  __  _____  __  __   ___   __  __     _    __  __\n"
-                + "|  \\/  || ____||  \\/  | / _ \\ |  \\/  |   / \\   \\ \\/ /\n"
-                + "| |\\/| ||  _|  | |\\/| || | | || |\\/| |  / _ \\   \\  / \n"
-                + "| |  | || |___ | |  | || |_| || |  | | / ___ \\  /  \\ \n"
-                + "|_|  |_||_____||_|  |_| \\___/ |_|  |_|/_/   \\_\\/_/\\_\\\n";
-        String welcomeMessage = UI.showWelcome(logo);
+        String welcomeMessage = UI.showWelcome();
         System.out.println(welcomeMessage);
 
         loadTasksFromFile();
@@ -42,6 +37,14 @@ public class MemoMax {
 
         String goodbyeMessage = UI.showGoodbye();
         System.out.println(goodbyeMessage);
+    }
+
+    /**
+     * Returns the welcome message from the UI.
+     * @return A string containing only the welcome text.
+     */
+    public String getGreeting() {
+        return UI.showWelcome();
     }
 
     /**
