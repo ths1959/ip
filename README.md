@@ -27,7 +27,5 @@ Prerequisites: JDK 17, update Intellij to the most recent version.
 
 ## AI Usage Disclosure
  Note:
- - Usage of ChatGPT for adherence towards JavaDoc documentation standards.
- - Usage of ChatGPT for suggestions towards code refactoring into different classes for A-MoreOOP.
- 
- Core logic, structure, and error messages remain my own implementation.
+ - Usage of ChatGPT for code refactoring suggestions, adherence to JavaDoc standards, and general ideation of JUnit test cases.
+ - Usage of ChatGPT for troubleshooting environment and build issues.
