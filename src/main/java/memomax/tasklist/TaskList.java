@@ -146,11 +146,10 @@ public class TaskList {
         ArrayList<Task> matchingTasks = new ArrayList<>();
         String lowerKeyword = keyword.toLowerCase();
 
-        for (Task task : tasks) {
-            if (task.toString().toLowerCase().contains(lowerKeyword)) {
-                matchingTasks.add(task);
-            }
-        }
+        tasks.stream()
+                .filter(task -> task.toString().toLowerCase().contains(lowerKeyword))
+                .forEach(matchingTasks::add);
+
         return matchingTasks;
     }
 

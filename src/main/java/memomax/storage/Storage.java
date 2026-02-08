@@ -90,10 +90,20 @@ public class Storage {
             }
 
             try (FileWriter writer = new FileWriter(file)) {
-                for (Task task : tasks) {
-                    assert task != null : "Cannot save a null task to file";
-                    writer.write(task.toFileFormat() + "\n");
-                }
+                tasks.stream()
+                        .peek(task -> {
+                            assert task != null : "Cannot save a null task to file";
+                        })
+                        .map(task -> task.toFileFormat() + "\n")
+                        .forEach(formattedLine -> {
+                            try {
+                                writer.write(formattedLine);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+            } catch (RuntimeException e) {
+                throw new MemoMaxException("Failed to save tasks.");
             }
         } catch (IOException e) {
             throw new MemoMaxException("Failed to save tasks.");
