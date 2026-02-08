@@ -10,6 +10,9 @@ import memomax.task.Task;
  * Provides operations to add, delete, mark, unmark, and search tasks.
  */
 public class TaskList {
+    private static final String ICON_MARKED = "[X]";
+    private static final String ICON_UNMARKED = "[ ]";
+
     private final ArrayList<Task> tasks;
 
     /**
@@ -89,7 +92,7 @@ public class TaskList {
         Task task = tasks.get(index);
         assert task != null : "Task to mark should not be null";
 
-        if (task.getStatusIcon().equals("[X]")) {
+        if (task.getStatusIcon().equals(ICON_MARKED)) {
             throw new MemoMaxException("Task " + (index + 1)
                     + " is already marked as done!");
         }
@@ -111,7 +114,7 @@ public class TaskList {
         Task task = tasks.get(index);
         assert task != null : "Task to unmark should not be null";
 
-        if (task.getStatusIcon().equals("[ ]")) {
+        if (task.getStatusIcon().equals(ICON_UNMARKED)) {
             throw new MemoMaxException("Task " + (index + 1)
                     + " is already not done!");
         }
@@ -141,8 +144,10 @@ public class TaskList {
         assert keyword != null : "Search keyword should not be null";
 
         ArrayList<Task> matchingTasks = new ArrayList<>();
+        String lowerKeyword = keyword.toLowerCase();
+
         for (Task task : tasks) {
-            if (task.toString().toLowerCase().contains(keyword.toLowerCase())) {
+            if (task.toString().toLowerCase().contains(lowerKeyword)) {
                 matchingTasks.add(task);
             }
         }
@@ -174,7 +179,8 @@ public class TaskList {
      * @throws MemoMaxException If the index is out of bounds.
      */
     private void validateIndex(int index) throws MemoMaxException {
-        if (index < 0 || index >= tasks.size()) {
+        boolean isOutOfBounds = index < 0 || index >= tasks.size();
+        if (isOutOfBounds) {
             throw new MemoMaxException("Task " + (index + 1) + " does not exist!");
         }
     }
