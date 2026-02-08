@@ -16,6 +16,12 @@ import memomax.task.Todo;
  * Handles loading and saving tasks to file.
  */
 public class Storage {
+    private static final String DELIMITER = " \\| ";
+    private static final String TYPE_TODO = "T";
+    private static final String TYPE_DEADLINE = "D";
+    private static final String TYPE_EVENT = "E";
+    private static final String STATUS_DONE = "1";
+
     private final String filePath;
 
     /**
@@ -147,7 +153,7 @@ public class Storage {
             return null;
         }
 
-        String[] parts = line.split(" \\| ");
+        String[] parts = line.split(DELIMITER);
         if (parts.length < 3) {
             return null;
         }
@@ -156,47 +162,34 @@ public class Storage {
         String doneStatus = parts[1].trim();
         String description = parts[2].trim();
 
-        if (!type.equals("T") && !type.equals("D") && !type.equals("E")) {
+        if (description.isEmpty()) {
             return null;
         }
 
-        if (!doneStatus.equals("0") && !doneStatus.equals("1")) {
-            return null;
-        }
-
-        boolean isDone = doneStatus.equals("1");
+        boolean isDone = doneStatus.equals(STATUS_DONE);
         Task task;
 
         try {
             switch (type) {
-            case "T":
-                if (parts.length != 3 || description.isEmpty()) {
+            case TYPE_TODO:
+                if (parts.length != 3) {
                     return null;
                 }
                 task = new Todo(description);
                 break;
 
-            case "D":
-                if (parts.length != 4) {
+            case TYPE_DEADLINE:
+                if (parts.length != 4 || parts[3].trim().isEmpty()) {
                     return null;
                 }
-                String by = parts[3].trim();
-                if (description.isEmpty() || by.isEmpty()) {
-                    return null;
-                }
-                task = new Deadline(description, by);
+                task = new Deadline(description, parts[3].trim());
                 break;
 
-            case "E":
-                if (parts.length != 5) {
+            case TYPE_EVENT:
+                if (parts.length != 5 || parts[3].trim().isEmpty() || parts[4].trim().isEmpty()) {
                     return null;
                 }
-                String from = parts[3].trim();
-                String to = parts[4].trim();
-                if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                    return null;
-                }
-                task = new Event(description, from, to);
+                task = new Event(description, parts[3].trim(), parts[4].trim());
                 break;
 
             default:
