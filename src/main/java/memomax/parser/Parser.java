@@ -8,6 +8,15 @@ import memomax.exception.MemoMaxException;
  */
 public class Parser {
 
+    private static final String DELIMITER_BY = "/by";
+    private static final String DELIMITER_FROM = "/from";
+    private static final String DELIMITER_TO = "/to";
+
+    private static final String PREFIX_TODO = "todo ";
+    private static final String PREFIX_FIND = "find ";
+    private static final String PREFIX_DEADLINE = "deadline ";
+    private static final String PREFIX_EVENT = "event ";
+
     /**
      * Parses a todo command and extracts the description.
      *
@@ -16,10 +25,11 @@ public class Parser {
      * @throws MemoMaxException If the description is empty.
      */
     public static String parseTodo(String userInput) throws MemoMaxException {
-        if (userInput.trim().equals("todo")) {
+        if (userInput.trim().equalsIgnoreCase("todo")) {
             throw new MemoMaxException("Todo needs a description. Example: todo read book");
         }
-        String description = userInput.substring("todo ".length()).trim();
+
+        String description = userInput.substring(PREFIX_TODO.length()).trim();
         if (description.isEmpty()) {
             throw new MemoMaxException("Todo description cannot be empty. Example: todo read book");
         }
@@ -61,11 +71,11 @@ public class Parser {
      * @throws MemoMaxException If the keyword is empty.
      */
     public static String parseFind(String userInput) throws MemoMaxException {
-        if (userInput.trim().equals("find")) {
+        if (userInput.trim().equalsIgnoreCase("find")) {
             throw new MemoMaxException("Find needs a keyword. Example: find book");
         }
 
-        String keyword = userInput.substring("find ".length()).trim();
+        String keyword = userInput.substring(PREFIX_FIND.length()).trim();
         if (keyword.isEmpty()) {
             throw new MemoMaxException("Find keyword cannot be empty. Example: find book");
         }
@@ -81,33 +91,33 @@ public class Parser {
      * @throws MemoMaxException If the format is invalid.
      */
     public static String[] parseDeadline(String userInput) throws MemoMaxException {
-        if (userInput.trim().equals("deadline")) {
+        if (userInput.trim().equalsIgnoreCase("deadline")) {
             throw new MemoMaxException("Deadline needs a description and a due date. "
-                    + "Example: deadline return book /by 2025-02-01 1800");
+                    + "Example: deadline return book " + DELIMITER_BY + " 2025-02-01 1800");
         }
 
-        if (!userInput.contains("/by")) {
+        if (!userInput.contains(DELIMITER_BY)) {
             throw new MemoMaxException("Deadline needs a due date. "
-                    + "Example: deadline return book /by 2026-02-14 1800");
+                    + "Example: deadline return book " + DELIMITER_BY + " 2026-02-14 1800");
         }
 
-        String[] actionDate = userInput.split("/by", -1);
+        String[] actionDate = userInput.split(DELIMITER_BY, -1);
         if (actionDate.length < 2) {
-            throw new MemoMaxException("Please add a due date after '/by'. "
-                    + "Example: deadline return book /by 2026-02-14 1800");
+            throw new MemoMaxException("Please add a due date after '" + DELIMITER_BY + "'. "
+                    + "Example: deadline return book " + DELIMITER_BY + " 2026-02-14 1800");
         }
 
-        String action = actionDate[0].substring("deadline ".length()).trim();
+        String action = actionDate[0].substring(PREFIX_DEADLINE.length()).trim();
         String date = actionDate[1].trim();
 
         if (action.isEmpty()) {
             throw new MemoMaxException("Task not specified. "
-                    + "Example: deadline return book /by 2026-02-14 1800");
+                    + "Example: deadline return book " + DELIMITER_BY + " 2026-02-14 1800");
         }
 
         if (date.isEmpty()) {
             throw new MemoMaxException("Due date is not specified. "
-                    + "Example: deadline return book /by 2026-02-14 1800");
+                    + "Example: deadline return book " + DELIMITER_BY + " 2026-02-14 1800");
         }
 
         return new String[]{action, date};
@@ -121,53 +131,30 @@ public class Parser {
      * @throws MemoMaxException If the format is invalid.
      */
     public static String[] parseEvent(String userInput) throws MemoMaxException {
-        boolean hasFrom = userInput.contains("/from");
-        boolean hasTo = userInput.contains("/to");
+        boolean hasFrom = userInput.contains(DELIMITER_FROM);
+        boolean hasTo = userInput.contains(DELIMITER_TO);
 
-        if (!hasFrom && !hasTo) {
-            throw new MemoMaxException("Event needs description, start, "
-                    + "and end times. " + "Example: event meeting "
-                    + "/from 2026-02-14 1400 /to 2026-02-14 1600");
-        }
-        if (!hasFrom) {
-            throw new MemoMaxException("Start time not specified, "
-                    + "add '/from' time. " + "Example: event meeting "
-                    + "/from 2026-02-14 1400 /to 2026-02-14 1600");
+        if (!hasFrom || !hasTo) {
+            throw new MemoMaxException("Event needs description, start, and end times. "
+                    + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
+                    + DELIMITER_TO + " 2026-02-14 1600");
         }
 
-        String[] eventDate = userInput.split("/from", -1);
-        String event = eventDate[0].substring("event ".length()).trim();
+        String[] eventSplit = userInput.split(DELIMITER_FROM, -1);
+        String event = eventSplit[0].substring(PREFIX_EVENT.length()).trim();
 
-        if (eventDate.length < 2) {
-            throw new MemoMaxException("Start time not specified. "
-                    + "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
-        }
-
-        if (!hasTo) {
-            throw new MemoMaxException("End time not specified, add '/to' time. "
-                    + "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
-        }
-
-        String[] fromTo = eventDate[1].split("/to", -1);
+        String[] fromTo = eventSplit[1].split(DELIMITER_TO, -1);
         if (fromTo.length < 2) {
             throw new MemoMaxException("End time not specified. "
-                    + "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
+                    + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
+                    + DELIMITER_TO + " 2026-02-14 1600");
         }
 
         String from = fromTo[0].trim();
         String to = fromTo[1].trim();
 
-        if (event.isEmpty()) {
-            throw new MemoMaxException("Event not specified. "
-                    + "Example: event meeting /from 2026-02-14 14:00 /to 2026-02-14 16:00");
-        }
-        if (from.isEmpty()) {
-            throw new MemoMaxException("Start time not specified. "
-                    + "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
-        }
-        if (to.isEmpty()) {
-            throw new MemoMaxException("End time not specified. "
-                    + "Example: event meeting /from 2026-02-14 1400 /to 2026-02-14 1600");
+        if (event.isEmpty() || from.isEmpty() || to.isEmpty()) {
+            throw new MemoMaxException("Event details (description, from, to) cannot be empty.");
         }
 
         return new String[]{event, from, to};
