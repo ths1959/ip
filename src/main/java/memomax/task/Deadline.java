@@ -23,6 +23,7 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String by) throws MemoMaxException {
         super(description);
+        assert by != null && !by.trim().isEmpty() : "Deadline 'by' string should not be null or empty";
         try {
             this.by = LocalDateTime.parse(by.trim(), INPUT_FORMAT);
         } catch (Exception e) {
@@ -37,6 +38,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
+        assert by != null : "Deadline date should not be null during toString conversion";
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
         return "[D]" + super.toString() + " (by: " + by.format(outputFormatter) + ")";
     }
@@ -48,6 +50,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toFileFormat() {
+        assert by != null : "Deadline date should not be null during file format conversion";
         return "D | " + (isDone ? "1" : "0") + " | " + description
                 + " | " + by.format(INPUT_FORMAT);
     }

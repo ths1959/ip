@@ -24,6 +24,9 @@ public class Event extends Task {
      */
     public Event(String description, String from, String to) throws MemoMaxException {
         super(description);
+        assert from != null && !from.trim().isEmpty() : "Event 'from' string should not be null or empty";
+        assert to != null && !to.trim().isEmpty() : "Event 'to' string should not be null or empty";
+
         try {
             this.from = LocalDateTime.parse(from.trim(), INPUT_FORMAT);
             this.to = LocalDateTime.parse(to.trim(), INPUT_FORMAT);
@@ -39,6 +42,7 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
+        assert from != null && to != null : "Event times should not be null during toString conversion";
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
         return "[E]" + super.toString() + " (from: " + from.format(outputFormatter)
                 + " to: " + to.format(outputFormatter) + ")";
@@ -51,6 +55,7 @@ public class Event extends Task {
      */
     @Override
     public String toFileFormat() {
+        assert from != null && to != null : "Event times should not be null during file format conversion";
         return "E | " + (isDone ? "1" : "0") + " | " + description + " | "
                 + from.format(INPUT_FORMAT) + " | " + to.format(INPUT_FORMAT);
     }

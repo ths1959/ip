@@ -55,11 +55,13 @@ public class MemoMax {
      * @return The response message from MemoMax.
      */
     public String getResponse(String input) {
+        assert input != null : "Input string to getResponse should not be null";
         if (tasks.isEmpty()) {
             loadTasksFromFile();
         }
 
         String[] inputParts = input.split(" ");
+        assert inputParts.length > 0 : "Input should contain at least one word";
         CommandType commandType = CommandType.parseCommand(inputParts[0]);
 
         switch (commandType) {
@@ -94,6 +96,7 @@ public class MemoMax {
     private static void runChatbotLoop() {
         while (true) {
             String userInput = UI.readCommand();
+            assert userInput != null : "UI readCommand should not return null";
             String[] inputParts = userInput.split(" ");
             CommandType commandType = CommandType.parseCommand(inputParts[0]);
 
@@ -144,6 +147,7 @@ public class MemoMax {
     private static void loadTasksFromFile() {
         try {
             ArrayList<Task> loadedTasks = STORAGE.load();
+            assert loadedTasks != null : "STORAGE.load() should return a list, even if empty";
             tasks = new TaskList(loadedTasks);
         } catch (MemoMaxException e) {
             String storageErrorMessage = UI.showStorageError("Failed to load saved tasks: " + e.getMessage());
@@ -156,6 +160,7 @@ public class MemoMax {
      * Saves tasks from memory to storage file.
      */
     private static void saveTasksToFile() {
+        assert tasks != null : "Task list must exist to be saved";
         try {
             STORAGE.save(tasks.getAllTasks());
         } catch (MemoMaxException e) {
@@ -168,6 +173,7 @@ public class MemoMax {
      * Displays all tasks in the list.
      */
     private static String handleList() {
+        assert tasks != null : "Task list must be initialized to display";
         String listOutput = UI.showTaskList(tasks.getAllTasks(), tasks.isEmpty());
         System.out.println(listOutput);
         return listOutput;
@@ -179,6 +185,7 @@ public class MemoMax {
      * @param inputParts The split input parts
      */
     private static String handleMark(String[] inputParts) {
+        assert inputParts != null && inputParts.length >= 1 : "Input parts must be valid";
         String response;
         try {
             int taskNumber = Parser.parseTaskNumber(inputParts, "mark");
@@ -200,6 +207,7 @@ public class MemoMax {
      * @param inputParts The split input parts
      */
     private static String handleUnmark(String[] inputParts) {
+        assert inputParts != null && inputParts.length >= 1 : "Input parts must be valid";
         String response;
         try {
             int taskNumber = Parser.parseTaskNumber(inputParts, "unmark");
@@ -221,6 +229,7 @@ public class MemoMax {
      * @param inputParts The split input parts
      */
     private static String handleDelete(String[] inputParts) {
+        assert inputParts != null && inputParts.length >= 1 : "Input parts must be valid";
         String response;
         try {
             int taskNumber = Parser.parseTaskNumber(inputParts, "delete");
@@ -242,6 +251,7 @@ public class MemoMax {
      * @param userInput The user input string.
      */
     private static String handleFind(String userInput) {
+        assert userInput != null : "Find input should not be null";
         String response;
         try {
             String keyword = Parser.parseFind(userInput);
@@ -260,6 +270,7 @@ public class MemoMax {
      * @param userInput The user input string
      */
     private static String handleTodo(String userInput) {
+        assert userInput != null : "Todo input should not be null";
         String response;
         try {
             String description = Parser.parseTodo(userInput);
@@ -281,6 +292,7 @@ public class MemoMax {
      * @param userInput The user input string
      */
     private static String handleDeadline(String userInput) {
+        assert userInput != null : "Deadline input should not be null";
         String response;
         try {
             String[] parsed = Parser.parseDeadline(userInput);
@@ -303,6 +315,7 @@ public class MemoMax {
      * @param userInput The user input string
      */
     private static String handleEvent(String userInput) {
+        assert userInput != null : "Event input should not be null";
         String response;
         try {
             String[] parsed = Parser.parseEvent(userInput);
@@ -327,6 +340,7 @@ public class MemoMax {
      * @param inputParts The split input parts
      */
     private static String handleHelp(String[] inputParts) {
+        assert inputParts != null : "Help input parts should not be null";
         String response;
         if (inputParts.length != 1) {
             response = UI.showUnknownCommand();

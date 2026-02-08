@@ -24,6 +24,7 @@ public class Storage {
      * @param filePath The path of the file to store tasks.
      */
     public Storage(String filePath) {
+        assert filePath != null && !filePath.trim().isEmpty() : "File path should not be null or empty";
         this.filePath = filePath;
     }
 
@@ -69,6 +70,7 @@ public class Storage {
      * @throws MemoMaxException If file cannot be written.
      */
     public void save(ArrayList<Task> tasks) throws MemoMaxException {
+        assert tasks != null : "Task list to save should not be null";
         try {
             ensureDirectoryAndFileExist();
             File file = new File(filePath);
@@ -83,6 +85,9 @@ public class Storage {
 
             try (FileWriter writer = new FileWriter(file)) {
                 tasks.stream()
+                        .peek(task -> {
+                            assert task != null : "Cannot save a null task to file";
+                        })
                         .map(task -> task.toFileFormat() + "\n")
                         .forEach(formattedLine -> {
                             try {
@@ -195,6 +200,7 @@ public class Storage {
                 break;
 
             default:
+                assert false : "Execution should not reach here due to earlier type check";
                 return null;
             }
         } catch (Exception e) {
