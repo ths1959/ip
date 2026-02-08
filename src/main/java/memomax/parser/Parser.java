@@ -34,7 +34,7 @@ public class Parser {
 
         String description = userInput.substring(PREFIX_TODO.length()).trim();
         if (description.isEmpty()) {
-            throw new MemoMaxException("Todo description cannot be empty. Example: todo read book");
+            throw new MemoMaxException("Todo needs a description. Example: todo read book");
         }
         return description;
     }
@@ -129,8 +129,8 @@ public class Parser {
         }
 
         if (date.isEmpty()) {
-            throw new MemoMaxException("Due date is not specified. " +
-                    "Example: deadline return book " + DELIMITER_BY + " 2026-02-14 1800");
+            throw new MemoMaxException("Due date is not specified. "
+                    + "Example: deadline return book " + DELIMITER_BY + " 2026-02-14 1800");
         }
 
         return new String[]{action, date};
@@ -147,31 +147,38 @@ public class Parser {
         assert userInput != null : "User input should not be null";
         assert userInput.toLowerCase().startsWith("event") : "parseEvent called for non-event input";
 
-        boolean hasFrom = userInput.contains(DELIMITER_FROM);
-        boolean hasTo = userInput.contains(DELIMITER_TO);
+        int fromIndex = userInput.indexOf(DELIMITER_FROM);
+        int toIndex = userInput.indexOf(DELIMITER_TO);
 
-        if (!hasFrom || !hasTo) {
-            throw new MemoMaxException("Event needs description, start, and end times. "
+        if (fromIndex == -1) {
+            throw new MemoMaxException("Start time not specified. "
                     + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
                     + DELIMITER_TO + " 2026-02-14 1600");
         }
-
-        String[] eventSplit = userInput.split(DELIMITER_FROM, -1);
-        assert eventSplit.length >= 1 : "Split by /from failed to produce description part";
-        String event = eventSplit[0].substring(PREFIX_EVENT.length()).trim();
-
-        String[] fromTo = eventSplit[1].split(DELIMITER_TO, -1);
-        if (fromTo.length < 2) {
+        if (toIndex == -1) {
             throw new MemoMaxException("End time not specified. "
                     + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
                     + DELIMITER_TO + " 2026-02-14 1600");
         }
 
-        String from = fromTo[0].trim();
-        String to = fromTo[1].trim();
+        String event = userInput.substring(PREFIX_EVENT.length(), fromIndex).trim();
+        String from = userInput.substring(fromIndex + DELIMITER_FROM.length(), toIndex).trim();
+        String to = userInput.substring(toIndex + DELIMITER_TO.length()).trim();
 
-        if (event.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            throw new MemoMaxException("Event details (description, from, to) cannot be empty.");
+        if (event.isEmpty()) {
+            throw new MemoMaxException("Event not specified. "
+                    + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
+                    + DELIMITER_TO + " 2026-02-14 1600");
+        }
+        if (from.isEmpty()) {
+            throw new MemoMaxException("Start time not specified. "
+                    + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
+                    + DELIMITER_TO + " 2026-02-14 1600");
+        }
+        if (to.isEmpty()) {
+            throw new MemoMaxException("End time not specified. "
+                    + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
+                    + DELIMITER_TO + " 2026-02-14 1600");
         }
 
         return new String[]{event, from, to};
