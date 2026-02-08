@@ -14,6 +14,7 @@ public class Task {
      * @param description The description of the task.
      */
     Task(String description) {
+        assert description != null && !description.trim().isEmpty() : "Task description should not be null or empty";
         this.description = description;
         this.isDone = false;
     }
@@ -51,6 +52,7 @@ public class Task {
      * @return A formatted task string with status and description.
      */
     public String toString() {
+        assert description != null : "Description should not be null during toString";
         return getStatusIcon() + " " + this.description;
     }
 
@@ -60,6 +62,7 @@ public class Task {
      * @return A string representation formatted for file storage.
      */
     public String toFileFormat() {
+        assert description != null : "Description should not be null during file formatting";
         return "T | " + (isDone ? "1" : "0") + " | " + description;
     }
 }

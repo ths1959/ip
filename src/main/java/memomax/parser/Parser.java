@@ -16,6 +16,9 @@ public class Parser {
      * @throws MemoMaxException If the description is empty.
      */
     public static String parseTodo(String userInput) throws MemoMaxException {
+        assert userInput != null : "User input should not be null";
+        assert userInput.startsWith("todo") : "parseTodo called for non-todo input";
+
         if (userInput.trim().equals("todo")) {
             throw new MemoMaxException("Todo needs a description. Example: todo read book");
         }
@@ -35,6 +38,10 @@ public class Parser {
      * @throws MemoMaxException If the number is missing or invalid.
      */
     public static int parseTaskNumber(String[] inputParts, String command) throws MemoMaxException {
+        assert inputParts != null : "Input parts array should not be null";
+        assert inputParts.length > 0 : "Input parts array should not be empty";
+        assert inputParts[0].equals(command) : "parseTaskNumber called with mismatched command word";
+
         if (inputParts.length < 2) {
             throw new MemoMaxException("Please tell me which task number."
                     + " Example: " + command + " 1");
@@ -61,6 +68,9 @@ public class Parser {
      * @throws MemoMaxException If the keyword is empty.
      */
     public static String parseFind(String userInput) throws MemoMaxException {
+        assert userInput != null : "User input should not be null";
+        assert userInput.startsWith("find") : "parseFind called for non-find input";
+
         if (userInput.trim().equals("find")) {
             throw new MemoMaxException("Find needs a keyword. Example: find book");
         }
@@ -81,6 +91,9 @@ public class Parser {
      * @throws MemoMaxException If the format is invalid.
      */
     public static String[] parseDeadline(String userInput) throws MemoMaxException {
+        assert userInput != null : "User input should not be null";
+        assert userInput.startsWith("deadline") : "parseDeadline called for non-deadline input";
+
         if (userInput.trim().equals("deadline")) {
             throw new MemoMaxException("Deadline needs a description and a due date. "
                     + "Example: deadline return book /by 2025-02-01 1800");
@@ -121,6 +134,9 @@ public class Parser {
      * @throws MemoMaxException If the format is invalid.
      */
     public static String[] parseEvent(String userInput) throws MemoMaxException {
+        assert userInput != null : "User input should not be null";
+        assert userInput.startsWith("event") : "parseEvent called for non-event input";
+
         boolean hasFrom = userInput.contains("/from");
         boolean hasTo = userInput.contains("/to");
 
@@ -136,6 +152,7 @@ public class Parser {
         }
 
         String[] eventDate = userInput.split("/from", -1);
+        assert eventDate.length >= 1 : "Split by /from failed to produce description part";
         String event = eventDate[0].substring("event ".length()).trim();
 
         if (eventDate.length < 2) {

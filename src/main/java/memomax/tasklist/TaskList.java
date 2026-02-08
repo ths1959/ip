@@ -25,6 +25,7 @@ public class TaskList {
      * @param tasks The list of tasks to initialize with.
      */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "Source task list should not be null";
         this.tasks = new ArrayList<>(tasks);
     }
 
@@ -34,7 +35,10 @@ public class TaskList {
      * @param task The task to add.
      */
     public void add(Task task) {
+        assert task != null : "Cannot add a null task to the list";
+        int oldSize = tasks.size();
         tasks.add(task);
+        assert tasks.size() == oldSize + 1 : "Task list size should increment by 1";
     }
 
     /**
@@ -46,7 +50,13 @@ public class TaskList {
      */
     public Task delete(int index) throws MemoMaxException {
         validateIndex(index);
-        return tasks.remove(index);
+        assert index >= 0 && index < tasks.size() : "Index must be valid after validation";
+
+        int oldSize = tasks.size();
+        Task removedTask = tasks.remove(index);
+        assert tasks.size() == oldSize - 1 : "Task list size should decrement by 1";
+
+        return removedTask;
     }
 
     /**
@@ -58,7 +68,12 @@ public class TaskList {
      */
     public Task get(int index) throws MemoMaxException {
         validateIndex(index);
-        return tasks.get(index);
+        assert index >= 0 && index < tasks.size() : "Index must be valid after validation";
+
+        Task task = tasks.get(index);
+        assert task != null : "Retrieved task should not be null";
+
+        return task;
     }
 
     /**
@@ -69,7 +84,10 @@ public class TaskList {
      */
     public void mark(int index) throws MemoMaxException {
         validateIndex(index);
+        assert index >= 0 && index < tasks.size() : "Index must be valid after validation";
+
         Task task = tasks.get(index);
+        assert task != null : "Task to mark should not be null";
 
         if (task.getStatusIcon().equals("[X]")) {
             throw new MemoMaxException("Task " + (index + 1)
@@ -77,6 +95,7 @@ public class TaskList {
         }
 
         task.mark();
+        assert task.getStatusIcon().equals("[X]") : "Task should be marked as done";
     }
 
     /**
@@ -87,7 +106,10 @@ public class TaskList {
      */
     public void unmark(int index) throws MemoMaxException {
         validateIndex(index);
+        assert index >= 0 && index < tasks.size() : "Index must be valid after validation";
+
         Task task = tasks.get(index);
+        assert task != null : "Task to unmark should not be null";
 
         if (task.getStatusIcon().equals("[ ]")) {
             throw new MemoMaxException("Task " + (index + 1)
@@ -95,6 +117,7 @@ public class TaskList {
         }
 
         task.unmark();
+        assert task.getStatusIcon().equals("[ ]") : "Task should be unmarked";
     }
 
     /**
@@ -103,7 +126,9 @@ public class TaskList {
      * @return A copy of the task list.
      */
     public ArrayList<Task> getAllTasks() {
-        return new ArrayList<>(tasks);
+        ArrayList<Task> copy = new ArrayList<>(tasks);
+        assert copy.size() == tasks.size() : "Copy size should match original size";
+        return copy;
     }
 
     /**
@@ -113,6 +138,8 @@ public class TaskList {
      * @return List of matching tasks.
      */
     public ArrayList<Task> findTasks(String keyword) {
+        assert keyword != null : "Search keyword should not be null";
+
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {
             if (task.toString().toLowerCase().contains(keyword.toLowerCase())) {
