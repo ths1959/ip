@@ -82,9 +82,17 @@ public class Storage {
             }
 
             try (FileWriter writer = new FileWriter(file)) {
-                for (Task task : tasks) {
-                    writer.write(task.toFileFormat() + "\n");
-                }
+                tasks.stream()
+                        .map(task -> task.toFileFormat() + "\n")
+                        .forEach(formattedLine -> {
+                            try {
+                                writer.write(formattedLine);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+            } catch (RuntimeException e) {
+                throw new MemoMaxException("Failed to save tasks.");
             }
         } catch (IOException e) {
             throw new MemoMaxException("Failed to save tasks.");
