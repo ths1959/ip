@@ -10,6 +10,10 @@ import memomax.task.Task;
  * Manages formatted output and error messages.
  */
 public class Ui {
+    private static final String MESSAGE_COUNT_PREFIX = "Now you have ";
+    private static final String MESSAGE_COUNT_SUFFIX = " task(s) in the list.";
+    private static final String HELP_PROMPT = "Enter 'help' for more information";
+
     private final Scanner scanner;
 
     /**
@@ -51,7 +55,7 @@ public class Ui {
     public String showErrorMessage(String message) {
         return buildMessage(
                 "Oops! " + message,
-                "Enter 'help' for more information"
+                HELP_PROMPT
         );
     }
 
@@ -96,15 +100,16 @@ public class Ui {
     public String showTaskList(ArrayList<Task> tasks, boolean isEmpty) {
         if (isEmpty) {
             return buildMessage("There are currently no tasks in your list");
-        } else {
-            ArrayList<String> lines = new ArrayList<>();
-            lines.add("Here is/are the task(s) in your list:");
-            for (int i = 0; i < tasks.size(); i++) {
-                lines.add((i + 1) + "." + tasks.get(i).toString());
-            }
-            lines.add("You have " + tasks.size() + " task(s) in the list.");
-            return buildMessage(lines.toArray(new String[0]));
         }
+
+        ArrayList<String> lines = new ArrayList<>();
+        lines.add("Here is/are the task(s) in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            lines.add((i + 1) + "." + tasks.get(i).toString());
+        }
+        lines.add(MESSAGE_COUNT_PREFIX + tasks.size() + MESSAGE_COUNT_SUFFIX);
+
+        return buildMessage(lines.toArray(new String[0]));
     }
 
     /**
@@ -118,7 +123,7 @@ public class Ui {
         return buildMessage(
                 "Got it. I've added this task:",
                 " " + task.toString(),
-                "Now you have " + taskCount + " task(s) in the list."
+                MESSAGE_COUNT_PREFIX + taskCount + MESSAGE_COUNT_SUFFIX
         );
     }
 
@@ -159,7 +164,7 @@ public class Ui {
         return buildMessage(
                 "Noted. I've removed this task:",
                 " " + task.toString(),
-                "Now you have " + taskCount + " task(s) in the list."
+                MESSAGE_COUNT_PREFIX + taskCount + MESSAGE_COUNT_SUFFIX
         );
     }
 
@@ -171,15 +176,16 @@ public class Ui {
      * @return The formatted find results
      */
     public String showFindResults(ArrayList<Task> matchingTasks, String keyword) {
-        ArrayList<String> lines = new ArrayList<>();
         if (matchingTasks.isEmpty()) {
-            lines.add("No tasks found containing: '" + keyword + "'");
-        } else {
-            lines.add("Here are the matching tasks in your list:");
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                lines.add((i + 1) + "." + matchingTasks.get(i));
-            }
+            return buildMessage("No tasks found containing: '" + keyword + "'");
         }
+
+        ArrayList<String> lines = new ArrayList<>();
+        lines.add("Here are the matching tasks in your list:");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            lines.add((i + 1) + "." + matchingTasks.get(i));
+        }
+
         return buildMessage(lines.toArray(new String[0]));
     }
 
@@ -211,7 +217,7 @@ public class Ui {
     public String showUnknownCommand() {
         return buildMessage(
                 "Invalid command",
-                "Type 'help' for more options"
+                HELP_PROMPT
         );
     }
 }
