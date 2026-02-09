@@ -85,6 +85,8 @@ public class MemoMax {
             return handleHelp(inputParts);
         case FIND:
             return handleFind(input);
+        case UPDATE:
+            return handleUpdate(input);
         default:
             return handleUnknownCommand();
         }
@@ -129,6 +131,9 @@ public class MemoMax {
                 break;
             case FIND:
                 handleFind(userInput);
+                break;
+            case UPDATE:
+                handleUpdate(userInput);
                 break;
             default:
                 handleUnknownCommand();
@@ -258,6 +263,36 @@ public class MemoMax {
             ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
             response = UI.showFindResults(matchingTasks, keyword);
         } catch (MemoMaxException e) {
+            response = UI.showErrorMessage(e.getMessage());
+        }
+        System.out.println(response);
+        return response;
+    }
+
+    /**
+     * Updates an existing task's description.
+     *
+     * @param userInput The raw user input string.
+     */
+    private static String handleUpdate(String userInput) {
+        assert userInput != null : "Update input should not be null";
+        String response;
+        try {
+            String[] parsed = Parser.parseUpdate(userInput);
+            int index = Integer.parseInt(parsed[0]) - 1;
+            String newDescription = parsed[1];
+
+            Task oldTask = tasks.get(index);
+            Task updatedTask = new Todo(newDescription);
+
+            if (oldTask.getStatusIcon().equals("[X]")) {
+                updatedTask.mark();
+            }
+
+            tasks.update(index, updatedTask);
+            response = UI.showTaskUpdated(updatedTask);
+            saveTasksToFile();
+        } catch (MemoMaxException | NumberFormatException e) {
             response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
