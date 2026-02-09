@@ -124,6 +124,22 @@ public class TaskList {
     }
 
     /**
+     * Updates an existing task with a new task object.
+     *
+     * @param index The index of the task to update (0-based).
+     * @param updatedTask The new task to place at that index.
+     * @throws MemoMaxException If the index is invalid.
+     */
+    public void update(int index, Task updatedTask) throws MemoMaxException {
+        validateIndex(index);
+        assert updatedTask != null : "Updated task cannot be null";
+        assert index >= 0 && index < tasks.size() : "Index must be valid after validation";
+
+        tasks.set(index, updatedTask);
+        assert tasks.get(index).equals(updatedTask) : "Task at index should be the updated task";
+    }
+
+    /**
      * Returns all tasks in the list.
      *
      * @return A copy of the task list.

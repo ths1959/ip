@@ -169,6 +169,19 @@ public class Ui {
     }
 
     /**
+     * Displays a task updated confirmation.
+     *
+     * @param task The updated task
+     * @return The formatted confirmation message
+     */
+    public String showTaskUpdated(Task task) {
+        return buildMessage(
+                "OK, I've updated this task:",
+                " " + task.toString()
+        );
+    }
+
+    /**
      * Displays search results for the find command.
      *
      * @param matchingTasks List of tasks matching the specified keyword.
@@ -205,7 +218,8 @@ public class Ui {
                 "6. Mark as not done: unmark <number>",
                 "7. Delete a task: delete <number>",
                 "8. Find tasks: find <keyword>",
-                "9. Say goodbye: bye"
+                "9. Update a task: update <number> <new description>",
+                "10. Say goodbye: bye"
         );
     }
 
