@@ -16,6 +16,7 @@ public class Parser {
     private static final String PREFIX_FIND = "find ";
     private static final String PREFIX_DEADLINE = "deadline ";
     private static final String PREFIX_EVENT = "event ";
+    private static final String PREFIX_UPDATE = "update ";
 
     /**
      * Parses a todo command and extracts the description.
@@ -148,18 +149,7 @@ public class Parser {
         assert userInput.toLowerCase().startsWith("event") : "parseEvent called for non-event input";
 
         int fromIndex = userInput.indexOf(DELIMITER_FROM);
-        int toIndex = userInput.indexOf(DELIMITER_TO);
-
-        if (fromIndex == -1) {
-            throw new MemoMaxException("Start time not specified. "
-                    + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
-                    + DELIMITER_TO + " 2026-02-14 1600");
-        }
-        if (toIndex == -1) {
-            throw new MemoMaxException("End time not specified. "
-                    + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
-                    + DELIMITER_TO + " 2026-02-14 1600");
-        }
+        int toIndex = getToIndex(userInput, fromIndex);
 
         String event = userInput.substring(PREFIX_EVENT.length(), fromIndex).trim();
         String from = userInput.substring(fromIndex + DELIMITER_FROM.length(), toIndex).trim();
@@ -182,5 +172,48 @@ public class Parser {
         }
 
         return new String[]{event, from, to};
+    }
+
+    private static int getToIndex(String userInput, int fromIndex) throws MemoMaxException {
+        int toIndex = userInput.indexOf(DELIMITER_TO);
+
+        if (fromIndex == -1) {
+            throw new MemoMaxException("Start time not specified. "
+                    + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
+                    + DELIMITER_TO + " 2026-02-14 1600");
+        }
+        if (toIndex == -1) {
+            throw new MemoMaxException("End time not specified. "
+                    + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
+                    + DELIMITER_TO + " 2026-02-14 1600");
+        }
+        return toIndex;
+    }
+
+    /**
+     * Parses an update command to extract the task index and the new description.
+     *
+     * @param userInput The full user input string.
+     * @return A String array containing [taskNumber, newDescription].
+     * @throws MemoMaxException If the format is invalid or parts are missing.
+     */
+    public static String[] parseUpdate(String userInput) throws MemoMaxException {
+        assert userInput != null : "User input should not be null";
+        assert userInput.toLowerCase().startsWith("update") : "parseUpdate called for non-update input";
+
+        if (userInput.trim().equalsIgnoreCase("update")) {
+            throw new MemoMaxException("Update needs a task number and new description. "
+                    + "Example: update 1 new description");
+        }
+
+        String content = userInput.substring(PREFIX_UPDATE.length()).trim();
+        String[] parts = content.split(" ", 2);
+
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            throw new MemoMaxException("Please provide both a task number and the new description. "
+                    + "Example: update 1 new description");
+        }
+
+        return new String[]{parts[0].trim(), parts[1].trim()};
     }
 }

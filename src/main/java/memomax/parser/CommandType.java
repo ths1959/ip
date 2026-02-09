@@ -5,7 +5,7 @@ package memomax.parser;
  */
 public enum CommandType {
     BYE, LIST, MARK, UNMARK, DELETE,
-    TODO, DEADLINE, EVENT, HELP, FIND, UNKNOWN;
+    TODO, DEADLINE, EVENT, HELP, FIND, UPDATE, UNKNOWN;
 
     /**
      * Converts string to CommandType.
@@ -37,6 +37,8 @@ public enum CommandType {
             return HELP;
         case "find":
             return FIND;
+        case "update":
+            return UPDATE;
         default:
             return UNKNOWN;
         }
