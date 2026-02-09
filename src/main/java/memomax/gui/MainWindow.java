@@ -2,6 +2,8 @@ package memomax.gui;
 
 import java.util.Objects;
 
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -9,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import memomax.MemoMax;
 
 /**
@@ -67,6 +70,7 @@ public class MainWindow extends AnchorPane {
     /**
      * Creates two dialog boxes, one echoing user input and the other containing MemoMax's reply.
      * Clears the user input after processing.
+     * If the user input is "bye", the application will close after a short delay.
      */
     @FXML
     private void handleUserInput() {
@@ -77,5 +81,11 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getMemoMaxDialog(response, memoMaxImage)
         );
         userInput.clear();
+
+        if (input.trim().equalsIgnoreCase("bye")) {
+            PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+            delay.setOnFinished(event -> Platform.exit());
+            delay.play();
+        }
     }
 }

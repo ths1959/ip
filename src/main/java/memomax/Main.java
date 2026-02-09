@@ -1,10 +1,12 @@
 package memomax;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import memomax.gui.MainWindow;
@@ -14,7 +16,7 @@ import memomax.gui.MainWindow;
  */
 public class Main extends Application {
 
-    private MemoMax memoMax = new MemoMax();
+    private final MemoMax memoMax = new MemoMax();
 
     @Override
     public void start(Stage stage) {
@@ -23,6 +25,10 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setTitle("MemoMax");
+            stage.getIcons().add(new Image(Objects.requireNonNull(this.getClass()
+                    .getResourceAsStream("/images/DaMemoMax.png"))));
+
             fxmlLoader.<MainWindow>getController().setMemoMax(memoMax);
             stage.show();
         } catch (IOException e) {
