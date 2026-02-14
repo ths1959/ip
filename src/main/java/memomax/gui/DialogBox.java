@@ -42,12 +42,17 @@ public class DialogBox extends HBox {
         makeCircle();
     }
 
+    /**
+     * Clips the ImageView into a circle and adds a 3D glow effect.
+     */
     private void makeCircle() {
         Circle clip = new Circle();
         clip.setCenterX(displayPicture.getFitWidth() / 2);
         clip.setCenterY(displayPicture.getFitHeight() / 2);
         clip.setRadius(displayPicture.getFitWidth() / 2);
         displayPicture.setClip(clip);
+
+        displayPicture.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.5), 10, 0, 0, 0);");
     }
 
     /**
@@ -60,6 +65,13 @@ public class DialogBox extends HBox {
         setAlignment(Pos.CENTER_LEFT);
     }
 
+    /**
+     * Creates a DialogBox representing the user's input.
+     *
+     * @param text The text input by the user.
+     * @param img The user's profile image.
+     * @return A DialogBox styled for the user.
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         DialogBox db = new DialogBox(text, img);
         db.dialog.setStyle(db.dialog.getStyle()
@@ -67,10 +79,19 @@ public class DialogBox extends HBox {
                 + "-fx-border-color: #000000; "
                 + "-fx-text-fill: black; "
                 + "-fx-background-radius: 15 0 15 15; "
-                + "-fx-border-radius: 15 0 15 15;");
+                + "-fx-border-radius: 15 0 15 15; "
+                + "-fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.4), 10, 0, 0, 0);");
         return db;
     }
 
+    /**
+     * Creates a DialogBox representing MemoMax's response.
+     * The dialog box is flipped so the image appears on the left.
+     *
+     * @param text The response text from MemoMax.
+     * @param img MemoMax's profile image.
+     * @return A DialogBox styled for MemoMax.
+     */
     public static DialogBox getMemoMaxDialog(String text, Image img) {
         DialogBox db = new DialogBox(text, img);
         db.flip();
@@ -79,7 +100,8 @@ public class DialogBox extends HBox {
                 + "-fx-border-color: #000000; "
                 + "-fx-text-fill: black; "
                 + "-fx-background-radius: 0 15 15 15; "
-                + "-fx-border-radius: 0 15 15 15;");
+                + "-fx-border-radius: 0 15 15 15; "
+                + "-fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.4), 10, 0, 0, 0);");
         return db;
     }
 }
