@@ -22,6 +22,8 @@ public class MemoMax {
     private static final Ui UI = new Ui();
     private static final Storage STORAGE = new Storage("./data/MemoMax.txt");
 
+    private static boolean isLastResponseError = false;
+
     /**
      * Main entry point for the chatbot.
      *
@@ -48,6 +50,14 @@ public class MemoMax {
     }
 
     /**
+     * Returns whether the last response generated was an error.
+     * @return true if an error occurred, false otherwise.
+     */
+    public boolean isErrorResponse() {
+        return isLastResponseError;
+    }
+
+    /**
      * Processes user input and returns MemoMax's response for the GUI.
      * This method acts as a bridge for Level-10 integration.
      *
@@ -56,39 +66,46 @@ public class MemoMax {
      */
     public String getResponse(String input) {
         assert input != null : "Input string to getResponse should not be null";
+        isLastResponseError = false;
+
         if (tasks.isEmpty()) {
             loadTasksFromFile();
         }
 
-        String[] inputParts = input.split(" ");
-        assert inputParts.length > 0 : "Input should contain at least one word";
-        CommandType commandType = CommandType.parseCommand(inputParts[0]);
+        try {
+            String[] inputParts = input.split(" ");
+            assert inputParts.length > 0 : "Input should contain at least one word";
+            CommandType commandType = CommandType.parseCommand(inputParts[0]);
 
-        switch (commandType) {
-        case BYE:
-            return UI.showGoodbye();
-        case LIST:
-            return handleList();
-        case MARK:
-            return handleMark(inputParts);
-        case UNMARK:
-            return handleUnmark(inputParts);
-        case DELETE:
-            return handleDelete(inputParts);
-        case TODO:
-            return handleTodo(input);
-        case DEADLINE:
-            return handleDeadline(input);
-        case EVENT:
-            return handleEvent(input);
-        case HELP:
-            return handleHelp(inputParts);
-        case FIND:
-            return handleFind(input);
-        case UPDATE:
-            return handleUpdate(input);
-        default:
-            return handleUnknownCommand();
+            switch (commandType) {
+            case BYE:
+                return UI.showGoodbye();
+            case LIST:
+                return handleList();
+            case MARK:
+                return handleMark(inputParts);
+            case UNMARK:
+                return handleUnmark(inputParts);
+            case DELETE:
+                return handleDelete(inputParts);
+            case TODO:
+                return handleTodo(input);
+            case DEADLINE:
+                return handleDeadline(input);
+            case EVENT:
+                return handleEvent(input);
+            case HELP:
+                return handleHelp(inputParts);
+            case FIND:
+                return handleFind(input);
+            case UPDATE:
+                return handleUpdate(input);
+            default:
+                return handleUnknownCommand();
+            }
+        } catch (Exception e) {
+            isLastResponseError = true;
+            return UI.showErrorMessage(e.getMessage());
         }
     }
 
@@ -200,6 +217,7 @@ public class MemoMax {
             response = UI.showTaskMarked(tasks.get(index));
             saveTasksToFile();
         } catch (MemoMaxException e) {
+            isLastResponseError = true;
             response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
@@ -222,6 +240,7 @@ public class MemoMax {
             response = UI.showTaskUnmarked(tasks.get(index));
             saveTasksToFile();
         } catch (MemoMaxException e) {
+            isLastResponseError = true;
             response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
@@ -244,6 +263,7 @@ public class MemoMax {
             response = UI.showTaskDeleted(taskToRemove, tasks.size());
             saveTasksToFile();
         } catch (MemoMaxException e) {
+            isLastResponseError = true;
             response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
@@ -263,6 +283,7 @@ public class MemoMax {
             ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
             response = UI.showFindResults(matchingTasks, keyword);
         } catch (MemoMaxException e) {
+            isLastResponseError = true;
             response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
@@ -293,6 +314,7 @@ public class MemoMax {
             response = UI.showTaskUpdated(updatedTask);
             saveTasksToFile();
         } catch (MemoMaxException | NumberFormatException e) {
+            isLastResponseError = true;
             response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
@@ -315,6 +337,7 @@ public class MemoMax {
             response = UI.showTasksAdded(newTask, tasks.size());
             saveTasksToFile();
         } catch (MemoMaxException e) {
+            isLastResponseError = true;
             response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
@@ -338,6 +361,7 @@ public class MemoMax {
             response = UI.showTasksAdded(newTask, tasks.size());
             saveTasksToFile();
         } catch (MemoMaxException e) {
+            isLastResponseError = true;
             response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
@@ -363,6 +387,7 @@ public class MemoMax {
             response = UI.showTasksAdded(newTask, tasks.size());
             saveTasksToFile();
         } catch (MemoMaxException e) {
+            isLastResponseError = true;
             response = UI.showErrorMessage(e.getMessage());
         }
         System.out.println(response);
@@ -378,6 +403,7 @@ public class MemoMax {
         assert inputParts != null : "Help input parts should not be null";
         String response;
         if (inputParts.length != 1) {
+            isLastResponseError = true;
             response = UI.showUnknownCommand();
         } else {
             response = UI.showHelp();
@@ -390,6 +416,7 @@ public class MemoMax {
      * Handles unknown commands.
      */
     private static String handleUnknownCommand() {
+        isLastResponseError = true;
         String response = UI.showUnknownCommand();
         System.out.println(response);
         return response;

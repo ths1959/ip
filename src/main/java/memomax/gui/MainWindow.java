@@ -35,6 +35,8 @@ public class MainWindow extends AnchorPane {
             .getResourceAsStream("/images/DaUser.png")));
     private final Image memoMaxImage = new Image(Objects.requireNonNull(this.getClass()
             .getResourceAsStream("/images/DaMemoMax.png")));
+    private final Image memoMaxSadImage = new Image(Objects.requireNonNull(this.getClass()
+            .getResourceAsStream("/images/MemoMaxSad.png")));
 
     /**
      * Initializes the controller after the FXML file has been loaded.
@@ -76,9 +78,12 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = memoMax.getResponse(input);
+
+        Image botImageToUse = memoMax.isErrorResponse() ? memoMaxSadImage : memoMaxImage;
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getMemoMaxDialog(response, memoMaxImage)
+                DialogBox.getMemoMaxDialog(response, botImageToUse)
         );
         userInput.clear();
 
