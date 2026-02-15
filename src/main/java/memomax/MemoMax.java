@@ -73,7 +73,8 @@ public class MemoMax {
         }
 
         try {
-            String[] inputParts = input.split(" ");
+            String sanitizedInput = input.trim();
+            String[] inputParts = sanitizedInput.split("\\s+");
             assert inputParts.length > 0 : "Input should contain at least one word";
             CommandType commandType = CommandType.parseCommand(inputParts[0]);
 
@@ -89,17 +90,17 @@ public class MemoMax {
             case DELETE:
                 return handleDelete(inputParts);
             case TODO:
-                return handleTodo(input);
+                return handleTodo(sanitizedInput);
             case DEADLINE:
-                return handleDeadline(input);
+                return handleDeadline(sanitizedInput);
             case EVENT:
-                return handleEvent(input);
+                return handleEvent(sanitizedInput);
             case HELP:
                 return handleHelp(inputParts);
             case FIND:
-                return handleFind(input);
+                return handleFind(sanitizedInput);
             case UPDATE:
-                return handleUpdate(input);
+                return handleUpdate(sanitizedInput);
             default:
                 return handleUnknownCommand();
             }
@@ -116,7 +117,9 @@ public class MemoMax {
         while (true) {
             String userInput = UI.readCommand();
             assert userInput != null : "UI readCommand should not return null";
-            String[] inputParts = userInput.split(" ");
+
+            String sanitizedInput = userInput.trim();
+            String[] inputParts = sanitizedInput.split("\\s+");
             CommandType commandType = CommandType.parseCommand(inputParts[0]);
 
             switch (commandType) {
@@ -135,22 +138,22 @@ public class MemoMax {
                 handleDelete(inputParts);
                 break;
             case TODO:
-                handleTodo(userInput);
+                handleTodo(sanitizedInput);
                 break;
             case DEADLINE:
-                handleDeadline(userInput);
+                handleDeadline(sanitizedInput);
                 break;
             case EVENT:
-                handleEvent(userInput);
+                handleEvent(sanitizedInput);
                 break;
             case HELP:
                 handleHelp(inputParts);
                 break;
             case FIND:
-                handleFind(userInput);
+                handleFind(sanitizedInput);
                 break;
             case UPDATE:
-                handleUpdate(userInput);
+                handleUpdate(sanitizedInput);
                 break;
             default:
                 handleUnknownCommand();
@@ -258,7 +261,8 @@ public class MemoMax {
         try {
             int taskNumber = Parser.parseTaskNumber(inputParts, "delete");
             int index = taskNumber - 1;
-            Task taskToRemove = tasks.delete(index);
+            Task taskToRemove = tasks.get(index);
+            tasks.delete(index);
 
             response = UI.showTaskDeleted(taskToRemove, tasks.size());
             saveTasksToFile();
@@ -381,6 +385,10 @@ public class MemoMax {
             String event = parsed[0];
             String from = parsed[1];
             String to = parsed[2];
+
+            if (from.compareTo(to) > 0) {
+                throw new MemoMaxException("Start time cannot be after end time!");
+            }
 
             Task newTask = new Event(event, from, to);
             tasks.add(newTask);
