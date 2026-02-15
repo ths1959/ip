@@ -75,7 +75,6 @@ public class MemoMax {
     public String getResponse(String input) {
         assert input != null : "Input string to getResponse should not be null";
         isLastResponseError = false;
-        
         if (tasks == null) {
             loadTasksFromFile();
         }
