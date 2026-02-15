@@ -53,13 +53,13 @@ public class Parser {
         assert inputParts.length > 0 : "Input parts array should not be empty";
         assert inputParts[0].equals(command) : "parseTaskNumber called with mismatched command word";
 
-        if (inputParts.length < 2) {
+        if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
             throw new MemoMaxException("Please tell me which task number."
                     + " Example: " + command + " 1");
         }
 
         try {
-            int taskNumber = Integer.parseInt(inputParts[1]);
+            int taskNumber = Integer.parseInt(inputParts[1].trim());
             if (taskNumber <= 0) {
                 throw new MemoMaxException("Task number must be positive. "
                         + "Example: " + command + " 1");
@@ -151,6 +151,11 @@ public class Parser {
         int fromIndex = userInput.indexOf(DELIMITER_FROM);
         int toIndex = getToIndex(userInput, fromIndex);
 
+        if (fromIndex > toIndex) {
+            throw new MemoMaxException("Command format error: " + DELIMITER_FROM
+                    + " must come before " + DELIMITER_TO);
+        }
+
         String event = userInput.substring(PREFIX_EVENT.length(), fromIndex).trim();
         String from = userInput.substring(fromIndex + DELIMITER_FROM.length(), toIndex).trim();
         String to = userInput.substring(toIndex + DELIMITER_TO.length()).trim();
@@ -207,7 +212,7 @@ public class Parser {
         }
 
         String content = userInput.substring(PREFIX_UPDATE.length()).trim();
-        String[] parts = content.split(" ", 2);
+        String[] parts = content.split("\\s+", 2);
 
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
             throw new MemoMaxException("Please provide both a task number and the new description. "
