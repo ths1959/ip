@@ -25,6 +25,14 @@ public class MemoMax {
     private static boolean isLastResponseError = false;
 
     /**
+     * Constructor for MemoMax.
+     * Ensures tasks are loaded from storage immediately upon initialization.
+     */
+    public MemoMax() {
+        loadTasksFromFile();
+    }
+
+    /**
      * Main entry point for the chatbot.
      *
      * @param args Command line arguments
@@ -67,8 +75,8 @@ public class MemoMax {
     public String getResponse(String input) {
         assert input != null : "Input string to getResponse should not be null";
         isLastResponseError = false;
-
-        if (tasks.isEmpty()) {
+        
+        if (tasks == null) {
             loadTasksFromFile();
         }
 
