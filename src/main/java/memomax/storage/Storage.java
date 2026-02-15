@@ -193,7 +193,6 @@ public class Storage {
                 break;
 
             default:
-                assert false : "Execution should not reach here due to earlier type check";
                 return null;
             }
         } catch (Exception e) {
