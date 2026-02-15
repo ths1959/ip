@@ -24,3 +24,8 @@ Prerequisites: JDK 17, update Intellij to the most recent version.
    ```
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+
+## AI Usage Acknowledgements
+
+* **AI Assistance**: ChatGPT was used during the development of this project to assist with troubleshooting logic, refining code quality (Checkstyle compliance), and brainstorming edge cases for unit testing.
+* A detailed summary of technical assistance can be found in [AI.md](./AI.md).
