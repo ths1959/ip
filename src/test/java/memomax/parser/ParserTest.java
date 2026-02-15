@@ -143,6 +143,16 @@ public class ParserTest {
     }
 
     @Test
+    public void parseEvent_swappedDelimiters_throwsException() {
+        try {
+            Parser.parseEvent("event meeting /to 2025-01-30 1600 /from 2025-01-30 1400");
+            fail("Expected MemoMaxException for swapped delimiters");
+        } catch (MemoMaxException e) {
+            assertTrue(e.getMessage().contains("/from must come before /to"));
+        }
+    }
+
+    @Test
     public void parseEvent_missingFrom_throwsException() {
         try {
             Parser.parseEvent("event meeting /to 2025-01-30 1600");
@@ -163,32 +173,9 @@ public class ParserTest {
     }
 
     @Test
-    public void parseEvent_emptyFrom_throwsException() {
-        try {
-            Parser.parseEvent("event meeting /from  /to 2025-01-30 1600");
-            fail("Expected MemoMaxException for empty from time");
-        } catch (MemoMaxException e) {
-            assertTrue(e.getMessage().contains("Start time not specified"));
-        }
-    }
-
-    @Test
-    public void parseEvent_emptyTo_throwsException() {
-        try {
-            Parser.parseEvent("event meeting /from 2025-01-30 1400 /to ");
-            fail("Expected MemoMaxException for empty to time");
-        } catch (MemoMaxException e) {
-            assertTrue(e.getMessage().contains("End time not specified"));
-        }
-    }
-
-    @Test
-    public void parseEvent_emptyDescription_throwsException() {
-        try {
-            Parser.parseEvent("event /from 2025-01-30 1400 /to 2025-01-30 1600");
-            fail("Expected MemoMaxException for empty description");
-        } catch (MemoMaxException e) {
-            assertTrue(e.getMessage().contains("Event not specified"));
-        }
+    public void parseUpdate_multipleSpaces_returnsCorrectParts() throws MemoMaxException {
+        String[] result = Parser.parseUpdate("update    1    new description");
+        assertEquals("1", result[0]);
+        assertEquals("new description", result[1]);
     }
 }

@@ -19,6 +19,24 @@ public class StorageTest {
     private static final String TEST_FILE_PATH = "data/test_storage.txt";
 
     @Test
+    public void load_corruptedLine_skipsLineAndContinues() throws Exception {
+        Storage storage = new Storage(TEST_FILE_PATH);
+        java.nio.file.Files.createDirectories(java.nio.file.Path.of("data"));
+        java.nio.file.Files.writeString(java.nio.file.Path.of(TEST_FILE_PATH),
+            "T | 0 | Valid Task\nX | Corrupted | Line\n");
+
+        ArrayList<Task> loadedTasks = storage.load();
+
+        assertEquals(1, loadedTasks.size());
+        assertTrue(loadedTasks.get(0).toString().contains("Valid Task"));
+
+        File file = new File(TEST_FILE_PATH);
+        if (file.exists()) {
+            assertTrue(file.delete(), "Failed to delete test file after corrupted line test");
+        }
+    }
+
+    @Test
     public void save_validTasks_fileCreated() throws Exception {
         Storage storage = new Storage(TEST_FILE_PATH);
         ArrayList<Task> tasks = new ArrayList<>();
@@ -28,7 +46,8 @@ public class StorageTest {
 
         File file = new File(TEST_FILE_PATH);
         assertTrue(file.exists());
-        file.delete();
+
+        assertTrue(file.delete(), "Failed to delete test file after save test");
     }
 
     @Test
@@ -42,7 +61,11 @@ public class StorageTest {
 
         assertEquals(1, loadedTasks.size());
         assertTrue(loadedTasks.get(0).toString().contains("Save and load"));
-        new File(TEST_FILE_PATH).delete();
+
+        File file = new File(TEST_FILE_PATH);
+        if (file.exists()) {
+            assertTrue(file.delete(), "Failed to delete test file after load test");
+        }
     }
 
     @Test
@@ -51,6 +74,10 @@ public class StorageTest {
         ArrayList<Task> tasks = storage.load();
 
         assertTrue(tasks.isEmpty());
-        new File("data/non_existent.txt").delete();
+
+        File file = new File("data/non_existent.txt");
+        if (file.exists()) {
+            assertTrue(file.delete(), "Failed to delete non-existent marker file");
+        }
     }
 }

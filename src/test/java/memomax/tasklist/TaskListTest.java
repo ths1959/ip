@@ -3,11 +3,13 @@ package memomax.tasklist;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import memomax.exception.MemoMaxException;
 import memomax.task.Task;
 import memomax.task.Todo;
 
@@ -16,6 +18,31 @@ import memomax.task.Todo;
  * Ensures that adding, deleting, and finding tasks works correctly.
  */
 public class TaskListTest {
+
+    @Test
+    public void add_duplicateTask_throwsException() throws Exception {
+        TaskList taskList = new TaskList();
+        taskList.add(new Todo("Unique Task"));
+        try {
+            taskList.add(new Todo("Unique Task"));
+            fail("Expected MemoMaxException for duplicate task");
+        } catch (MemoMaxException e) {
+            assertTrue(e.getMessage().contains("already exists"));
+        }
+    }
+
+    @Test
+    public void update_toExistingTask_throwsException() throws Exception {
+        TaskList taskList = new TaskList();
+        taskList.add(new Todo("Task A"));
+        taskList.add(new Todo("Task B"));
+        try {
+            taskList.update(1, new Todo("Task A"));
+            fail("Expected MemoMaxException for duplicate update");
+        } catch (MemoMaxException e) {
+            assertTrue(e.getMessage().contains("create a duplicate"));
+        }
+    }
 
     @Test
     public void delete_validIndex_taskRemoved() throws Exception {
