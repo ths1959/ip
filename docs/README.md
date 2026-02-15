@@ -20,7 +20,7 @@ MemoMax is a task manager designed for users who prefer the speed of a **Command
 ### Adding a Todo: `todo`
 Adds a basic task without any date or time constraints.
 * **Format**: `todo DESCRIPTION`
-* **Example**: `todo Read CS2103T textbook`
+* **Example**: `todo Read library book`
 
 ### Adding a Deadline: `deadline`
 Adds a task that needs to be completed by a specific date and time.
