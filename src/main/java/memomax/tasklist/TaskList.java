@@ -36,9 +36,11 @@ public class TaskList {
      * Adds a task to the list.
      *
      * @param task The task to add.
+     * @throws MemoMaxException If a duplicate task already exists.
      */
-    public void add(Task task) {
+    public void add(Task task) throws MemoMaxException {
         assert task != null : "Cannot add a null task to the list";
+        checkDuplicate(task);
         int oldSize = tasks.size();
         tasks.add(task);
         assert tasks.size() == oldSize + 1 : "Task list size should increment by 1";
@@ -128,12 +130,18 @@ public class TaskList {
      *
      * @param index The index of the task to update (0-based).
      * @param updatedTask The new task to place at that index.
-     * @throws MemoMaxException If the index is invalid.
+     * @throws MemoMaxException If the index is invalid or results in a duplicate.
      */
     public void update(int index, Task updatedTask) throws MemoMaxException {
         validateIndex(index);
         assert updatedTask != null : "Updated task cannot be null";
         assert index >= 0 && index < tasks.size() : "Index must be valid after validation";
+
+        for (int i = 0; i < tasks.size(); i++) {
+            if (i != index && tasks.get(i).toString().equals(updatedTask.toString())) {
+                throw new MemoMaxException("Updating this task would create a duplicate!");
+            }
+        }
 
         tasks.set(index, updatedTask);
         assert tasks.get(index).equals(updatedTask) : "Task at index should be the updated task";
@@ -197,6 +205,20 @@ public class TaskList {
         boolean isOutOfBounds = index < 0 || index >= tasks.size();
         if (isOutOfBounds) {
             throw new MemoMaxException("Task " + (index + 1) + " does not exist!");
+        }
+    }
+
+    /**
+     * Checks if a duplicate task already exists in the list.
+     *
+     * @param task The task to check.
+     * @throws MemoMaxException If a duplicate is found.
+     */
+    private void checkDuplicate(Task task) throws MemoMaxException {
+        for (Task existingTask : tasks) {
+            if (existingTask.toString().equals(task.toString())) {
+                throw new MemoMaxException("This task already exists in your list!");
+            }
         }
     }
 }

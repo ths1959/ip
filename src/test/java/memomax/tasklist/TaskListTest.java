@@ -30,7 +30,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void getAllTasks_existingTasks_returnsCorrectList() {
+    public void getAllTasks_existingTasks_returnsCorrectList() throws Exception {
         TaskList taskList = new TaskList();
         taskList.add(new Todo("Task 1"));
         taskList.add(new Todo("Task 2"));
@@ -42,7 +42,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void findTasks_matchingKeyword_returnsFilteredList() {
+    public void findTasks_matchingKeyword_returnsFilteredList() throws Exception {
         TaskList taskList = new TaskList();
         taskList.add(new Todo("Read book"));
         taskList.add(new Todo("Eat lunch"));
@@ -61,7 +61,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void isEmpty_nonEmptyList_returnsFalse() {
+    public void isEmpty_nonEmptyList_returnsFalse() throws Exception {
         TaskList taskList = new TaskList();
         taskList.add(new Todo("Work"));
         assertFalse(taskList.isEmpty());
