@@ -118,7 +118,7 @@ public class MemoMax {
     }
 
     /**
-     * Main chatbot loop that processes user commands.
+     * Runs the main chatbot loop to process user commands.
      */
     private static void runChatbotLoop() {
         while (true) {
