@@ -32,6 +32,16 @@ public class Deadline extends Task {
     }
 
     /**
+     * Gets the due date of the deadline in input format.
+     *
+     * @return The formatted date string.
+     */
+    public String getBy() {
+        assert by != null : "Deadline date should not be null when calling getBy";
+        return by.format(INPUT_FORMAT);
+    }
+
+    /**
      * Returns a formatted deadline string with the due date.
      *
      * @return A string containing the "[D]" prefix, task details, and deadline.

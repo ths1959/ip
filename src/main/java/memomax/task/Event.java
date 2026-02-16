@@ -36,6 +36,26 @@ public class Event extends Task {
     }
 
     /**
+     * Gets the start time of the event in input format.
+     *
+     * @return The formatted start time string.
+     */
+    public String getFrom() {
+        assert from != null : "Event start time should not be null when calling getFrom";
+        return from.format(INPUT_FORMAT);
+    }
+
+    /**
+     * Gets the end time of the event in input format.
+     *
+     * @return The formatted end time string.
+     */
+    public String getTo() {
+        assert to != null : "Event end time should not be null when calling getTo";
+        return to.format(INPUT_FORMAT);
+    }
+
+    /**
      * Returns a formatted event string with time interval.
      *
      * @return A string with the "[E]" prefix, task details, and time interval.

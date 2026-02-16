@@ -171,7 +171,7 @@ public class TaskList {
         String lowerKeyword = keyword.toLowerCase();
 
         tasks.stream()
-                .filter(task -> task.toString().toLowerCase().contains(lowerKeyword))
+                .filter(task -> task.getDescription().toLowerCase().contains(lowerKeyword))
                 .forEach(matchingTasks::add);
 
         return matchingTasks;
