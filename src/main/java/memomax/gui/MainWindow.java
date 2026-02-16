@@ -67,6 +67,15 @@ public class MainWindow extends AnchorPane {
         dialogContainer.getChildren().addAll(
                 DialogBox.getMemoMaxDialog(memoMax.getGreeting(), memoMaxImage)
         );
+
+        String startupError = memoMax.getStartupError();
+        if (startupError != null) {
+            dialogContainer.getChildren().add(
+                    DialogBox.getMemoMaxDialog(startupError, memoMaxSadImage)
+            );
+        }
+
+        scrollPane.requestFocus();
     }
 
     /**
