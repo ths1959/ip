@@ -66,7 +66,7 @@ public class Ui {
      * @return The formatted storage error message
      */
     public String showStorageError(String message) {
-        return buildMessage("[Storage] " + message);
+        return buildMessage("Oops! " + message);
     }
 
     /**

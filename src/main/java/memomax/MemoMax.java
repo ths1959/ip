@@ -23,6 +23,7 @@ public class MemoMax {
     private static final Storage STORAGE = new Storage("./data/MemoMax.txt");
 
     private static boolean isLastResponseError = false;
+    private String startupError = null;
 
     /**
      * Constructor for MemoMax.
@@ -41,9 +42,9 @@ public class MemoMax {
         String welcomeMessage = UI.showWelcome();
         System.out.println(welcomeMessage);
 
-        loadTasksFromFile();
+        MemoMax bot = new MemoMax();
 
-        runChatbotLoop();
+        runChatbotLoop(bot);
 
         String goodbyeMessage = UI.showGoodbye();
         System.out.println(goodbyeMessage);
@@ -55,6 +56,14 @@ public class MemoMax {
      */
     public String getGreeting() {
         return UI.showWelcome();
+    }
+
+    /**
+     * Returns any error encountered during startup/loading.
+     * @return The error message, or null if no error occurred.
+     */
+    public String getStartupError() {
+        return startupError;
     }
 
     /**
@@ -119,8 +128,9 @@ public class MemoMax {
 
     /**
      * Runs the main chatbot loop to process user commands.
+     * @param bot The MemoMax instance to use.
      */
-    private static void runChatbotLoop() {
+    private static void runChatbotLoop(MemoMax bot) {
         while (true) {
             String userInput = UI.readCommand();
             assert userInput != null : "UI readCommand should not return null";
@@ -133,37 +143,37 @@ public class MemoMax {
             case BYE:
                 break;
             case LIST:
-                handleList();
+                bot.handleList();
                 break;
             case MARK:
-                handleMark(inputParts);
+                bot.handleMark(inputParts);
                 break;
             case UNMARK:
-                handleUnmark(inputParts);
+                bot.handleUnmark(inputParts);
                 break;
             case DELETE:
-                handleDelete(inputParts);
+                bot.handleDelete(inputParts);
                 break;
             case TODO:
-                handleTodo(sanitizedInput);
+                bot.handleTodo(sanitizedInput);
                 break;
             case DEADLINE:
-                handleDeadline(sanitizedInput);
+                bot.handleDeadline(sanitizedInput);
                 break;
             case EVENT:
-                handleEvent(sanitizedInput);
+                bot.handleEvent(sanitizedInput);
                 break;
             case HELP:
-                handleHelp(inputParts);
+                bot.handleHelp(inputParts);
                 break;
             case FIND:
-                handleFind(sanitizedInput);
+                bot.handleFind(sanitizedInput);
                 break;
             case UPDATE:
-                handleUpdate(sanitizedInput);
+                bot.handleUpdate(sanitizedInput);
                 break;
             default:
-                handleUnknownCommand();
+                bot.handleUnknownCommand();
                 break;
             }
 
@@ -176,15 +186,15 @@ public class MemoMax {
     /**
      * Loads tasks from storage file into memory.
      */
-    private static void loadTasksFromFile() {
+    private void loadTasksFromFile() {
         try {
             ArrayList<Task> loadedTasks = STORAGE.load();
             assert loadedTasks != null : "STORAGE.load() should return a list, even if empty";
             tasks = new TaskList(loadedTasks);
         } catch (MemoMaxException e) {
-            String storageErrorMessage = UI.showStorageError("Failed to load saved tasks: " + e.getMessage());
-            System.err.println(storageErrorMessage);
-            tasks = new TaskList();
+            this.startupError = UI.showStorageError(e.getMessage());
+            System.err.println(startupError);
+            tasks = new TaskList(e.getPartialTasks());
         }
     }
 
@@ -204,7 +214,7 @@ public class MemoMax {
     /**
      * Displays all tasks in the list.
      */
-    private static String handleList() {
+    private String handleList() {
         assert tasks != null : "Task list must be initialized to display";
         String listOutput = UI.showTaskList(tasks.getAllTasks(), tasks.isEmpty());
         System.out.println(listOutput);
@@ -216,7 +226,7 @@ public class MemoMax {
      *
      * @param inputParts The split input parts
      */
-    private static String handleMark(String[] inputParts) {
+    private String handleMark(String[] inputParts) {
         assert inputParts != null && inputParts.length >= 1 : "Input parts must be valid";
         String response;
         try {
@@ -239,7 +249,7 @@ public class MemoMax {
      *
      * @param inputParts The split input parts
      */
-    private static String handleUnmark(String[] inputParts) {
+    private String handleUnmark(String[] inputParts) {
         assert inputParts != null && inputParts.length >= 1 : "Input parts must be valid";
         String response;
         try {
@@ -262,7 +272,7 @@ public class MemoMax {
      *
      * @param inputParts The split input parts
      */
-    private static String handleDelete(String[] inputParts) {
+    private String handleDelete(String[] inputParts) {
         assert inputParts != null && inputParts.length >= 1 : "Input parts must be valid";
         String response;
         try {
@@ -286,7 +296,7 @@ public class MemoMax {
      *
      * @param userInput The user input string.
      */
-    private static String handleFind(String userInput) {
+    private String handleFind(String userInput) {
         assert userInput != null : "Find input should not be null";
         String response;
         try {
@@ -306,7 +316,7 @@ public class MemoMax {
      *
      * @param userInput The raw user input string.
      */
-    private static String handleUpdate(String userInput) {
+    private String handleUpdate(String userInput) {
         assert userInput != null : "Update input should not be null";
         String response;
         try {
@@ -315,7 +325,15 @@ public class MemoMax {
             String newDescription = parsed[1];
 
             Task oldTask = tasks.get(index);
-            Task updatedTask = new Todo(newDescription);
+            Task updatedTask;
+
+            if (oldTask instanceof Deadline) {
+                updatedTask = new Deadline(newDescription, ((Deadline) oldTask).getBy());
+            } else if (oldTask instanceof Event) {
+                updatedTask = new Event(newDescription, ((Event) oldTask).getFrom(), ((Event) oldTask).getTo());
+            } else {
+                updatedTask = new Todo(newDescription);
+            }
 
             if (oldTask.getStatusIcon().equals("[X]")) {
                 updatedTask.mark();
@@ -337,7 +355,7 @@ public class MemoMax {
      *
      * @param userInput The user input string
      */
-    private static String handleTodo(String userInput) {
+    private String handleTodo(String userInput) {
         assert userInput != null : "Todo input should not be null";
         String response;
         try {
@@ -360,7 +378,7 @@ public class MemoMax {
      *
      * @param userInput The user input string
      */
-    private static String handleDeadline(String userInput) {
+    private String handleDeadline(String userInput) {
         assert userInput != null : "Deadline input should not be null";
         String response;
         try {
@@ -384,7 +402,7 @@ public class MemoMax {
      *
      * @param userInput The user input string
      */
-    private static String handleEvent(String userInput) {
+    private String handleEvent(String userInput) {
         assert userInput != null : "Event input should not be null";
         String response;
         try {
@@ -414,7 +432,7 @@ public class MemoMax {
      *
      * @param inputParts The split input parts
      */
-    private static String handleHelp(String[] inputParts) {
+    private String handleHelp(String[] inputParts) {
         assert inputParts != null : "Help input parts should not be null";
         String response;
         if (inputParts.length != 1) {
@@ -430,7 +448,7 @@ public class MemoMax {
     /**
      * Handles unknown commands.
      */
-    private static String handleUnknownCommand() {
+    private String handleUnknownCommand() {
         isLastResponseError = true;
         String response = UI.showUnknownCommand();
         System.out.println(response);

@@ -51,6 +51,7 @@ public class Storage {
             return tasks;
         }
 
+        int corruptedLines = 0;
         try (Scanner s = new Scanner(file)) {
             while (s.hasNextLine()) {
                 String line = s.nextLine().trim();
@@ -58,11 +59,18 @@ public class Storage {
                     Task task = parseTask(line);
                     if (task != null) {
                         tasks.add(task);
+                    } else {
+                        corruptedLines++;
                     }
                 }
             }
         } catch (IOException e) {
             throw new MemoMaxException("Cannot read tasks file. Starting fresh");
+        }
+
+        if (corruptedLines > 0) {
+            throw new MemoMaxException("Warning: " + corruptedLines
+                + " corrupted lines found in storage. These were skipped.", tasks);
         }
 
         return tasks;
