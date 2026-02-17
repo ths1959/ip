@@ -1,6 +1,7 @@
 package memomax.tasklist;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 import memomax.exception.MemoMaxException;
 import memomax.task.Task;
@@ -175,6 +176,20 @@ public class TaskList {
                 .forEach(matchingTasks::add);
 
         return matchingTasks;
+    }
+
+    /**
+     * Finds the original master indices of tasks matching the keyword.
+     * This is used to display original indices in search results.
+     *
+     * @param keyword The search keyword.
+     * @return Array of indices (0-based) from the master list.
+     */
+    public int[] findMatchingIndices(String keyword) {
+        String lowerKeyword = keyword.toLowerCase();
+        return IntStream.range(0, tasks.size())
+                .filter(i -> tasks.get(i).getDescription().toLowerCase().contains(lowerKeyword))
+                .toArray();
     }
 
     /**

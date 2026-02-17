@@ -82,6 +82,20 @@ public class TaskListTest {
     }
 
     @Test
+    public void findMatchingIndices_matchingKeyword_returnsCorrectIndices() throws Exception {
+        TaskList taskList = new TaskList();
+        taskList.add(new Todo("Read book"));
+        taskList.add(new Todo("Eat lunch"));
+        taskList.add(new Todo("Read news"));
+
+        int[] indices = taskList.findMatchingIndices("Read");
+
+        assertEquals(2, indices.length);
+        assertEquals(0, indices[0]);
+        assertEquals(2, indices[1]);
+    }
+
+    @Test
     public void isEmpty_emptyList_returnsTrue() {
         TaskList taskList = new TaskList();
         assertTrue(taskList.isEmpty());

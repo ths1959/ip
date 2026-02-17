@@ -185,10 +185,11 @@ public class Ui {
      * Displays search results for the find command.
      *
      * @param matchingTasks List of tasks matching the specified keyword.
+     * @param indices Original 0-based indices from the master list.
      * @param keyword The search keyword.
      * @return The formatted find results
      */
-    public String showFindResults(ArrayList<Task> matchingTasks, String keyword) {
+    public String showFindResults(ArrayList<Task> matchingTasks, int[] indices, String keyword) {
         if (matchingTasks.isEmpty()) {
             return buildMessage("No tasks found containing: '" + keyword + "'");
         }
@@ -196,7 +197,7 @@ public class Ui {
         ArrayList<String> lines = new ArrayList<>();
         lines.add("Here are the matching tasks in your list:");
         for (int i = 0; i < matchingTasks.size(); i++) {
-            lines.add((i + 1) + "." + matchingTasks.get(i));
+            lines.add((indices[i] + 1) + "." + matchingTasks.get(i));
         }
 
         return buildMessage(lines.toArray(new String[0]));

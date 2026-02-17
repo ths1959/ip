@@ -302,7 +302,8 @@ public class MemoMax {
         try {
             String keyword = Parser.parseFind(userInput);
             ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
-            response = UI.showFindResults(matchingTasks, keyword);
+            int[] matchingIndices = tasks.findMatchingIndices(keyword);
+            response = UI.showFindResults(matchingTasks, matchingIndices, keyword);
         } catch (MemoMaxException e) {
             isLastResponseError = true;
             response = UI.showErrorMessage(e.getMessage());

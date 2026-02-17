@@ -42,7 +42,7 @@ public class UiTest {
 
     @Test
     public void showFindResults_noMatches_printsNoFoundMessage() {
-        String result = ui.showFindResults(new ArrayList<>(), "book");
+        String result = ui.showFindResults(new ArrayList<>(), new int[0], "book");
         assertTrue(result.contains("No tasks found containing: 'book'"));
     }
 
@@ -50,7 +50,8 @@ public class UiTest {
     public void showFindResults_withMatches_printsTasks() {
         ArrayList<Task> matches = new ArrayList<>();
         matches.add(new Todo("read book"));
-        String result = ui.showFindResults(matches, "book");
+        int[] indices = {0};
+        String result = ui.showFindResults(matches, indices, "book");
         assertTrue(result.contains("matching tasks in your list"));
         assertTrue(result.contains("read book"));
     }
