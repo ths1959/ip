@@ -37,6 +37,11 @@ public class Parser {
         if (description.isEmpty()) {
             throw new MemoMaxException("Todo needs a description. Example: todo read book");
         }
+
+        if (description.contains("|")) {
+            throw new MemoMaxException("Descriptions cannot contain the '|' character.");
+        }
+
         return description;
     }
 
@@ -134,6 +139,10 @@ public class Parser {
                     + "Example: deadline return book " + DELIMITER_BY + " 2026-02-14 1800");
         }
 
+        if (action.contains("|")) {
+            throw new MemoMaxException("Descriptions cannot contain the '|' character.");
+        }
+
         return new String[]{action, date};
     }
 
@@ -165,6 +174,11 @@ public class Parser {
                     + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
                     + DELIMITER_TO + " 2026-02-14 1600");
         }
+
+        if (event.contains("|")) {
+            throw new MemoMaxException("Descriptions cannot contain the '|' character.");
+        }
+
         if (from.isEmpty()) {
             throw new MemoMaxException("Start time not specified. "
                     + "Example: event meeting " + DELIMITER_FROM + " 2026-02-14 1400 "
@@ -217,6 +231,10 @@ public class Parser {
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
             throw new MemoMaxException("Please provide both a task number and the new description. "
                     + "Example: update 1 new description");
+        }
+
+        if (parts[1].contains("|")) {
+            throw new MemoMaxException("Descriptions cannot contain the '|' character.");
         }
 
         return new String[]{parts[0].trim(), parts[1].trim()};
