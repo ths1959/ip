@@ -25,7 +25,9 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setResizable(true);
+            stage.setMinWidth(400.0);
+            stage.setMinHeight(600.0);
             stage.setTitle("MemoMax");
             stage.getIcons().add(new Image(Objects.requireNonNull(this.getClass()
                     .getResourceAsStream("/images/DaMemoMax.png"))));

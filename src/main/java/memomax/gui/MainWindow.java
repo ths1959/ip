@@ -44,6 +44,9 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+
+        dialogContainer.prefWidthProperty().bind(scrollPane.widthProperty());
+
         String imageUrl = Objects.requireNonNull(getClass().getResource("/images/background.png"))
                 .toExternalForm();
         scrollPane.setStyle("-fx-background-color: transparent; "
@@ -54,6 +57,30 @@ public class MainWindow extends AnchorPane {
             + "-fx-background-repeat: no-repeat;");
 
         dialogContainer.setStyle("-fx-background-color: transparent;");
+
+        userInput.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9); "
+                + "-fx-background-radius: 20; "
+                + "-fx-border-color: #B0C4DE; "
+                + "-fx-border-radius: 20; "
+                + "-fx-border-width: 2; "
+                + "-fx-padding: 5 15 5 15; "
+                + "-fx-text-fill: #2F4F4F; "
+                + "-fx-prompt-text-fill: #A9A9A9;");
+
+        String buttonBaseStyle = "-fx-background-color: linear-gradient(to bottom, #E0F7FA, #B2EBF2); "
+                + "-fx-background-radius: 20; "
+                + "-fx-border-color: #81D4FA; "
+                + "-fx-border-radius: 20; "
+                + "-fx-border-width: 2; "
+                + "-fx-text-fill: #01579B; "
+                + "-fx-font-weight: bold; ";
+
+        sendButton.setStyle(buttonBaseStyle);
+
+        sendButton.setOnMouseEntered(e -> sendButton.setStyle(buttonBaseStyle
+                + "-fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.8), 15, 0, 0, 0); "
+                + "-fx-background-color: linear-gradient(to bottom, #FFFFFF, #E0F7FA);"));
+        sendButton.setOnMouseExited(e -> sendButton.setStyle(buttonBaseStyle));
     }
 
     /**

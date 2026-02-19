@@ -36,7 +36,6 @@ public class DialogBox extends HBox {
         dialog.setText(text);
         displayPicture.setImage(img);
         dialog.setPadding(new javafx.geometry.Insets(10));
-        dialog.setStyle("-fx-border-width: 0.5;");
         dialog.setMinHeight(javafx.scene.layout.Region.USE_PREF_SIZE);
 
         makeCircle();
@@ -74,13 +73,11 @@ public class DialogBox extends HBox {
      */
     public static DialogBox getUserDialog(String text, Image img) {
         DialogBox db = new DialogBox(text, img);
-        db.dialog.setStyle(db.dialog.getStyle()
-                + "-fx-background-color: #D1E8FF; "
-                + "-fx-border-color: #000000; "
-                + "-fx-text-fill: black; "
-                + "-fx-background-radius: 15 0 15 15; "
-                + "-fx-border-radius: 15 0 15 15; "
-                + "-fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.4), 10, 0, 0, 0);");
+        db.dialog.setStyle("-fx-background-color: #FFFFFF; "
+                + "-fx-text-fill: #2C3E50; "
+                + "-fx-background-radius: 20 20 0 20; "
+                + "-fx-padding: 10; "
+                + "-fx-effect: dropshadow(three-pass-box, rgba(173, 216, 230, 0.5), 10, 0, 0, 2);");
         return db;
     }
 
@@ -95,13 +92,11 @@ public class DialogBox extends HBox {
     public static DialogBox getMemoMaxDialog(String text, Image img) {
         DialogBox db = new DialogBox(text, img);
         db.flip();
-        db.dialog.setStyle(db.dialog.getStyle()
-                + "-fx-background-color: #E8DAEF; "
-                + "-fx-border-color: #000000; "
-                + "-fx-text-fill: black; "
-                + "-fx-background-radius: 0 15 15 15; "
-                + "-fx-border-radius: 0 15 15 15; "
-                + "-fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.4), 10, 0, 0, 0);");
+        db.dialog.setStyle("-fx-background-color: #F0F8FF; "
+                + "-fx-text-fill: #2C3E50; "
+                + "-fx-background-radius: 20 20 20 0; "
+                + "-fx-padding: 10; "
+                + "-fx-effect: dropshadow(three-pass-box, rgba(173, 216, 230, 0.5), 10, 0, 0, 2);");
         return db;
     }
 }
