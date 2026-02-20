@@ -2,7 +2,7 @@
 
 MemoMax is a task manager designed for users who prefer the speed of a **Command Line Interface (CLI)** while still enjoying a clean, modern Graphical User Interface (GUI). It is optimized for rapid task entry and organization, making it ideal for individuals who work primarily with their keyboards.
 
-![Product Screenshot](./Ui.png)
+![Product Screenshot](./docs/images/Ui.png)
 
 ## Quick Start
 
@@ -16,6 +16,8 @@ MemoMax is a task manager designed for users who prefer the speed of a **Command
 ---
 
 ## Features
+
+> **Note on Case Sensitivity:** All command keywords are **case-insensitive**. For example, `todo`, `Todo`, and `TODO` will all work the same way.
 
 ### Adding a Todo: `todo`
 Adds a basic task without any date or time constraints.
@@ -40,7 +42,18 @@ Finds tasks whose descriptions contain the given keyword.
 ### Updating a Task: `update`
 Edits the description of an existing task in the list.
 * **Format**: `update INDEX NEW_DESCRIPTION`
+* **Index**: Must be a positive integer (1, 2, 3...) based on the current list numbering.
 * **Example**: `update 1 Read Chapter 5 of textbook`
+
+---
+
+## Data Management
+
+### Automatic Saving
+MemoMax automatically saves your data to the hard disk whenever a change is made (e.g., adding, deleting, or updating a task). There is no need for a manual `save` command.
+
+### Data File Location
+Your data is stored in a file named `memomax.txt` within a `data` folder, located in the same directory as the `memomax.jar` file.
 
 ---
 
