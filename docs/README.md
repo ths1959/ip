@@ -17,7 +17,7 @@ MemoMax is a task manager designed for users who prefer the speed of a **Command
 
 ## Features
 
-> **Note on Case Sensitivity:** All command keywords are **case-insensitive**. For example, `todo`, `Todo`, and `TODO` will all work the same way.
+> **Note on Case Sensitivity:** Command words (e.g., `todo`, `deadline`, `event`) are **case-insensitive**. However, parameter tags (e.g., `/by`, `/from`, `/to`) must be entered in **lowercase**.
 
 ### Adding a Todo: `todo`
 Adds a basic task without any date or time constraints.
