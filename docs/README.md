@@ -2,7 +2,7 @@
 
 MemoMax is a task manager designed for users who prefer the speed of a **Command Line Interface (CLI)** while still enjoying a clean, modern Graphical User Interface (GUI). It is optimized for rapid task entry and organization, making it ideal for individuals who work primarily with their keyboards.
 
-![Product Screenshot](./docs/images/Ui.png)
+![Product Screenshot](./Ui.png)
 
 ## Quick Start
 
